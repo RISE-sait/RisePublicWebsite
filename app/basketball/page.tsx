@@ -67,7 +67,7 @@ export default function BasketballPage() {
 
       {/* Program Tabs */}
       <SectionContainer id="programs" className="bg-[#111]">
-        <SectionHeading title="BASKETBALL PROGRAMS" centered />
+        <SectionHeading title="BASKETBALL INFORMATION" centered />
 
         <div className="mb-8 max-w-3xl mx-auto">
           <TabNavigation
