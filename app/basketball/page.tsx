@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { VideoHero } from "@/components/ui/video-hero"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { MembershipGrid } from "@/components/ui/membership-grid"
-import { GameGrid } from "@/components/ui/game-grid"
-import { PlayerStatsCard } from "@/components/ui/player-stats-card"
-import { TopPlayersTable } from "@/components/ui/top-players-table"
-import { WaitlistForm } from "@/components/ui/waitlist-form"
-import { Button } from "@/components/ui/button"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { StatsCounter } from "@/components/ui/stats-counter"
-import PartnerLogos from "@/components/partner-logos"
-import TabNavigation from "@/components/tab-navigation"
-import { useState } from "react"
-import { MEMBERSHIP_PLANS, UPCOMING_GAMES, TOP_PLAYERS } from "@/lib/constants"
-import { Play } from "lucide-react"
+import { motion } from "framer-motion";
+import { VideoHero } from "@/components/ui/video-hero";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { MembershipGrid } from "@/components/ui/membership-grid";
+import { GameGrid } from "@/components/ui/game-grid";
+import { PlayerStatsCard } from "@/components/ui/player-stats-card";
+import { TopPlayersTable } from "@/components/ui/top-players-table";
+import { WaitlistForm } from "@/components/ui/waitlist-form";
+import { Button } from "@/components/ui/button";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { StatsCounter } from "@/components/ui/stats-counter";
+import PartnerLogos from "@/components/partner-logos";
+import TabNavigation from "@/components/tab-navigation";
+import { useState } from "react";
+import { MEMBERSHIP_PLANS, UPCOMING_GAMES, TOP_PLAYERS } from "@/lib/constants";
+import { Play } from "lucide-react";
 
 export default function BasketballPage() {
-  const [activeTab, setActiveTab] = useState("programs")
+  const [activeTab, setActiveTab] = useState("programs");
 
   const programTabs = [
     { id: "programs", label: "Programs" },
     { id: "schedules", label: "Schedules" },
     { id: "coaches", label: "Coaches" },
-  ]
+  ];
 
   return (
     <div className="flex flex-col">
@@ -54,7 +54,12 @@ export default function BasketballPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={250} label="ACTIVE MEMBERS" delay={0} />
             <StatsCounter value={15} label="PROFESSIONAL COACHES" delay={0.2} />
-            <StatsCounter value={95} label="PLAYER SATISFACTION" suffix="%" delay={0.4} />
+            <StatsCounter
+              value={95}
+              label="PLAYER SATISFACTION"
+              suffix="%"
+              delay={0.4}
+            />
             <StatsCounter value={8} label="CHAMPIONSHIPS WON" delay={0.6} />
           </div>
         </SectionContainer>
@@ -65,33 +70,59 @@ export default function BasketballPage() {
         <SectionHeading title="BASKETBALL PROGRAMS" centered />
 
         <div className="mb-8 max-w-3xl mx-auto">
-          <TabNavigation tabs={programTabs} defaultTab="programs" onChange={setActiveTab} />
+          <TabNavigation
+            tabs={programTabs}
+            defaultTab="programs"
+            onChange={setActiveTab}
+          />
         </div>
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">Youth Development</h3>
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+                Youth Development
+              </h3>
               <p className="mb-4">
-                Comprehensive skill development for players ages 5-12, focusing on fundamentals and fun.
+                Comprehensive skill development for players ages 5-12, focusing
+                on fundamentals and fun.
               </p>
-              <Button variant="outline" className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10">
+              <Button
+                variant="outline"
+                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
+              >
                 Learn More
               </Button>
             </ThreeDCard>
 
             <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">Teen Elite</h3>
-              <p className="mb-4">Advanced training for players ages 13-18 looking to compete at higher levels.</p>
-              <Button variant="outline" className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10">
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+                Teen Elite
+              </h3>
+              <p className="mb-4">
+                Advanced training for players ages 13-18 looking to compete at
+                higher levels.
+              </p>
+              <Button
+                variant="outline"
+                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
+              >
                 Learn More
               </Button>
             </ThreeDCard>
 
             <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">Adult Leagues</h3>
-              <p className="mb-4">Competitive and recreational leagues for adults of all skill levels.</p>
-              <Button variant="outline" className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10">
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+                Adult Leagues
+              </h3>
+              <p className="mb-4">
+                Competitive and recreational leagues for adults of all skill
+                levels.
+              </p>
+              <Button
+                variant="outline"
+                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
+              >
                 Learn More
               </Button>
             </ThreeDCard>
@@ -142,29 +173,50 @@ export default function BasketballPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img src="/placeholder.svg?height=100&width=100" alt="Coach" className="w-full h-full object-cover" />
+                <img
+                  src="/placeholder.svg?height=100&width=100"
+                  alt="Coach"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold mb-1">Coach Mike</h3>
               <p className="text-[#ffb800] mb-2">Head Coach</p>
-              <p className="text-sm">Former professional player with 15+ years of coaching experience.</p>
+              <p className="text-sm">
+                Former professional player with 15+ years of coaching
+                experience.
+              </p>
             </ThreeDCard>
 
             <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img src="/placeholder.svg?height=100&width=100" alt="Coach" className="w-full h-full object-cover" />
+                <img
+                  src="/placeholder.svg?height=100&width=100"
+                  alt="Coach"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold mb-1">Coach Sarah</h3>
               <p className="text-[#ffb800] mb-2">Skills Development</p>
-              <p className="text-sm">NCAA Division I player specializing in shooting and ball handling.</p>
+              <p className="text-sm">
+                NCAA Division I player specializing in shooting and ball
+                handling.
+              </p>
             </ThreeDCard>
 
             <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img src="/placeholder.svg?height=100&width=100" alt="Coach" className="w-full h-full object-cover" />
+                <img
+                  src="/placeholder.svg?height=100&width=100"
+                  alt="Coach"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold mb-1">Coach James</h3>
               <p className="text-[#ffb800] mb-2">Youth Coach</p>
-              <p className="text-sm">Specializes in youth development with a focus on fundamentals and fun.</p>
+              <p className="text-sm">
+                Specializes in youth development with a focus on fundamentals
+                and fun.
+              </p>
             </ThreeDCard>
           </div>
         )}
@@ -185,8 +237,7 @@ export default function BasketballPage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-white/20 backdrop-blur-sm rounded-full p-4 hover:bg-white/30 transition-all shadow-xl"
-                >
-                </motion.button>
+                ></motion.button>
               </div>
             </ThreeDCard>
           </div>
@@ -202,8 +253,9 @@ export default function BasketballPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              At RISE Basketball, we've built the future. Our programs are designed to empower players at every level,
-              offering comprehensive training and development in a supportive, inclusive environment.
+              At RISE Basketball, we've built the future. Our programs are
+              designed to empower players at every level, offering comprehensive
+              training and development in a supportive, inclusive environment.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -302,7 +354,10 @@ export default function BasketballPage() {
               >
                 JOIN NOW
               </Button>
-              <Button variant="link" className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all">
+              <Button
+                variant="link"
+                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
+              >
                 Learn More
               </Button>
             </motion.div>
@@ -316,16 +371,16 @@ export default function BasketballPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <ThreeDCard className="relative h-[300px] md:h-[400px]">
-          <div className="absolute inset-0 flex items-center justify-center">
-  <video
-    className="object-contain w-[400px]"
-    src="/testgame.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-  />
-</div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <video
+                className="object-contain w-[400px]"
+                src="/testgame.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            </div>
 
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.button
@@ -338,8 +393,12 @@ export default function BasketballPage() {
             </div>
           </ThreeDCard>
           <div className="glass-dark p-6 rounded-lg">
-            <div className="bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded inline-block mb-4">LIVE</div>
-            <h3 className="text-xl font-bold mb-4">Latest/Current Basketball Event</h3>
+            <div className="bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded inline-block mb-4">
+              LIVE
+            </div>
+            <h3 className="text-xl font-bold mb-4">
+              Latest/Current Basketball Event
+            </h3>
             <p className="text-sm text-gray-300 mb-2">Team A vs Team B</p>
 
             <div className="space-y-4 mt-6">
@@ -363,12 +422,19 @@ export default function BasketballPage() {
       {/* All Games */}
       <ParallaxSection bgColor="#000" className="py-16">
         <SectionContainer>
-          <AnimatedText text="ALL GAMES" className="text-3xl md:text-4xl font-bold text-center mb-8" animation="wave" />
+          <AnimatedText
+            text="ALL GAMES"
+            className="text-3xl md:text-4xl font-bold text-center mb-8"
+            animation="wave"
+          />
 
           <GameGrid games={UPCOMING_GAMES} />
 
           <div className="text-center mt-8">
-            <Button variant="link" className="text-[#ffb800] hover:text-[#e0a300] hover:scale-105 transition-all">
+            <Button
+              variant="link"
+              className="text-[#ffb800] hover:text-[#e0a300] hover:scale-105 transition-all"
+            >
               VIEW ALL GAMES
             </Button>
           </div>
@@ -376,17 +442,29 @@ export default function BasketballPage() {
       </ParallaxSection>
 
       {/* Player Statistics */}
-      <ParallaxSection bgImage="/placeholder.svg?height=800&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=800&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-white text-2xl font-bold mb-4">PLAYER STATISTICS</h2>
+              <h2 className="text-white text-2xl font-bold mb-4">
+                PLAYER STATISTICS
+              </h2>
               <ThreeDCard>
-                <PlayerStatsCard name="CADE CUNNINGHAM" position="POINT GUARD" ppg={23.2} />
+                <PlayerStatsCard
+                  name="CADE CUNNINGHAM"
+                  position="POINT GUARD"
+                  ppg={23.2}
+                />
               </ThreeDCard>
             </div>
             <div>
-              <h2 className="text-white text-2xl font-bold mb-4">TOP PLAYERS</h2>
+              <h2 className="text-white text-2xl font-bold mb-4">
+                TOP PLAYERS
+              </h2>
               <ThreeDCard>
                 <TopPlayersTable players={TOP_PLAYERS} />
               </ThreeDCard>
@@ -400,7 +478,9 @@ export default function BasketballPage() {
         <SectionHeading title="Memberships" centered />
 
         <MembershipGrid
-          plans={MEMBERSHIP_PLANS.filter((plan) => plan.id === "full-year" || plan.id === "jr-rise")}
+          plans={MEMBERSHIP_PLANS.filter(
+            (plan) => plan.id === "full-year" || plan.id === "jr-rise"
+          )}
           columns={2}
         />
       </SectionContainer>
@@ -435,9 +515,11 @@ export default function BasketballPage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-gray-300 mb-8 max-w-3xl"
           >
-            At RISE Basketball, we're not just about the game. We're about the journey from beginner to game-changing
-            competitor, from casual player to elite athlete. Our comprehensive training programs, state-of-the-art
-            facilities, unmatched facilities, and programs designed for athletes of all ages and skill levels.
+            At RISE Basketball, we're not just about the game. We're about the
+            journey from beginner to game-changing competitor, from casual
+            player to elite athlete. Our comprehensive training programs,
+            state-of-the-art facilities, unmatched facilities, and programs
+            designed for athletes of all ages and skill levels.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -454,14 +536,6 @@ export default function BasketballPage() {
           </motion.div>
         </SectionContainer>
       </ParallaxSection>
-
-      {/* Join the Waitlist */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
-        <SectionContainer>
-          <WaitlistForm />
-        </SectionContainer>
-      </ParallaxSection>
     </div>
-  )
+  );
 }
-
