@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { Check } from "lucide-react"
-import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface MembershipCardProps {
-  featured?: boolean
-  badge?: string
-  title: string
-  price: number
-  period: string
-  description: string
-  features: string[]
-  ctaText: string
-  learnMoreText: string
-  onCtaClick?: () => void
-  onLearnMoreClick?: () => void
-  className?: string
-  index?: number
+  featured?: boolean;
+  badge?: string;
+  title: string;
+  price: number;
+  period: string;
+  description: string;
+  features: string[];
+  ctaText: string;
+  learnMoreText: string;
+  onCtaClick?: () => void;
+  onLearnMoreClick?: () => void;
+  className?: string;
+  index?: number;
 }
 
 export function MembershipCard({
@@ -48,7 +48,7 @@ export function MembershipCard({
         featured
           ? "bg-gradient-to-br from-[#ffb800] to-[#e0a300]"
           : "bg-[#111] border border-gray-800 hover:border-[#ffb800]/30",
-        className,
+        className
       )}
     >
       <div className="p-6">
@@ -59,7 +59,12 @@ export function MembershipCard({
                 {badge}
               </span>
             )}
-            <h3 className={cn("text-xl font-bold mt-2", featured ? "text-black" : "text-white")}>
+            <h3
+              className={cn(
+                "text-xl font-bold mt-2",
+                featured ? "text-black" : "text-white"
+              )}
+            >
               {title.split("<br/>").map((part, i) => (
                 <span key={i}>
                   {part}
@@ -68,24 +73,53 @@ export function MembershipCard({
               ))}
             </h3>
             <div className="mt-2 flex items-baseline">
-              <span className={cn("text-3xl font-bold", featured ? "text-black" : "text-white")}>${price}</span>
-              <span className={cn("ml-1", featured ? "text-black/80" : "text-white")}>/month</span>
+              <span
+                className={cn(
+                  "text-3xl font-bold",
+                  featured ? "text-black" : "text-white"
+                )}
+              >
+                ${price}
+              </span>
+              <span
+                className={cn(
+                  "ml-1",
+                  featured ? "text-black/80" : "text-white"
+                )}
+              >
+                /month
+              </span>
             </div>
           </div>
         </div>
 
-        <p className={cn("text-sm mb-6", featured ? "text-black" : "text-white")}>{description}</p>
+        <p
+          className={cn("text-sm mb-6", featured ? "text-black" : "text-white")}
+        >
+          {description}
+        </p>
 
         <ul className="space-y-3 mb-6">
           {features.map((feature, index) => (
-            <li key={index} className={cn("flex items-center text-sm", featured ? "text-black" : "text-white")}>
+            <li
+              key={index}
+              className={cn(
+                "flex items-center text-sm",
+                featured ? "text-black" : "text-white"
+              )}
+            >
               <div
                 className={cn(
                   "mr-2 flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full",
-                  featured ? "bg-black/10" : "bg-[#ffb800]/10",
+                  featured ? "bg-black/10" : "bg-[#ffb800]/10"
                 )}
               >
-                <Check className={cn("h-3 w-3", featured ? "text-black" : "text-[#ffb800]")} />
+                <Check
+                  className={cn(
+                    "h-3 w-3",
+                    featured ? "text-black" : "text-[#ffb800]"
+                  )}
+                />
               </div>
               {feature}
             </li>
@@ -99,25 +133,26 @@ export function MembershipCard({
               "transition-all duration-300 hover:scale-105 font-semibold",
               featured
                 ? "bg-black/80 text-white hover:bg-black"
-                : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]",
+                : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
             onClick={onLearnMoreClick}
           >
             {learnMoreText}
           </Button>
           <Button
+            asChild
             variant="default"
             className={cn(
               "transition-all duration-300 hover:scale-105 shadow-lg font-bold",
-              featured ? "bg-black text-white hover:bg-gray-800" : "bg-[#ffb800] text-black hover:bg-[#e0a300]",
+              featured
+                ? "bg-black text-white hover:bg-gray-800"
+                : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
             )}
-            onClick={onCtaClick}
           >
-            {ctaText}
+            <a href="/join">JOIN NOW</a>
           </Button>
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
-
