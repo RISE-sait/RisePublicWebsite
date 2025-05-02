@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { VideoHero } from "@/components/ui/video-hero"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { BarberServiceCard } from "@/components/ui/barber-service-card"
-import { Button } from "@/components/ui/button"
-import { WaitlistForm } from "@/components/ui/waitlist-form"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { AnimatedText } from "@/components/ui/animated-text"
-import PartnerLogos from "@/components/partner-logos"
-import { BARBER_SERVICES } from "@/lib/constants"
+import { motion } from "framer-motion";
+import { VideoHero } from "@/components/ui/video-hero";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { BarberServiceCard } from "@/components/ui/barber-service-card";
+import { Button } from "@/components/ui/button";
+import { WaitlistForm } from "@/components/ui/waitlist-form";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { AnimatedText } from "@/components/ui/animated-text";
+import PartnerLogos from "@/components/partner-logos";
+import { BARBER_SERVICES } from "@/lib/constants";
 
 export default function BarberPage() {
   return (
@@ -35,17 +35,24 @@ export default function BarberPage() {
 
       {/* Schedule a Barber Appointment */}
       <SectionContainer id="book">
-        <SectionHeading title="Schedule a Barber Appointment" centered />
+        <SectionHeading title="Schedule a Courtside Cut" centered />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ThreeDCard className="bg-white p-6 text-black rounded-lg overflow-hidden">
             <div className="flex justify-between items-start">
               <div className="flex flex-col items-start">
                 <h3 className="font-bold text-lg">RISE Courtside Cuts</h3>
-                <p className="text-sm text-gray-600">4.8/5 ★★★★★ (125 reviews)</p>
+                <p className="text-sm text-gray-600">
+                  4.8/5 ★★★★★ (125 reviews)
+                </p>
               </div>
               <button className="text-gray-600">
-                <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M18 6L6 18M6 6L18 18"
                     stroke="currentColor"
@@ -102,7 +109,9 @@ export default function BarberPage() {
           </ThreeDCard>
 
           <ThreeDCard className="bg-white p-6 text-black rounded-lg overflow-hidden">
-            <h3 className="font-bold text-lg mb-4">Latest/Current Basketball Event</h3>
+            <h3 className="font-bold text-lg mb-4">
+              Latest/Current Basketball Event
+            </h3>
             <p className="text-sm mb-2">Team A vs Team B</p>
 
             <div className="space-y-4 mt-6">
@@ -124,7 +133,11 @@ export default function BarberPage() {
       </SectionContainer>
 
       {/* Barber Up at Courtside Cuts */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <div className="glass-dark p-8 rounded-lg max-w-3xl mx-auto">
             <AnimatedText
@@ -132,7 +145,9 @@ export default function BarberPage() {
               className="text-[#ffb800] text-3xl md:text-4xl font-bold mb-4"
               animation="reveal"
             />
-            <h3 className="text-xl font-semibold mb-6">Rent the Chair, Own the Vibes</h3>
+            <h3 className="text-xl font-semibold mb-6">
+              Rent the Chair, Own the Vibes
+            </h3>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -140,10 +155,12 @@ export default function BarberPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-8"
             >
-              We're a premier Courtside Cut & Style studio designed to showcase your style in a setting that brings a
-              professional feel to a cool and fun environment. Rent a chair for just $75 per day and have access to all
-              our premium services and products. Additional on social media, including your work can even be booked.
-              Bring your style and join the Courtside culture—We can't wait to see you!
+              We're a premier Courtside Cut & Style studio designed to showcase
+              your style in a setting that brings a professional feel to a cool
+              and fun environment. Rent a chair for just $75 per day and have
+              access to all our premium services and products. Additional on
+              social media, including your work can even be booked. Bring your
+              style and join the Courtside culture—We can't wait to see you!
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -179,7 +196,9 @@ export default function BarberPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-xs text-white font-medium">Style #{index + 1}</p>
+                <p className="text-xs text-white font-medium">
+                  Style #{index + 1}
+                </p>
               </div>
             </div>
           ))}
@@ -196,12 +215,15 @@ export default function BarberPage() {
       </SectionContainer>
 
       {/* Join the Waitlist */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <WaitlistForm />
         </SectionContainer>
       </ParallaxSection>
     </div>
-  )
+  );
 }
-
