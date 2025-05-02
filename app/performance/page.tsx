@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { VideoHero } from "@/components/ui/video-hero"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { FeatureGrid } from "@/components/ui/feature-grid"
-import { MembershipGrid } from "@/components/ui/membership-grid"
-import { ContactForm } from "@/components/ui/contact-form"
-import { ContactInfo } from "@/components/ui/contact-info"
-import { WaitlistForm } from "@/components/ui/waitlist-form"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { StatsCounter } from "@/components/ui/stats-counter"
-import PartnerLogos from "@/components/partner-logos"
-import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion";
+import { VideoHero } from "@/components/ui/video-hero";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { FeatureGrid } from "@/components/ui/feature-grid";
+import { MembershipGrid } from "@/components/ui/membership-grid";
+import { ContactForm } from "@/components/ui/contact-form";
+import { ContactInfo } from "@/components/ui/contact-info";
+import { WaitlistForm } from "@/components/ui/waitlist-form";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { StatsCounter } from "@/components/ui/stats-counter";
+import PartnerLogos from "@/components/partner-logos";
+import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
 
 export default function PerformancePage() {
   return (
@@ -61,7 +61,10 @@ export default function PerformancePage() {
             </ThreeDCard>
           </div>
           <div>
-            <SectionHeading title="WHY RISE PERFORMANCE?" subtitle="Flexible, Value-Packed Training for Athletes" />
+            <SectionHeading
+              title="WHY RISE PERFORMANCE?"
+              subtitle="Flexible, Value-Packed Training for Athletes"
+            />
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -69,8 +72,9 @@ export default function PerformancePage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              At RISE Performance, we offer functional fitness for strength and conditioning in a 20,000 sqft facility
-              equipped with high-level gym equipment and everything you need to level up.
+              At RISE Performance, we offer functional fitness for strength and
+              conditioning in a 20,000 sqft facility equipped with high-level
+              gym equipment and everything you need to level up.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -169,7 +173,10 @@ export default function PerformancePage() {
               >
                 JOIN NOW
               </Button>
-              <Button variant="link" className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all">
+              <Button
+                variant="link"
+                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
+              >
                 Learn More
               </Button>
             </motion.div>
@@ -190,7 +197,9 @@ export default function PerformancePage() {
         <SectionHeading title="Memberships" centered />
 
         <MembershipGrid
-          plans={MEMBERSHIP_PLANS.filter((plan) => plan.id === "performance" || plan.id === "full-year")}
+          plans={MEMBERSHIP_PLANS.filter(
+            (plan) => plan.id === "performance" || plan.id === "full-year"
+          )}
           columns={2}
         />
       </SectionContainer>
@@ -212,7 +221,9 @@ export default function PerformancePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-xs text-white font-medium">Fitness Area {index + 1}</p>
+                <p className="text-xs text-white font-medium">
+                  Fitness Area {index + 1}
+                </p>
               </div>
             </div>
           ))}
@@ -227,34 +238,6 @@ export default function PerformancePage() {
           </Button>
         </div>
       </SectionContainer>
-
-      {/* Contact Form */}
-      <ParallaxSection bgColor="#000" className="py-16">
-        <SectionContainer>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ContactInfo
-              address="RISE SPORTS COMPLEX, #01, 33 St NE"
-              city="Calgary, AB"
-              postalCode="T2E 7K1"
-              contactTitle="President"
-              contactName="James Smith"
-              phone="587-999-7473"
-              email="info@risesportscomplex.com"
-              hours={["Mon-Fri 8am-5:30pm", "Saturday Closed", "Sunday Closed"]}
-            />
-
-            <ContactForm />
-          </div>
-        </SectionContainer>
-      </ParallaxSection>
-
-      {/* Join the Waitlist */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
-        <SectionContainer>
-          <WaitlistForm />
-        </SectionContainer>
-      </ParallaxSection>
     </div>
-  )
+  );
 }
-
