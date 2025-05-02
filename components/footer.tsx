@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Instagram, Twitter, Youtube, Facebook } from "lucide-react"
-import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants"
-import { motion } from "framer-motion"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
+import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   const socialIcons = {
@@ -12,7 +12,7 @@ export default function Footer() {
     Twitter,
     Youtube,
     Facebook,
-  }
+  };
 
   return (
     <footer className="bg-black text-white border-t border-[#222] pt-16 pb-6 relative overflow-hidden">
@@ -60,8 +60,8 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xs text-gray-400 text-center mb-8"
           >
-            By submitting your email, you agree to the Terms & Conditions and Privacy Policy. You may unsubscribe at any
-            time.
+            By submitting your email, you agree to the Terms & Conditions and
+            Privacy Policy. You may unsubscribe at any time.
           </motion.p>
 
           <motion.div
@@ -94,19 +94,28 @@ export default function Footer() {
               <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[#ffb800]"></span>
             </h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              {FOOTER_LINKS.contact.map((link, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <a href={link.href} className="hover:text-[#ffb800] transition-colors">
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
+              {FOOTER_LINKS.contact.map((link, index) => {
+                const isExternal = link.href.startsWith("http");
+                return (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <a
+                      href={link.href}
+                      className="hover:text-[#ffb800] transition-colors"
+                      {...(isExternal
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                    >
+                      {link.label}
+                    </a>
+                  </motion.li>
+                );
+              })}
             </ul>
           </div>
 
@@ -124,7 +133,10 @@ export default function Footer() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.03 }}
                 >
-                  <Link href={link.href} className="hover:text-[#ffb800] transition-colors">
+                  <Link
+                    href={link.href}
+                    className="hover:text-[#ffb800] transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </motion.li>
@@ -146,7 +158,10 @@ export default function Footer() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <Link href={link.href} className="hover:text-[#ffb800] transition-colors">
+                  <Link
+                    href={link.href}
+                    className="hover:text-[#ffb800] transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </motion.li>
@@ -161,7 +176,8 @@ export default function Footer() {
             </h3>
             <div className="flex gap-4">
               {FOOTER_LINKS.socials.map((social, index) => {
-                const IconComponent = socialIcons[social.icon as keyof typeof socialIcons]
+                const IconComponent =
+                  socialIcons[social.icon as keyof typeof socialIcons];
                 return (
                   <motion.a
                     key={index}
@@ -178,17 +194,17 @@ export default function Footer() {
                   >
                     <IconComponent className="h-5 w-5" />
                   </motion.a>
-                )
+                );
               })}
             </div>
           </div>
         </div>
 
         <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6">
-          © {new Date().getFullYear()} {SITE_NAME} Sports Complex Inc. All rights reserved.
+          © {new Date().getFullYear()} {SITE_NAME} Sports Complex Inc. All
+          rights reserved.
         </div>
       </div>
     </footer>
-  )
+  );
 }
-
