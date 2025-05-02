@@ -6,7 +6,6 @@ import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BarberServiceCard } from "@/components/ui/barber-service-card";
 import { Button } from "@/components/ui/button";
-import { WaitlistForm } from "@/components/ui/waitlist-form";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
@@ -213,17 +212,6 @@ export default function BarberPage() {
           </Button>
         </div>
       </SectionContainer>
-
-      {/* Join the Waitlist */}
-      <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
-        overlayOpacity={0.7}
-        className="py-16"
-      >
-        <SectionContainer>
-          <WaitlistForm />
-        </SectionContainer>
-      </ParallaxSection>
     </div>
   );
 }
