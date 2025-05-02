@@ -1,27 +1,31 @@
-export const SITE_NAME = "RISE"
-export const PRIMARY_COLOR = "#ffb800"
+export const SITE_NAME = "RISE";
+export const PRIMARY_COLOR = "#ffb800";
 
 // Update navigation items to match available pages
 export const NAVIGATION_ITEMS = [
   { label: "BASKETBALL", href: "/basketball" },
   { label: "PERFORMANCE", href: "/performance" },
   { label: "BARBER", href: "/barber" },
-]
+];
 
 export const SECONDARY_NAV_ITEMS = [
   { label: "COFFEE", href: "/coffee" },
   { label: "SUPPLEMENTS", href: "/supplements" },
   { label: "CONTACT", href: "/contact" },
   { label: "REVIEWS", href: "/reviews" },
-]
+];
 
 export const FOOTER_LINKS = {
   contact: [
-    { label: "info@risesportscomplex.com", href: "mailto:info@risesportscomplex.com" },
+    {
+      label: "info@risesportscomplex.com",
+      href: "mailto:info@risesportscomplex.com",
+    },
     { label: "Direct Phone Line: 1-587-999-7473", href: "tel:+15879997473" },
     {
-      label: "Physical Address: RISE SPORTS COMPLEX, #01 33 St NE Calgary, AB T2E 7K1",
-      href: "#",
+      label:
+        "Physical Address: RISE SPORTS COMPLEX, #01 33 St NE Calgary, AB T2E 7K1",
+      href: "https://maps.app.goo.gl/hpvXcuwFTz7t1pnNA",
     },
   ],
   company: [
@@ -48,9 +52,15 @@ export const FOOTER_LINKS = {
     { label: "YouTube", href: "https://youtube.com", icon: "Youtube" },
     { label: "Facebook", href: "https://facebook.com", icon: "Facebook" },
   ],
-}
+};
 
-export const PAYMENT_METHODS = ["Visa", "Mastercard", "American Express", "Apple Pay", "Google Pay"]
+export const PAYMENT_METHODS = [
+  "Visa",
+  "Mastercard",
+  "American Express",
+  "Apple Pay",
+  "Google Pay",
+];
 
 export const PARTNER_LOGOS = [
   { name: "Partner 1", image: "/placeholder.svg?height=50&width=100" },
@@ -59,7 +69,7 @@ export const PARTNER_LOGOS = [
   { name: "Partner 4", image: "/placeholder.svg?height=50&width=100" },
   { name: "Partner 5", image: "/placeholder.svg?height=50&width=100" },
   { name: "Partner 6", image: "/placeholder.svg?height=50&width=100" },
-]
+];
 
 export const MEMBERSHIP_PLANS = [
   {
@@ -69,8 +79,13 @@ export const MEMBERSHIP_PLANS = [
     title: "RISE FULL YEAR Basketball Membership",
     price: 225,
     period: "month",
-    description: "Perfect for players looking to develop their skills and take their game to the next level.",
-    features: ["Unlimited access to all facilities", "Priority booking for courts", "Access to all training programs"],
+    description:
+      "Perfect for players looking to develop their skills and take their game to the next level.",
+    features: [
+      "Unlimited access to all facilities",
+      "Priority booking for courts",
+      "Access to all training programs",
+    ],
     ctaText: "JOIN NOW",
     learnMoreText: "LEARN MORE",
   },
@@ -80,8 +95,13 @@ export const MEMBERSHIP_PLANS = [
     title: "Jr. RISE Basketball Membership",
     price: 125,
     period: "month",
-    description: "Perfect for young athletes ages 5-12 looking to develop their skills.",
-    features: ["Junior skill classes", "Age-appropriate training", "Supervised play sessions"],
+    description:
+      "Perfect for young athletes ages 5-12 looking to develop their skills.",
+    features: [
+      "Junior skill classes",
+      "Age-appropriate training",
+      "Supervised play sessions",
+    ],
     ctaText: "JOIN NOW",
     learnMoreText: "LEARN MORE",
   },
@@ -91,40 +111,50 @@ export const MEMBERSHIP_PLANS = [
     title: "RISE Performance Membership",
     price: 145,
     period: "month",
-    description: "Unlock our fitness facilities & fitness programs for all ages.",
-    features: ["Access to fitness facilities", "Group fitness classes", "Strength & Conditioning Training"],
+    description:
+      "Unlock our fitness facilities & fitness programs for all ages.",
+    features: [
+      "Access to fitness facilities",
+      "Group fitness classes",
+      "Strength & Conditioning Training",
+    ],
     ctaText: "JOIN NOW",
     learnMoreText: "LEARN MORE",
   },
-]
+];
 
 export const PERFORMANCE_FEATURES = [
   {
     title: "Top-Quality Fitness Room",
-    description: "State-of-the-art equipment for all your fitness needs, from cardio to strength training.",
+    description:
+      "State-of-the-art equipment for all your fitness needs, from cardio to strength training.",
     image: "/placeholder.svg?height=300&width=400",
   },
   {
     title: "Strength Training Zone",
-    description: "Dedicated area with weights and racks for building strength and endurance at all levels.",
+    description:
+      "Dedicated area with weights and racks for building strength and endurance at all levels.",
     image: "/placeholder.svg?height=300&width=400",
   },
   {
     title: "Functional Training Area",
-    description: "Flexible training space with turf and equipment for dynamic workouts.",
+    description:
+      "Flexible training space with turf and equipment for dynamic workouts.",
     image: "/placeholder.svg?height=300&width=400",
   },
   {
     title: "High-Energy Group Classes",
-    description: "Join our expert-led classes that combine fun and results for all fitness levels.",
+    description:
+      "Join our expert-led classes that combine fun and results for all fitness levels.",
     image: "/placeholder.svg?height=300&width=400",
   },
-]
+];
 
 export const COFFEE_FEATURES = [
   {
     title: "Coffee and Tea",
-    description: "A selection of freshly brewed coffee and premium teas crafted to energize and delight.",
+    description:
+      "A selection of freshly brewed coffee and premium teas crafted to energize and delight.",
     image: "/placeholder.svg?height=300&width=400",
   },
   {
@@ -141,10 +171,11 @@ export const COFFEE_FEATURES = [
   },
   {
     title: "Community Space",
-    description: "A hub of freshly brewed coffee and premium fuel crafted to energize the RISE community.",
+    description:
+      "A hub of freshly brewed coffee and premium fuel crafted to energize the RISE community.",
     image: "/placeholder.svg?height=300&width=400",
   },
-]
+];
 
 export const SUPPLEMENT_PRODUCTS = [
   {
@@ -175,7 +206,7 @@ export const SUPPLEMENT_PRODUCTS = [
     price: 49.99,
     image: "/placeholder.svg?height=300&width=300",
   },
-]
+];
 
 export const BARBER_SERVICES = [
   {
@@ -196,31 +227,147 @@ export const BARBER_SERVICES = [
     duration: "40 min",
     price: 55.0,
   },
-]
+];
 
 export const UPCOMING_GAMES = [
-  { id: 1, team1: "Team Blue", team2: "Team Red", date: "Mar 25, 2025", time: "7:30 PM" },
-  { id: 2, team1: "Team Green", team2: "Team Yellow", date: "Mar 27, 2025", time: "6:00 PM" },
-  { id: 3, team1: "Team Black", team2: "Team White", date: "Apr 2, 2025", time: "8:00 PM" },
-  { id: 4, team1: "Team Blue", team2: "Team Green", date: "Apr 5, 2025", time: "7:00 PM" },
-  { id: 5, team1: "Team Red", team2: "Team Yellow", date: "Apr 8, 2025", time: "6:30 PM" },
-  { id: 6, team1: "Team Black", team2: "Team Blue", date: "Apr 12, 2025", time: "7:30 PM" },
-  { id: 7, team1: "Team White", team2: "Team Red", date: "Apr 15, 2025", time: "8:00 PM" },
-  { id: 8, team1: "Team Yellow", team2: "Team Black", date: "Apr 18, 2025", time: "7:00 PM" },
-  { id: 9, team1: "Team Blue", team2: "Team White", date: "Apr 22, 2025", time: "6:30 PM" },
-  { id: 10, team1: "Team Green", team2: "Team Red", date: "Apr 25, 2025", time: "7:30 PM" },
-]
+  {
+    id: 1,
+    team1: "Team Blue",
+    team2: "Team Red",
+    date: "Mar 25, 2025",
+    time: "7:30 PM",
+  },
+  {
+    id: 2,
+    team1: "Team Green",
+    team2: "Team Yellow",
+    date: "Mar 27, 2025",
+    time: "6:00 PM",
+  },
+  {
+    id: 3,
+    team1: "Team Black",
+    team2: "Team White",
+    date: "Apr 2, 2025",
+    time: "8:00 PM",
+  },
+  {
+    id: 4,
+    team1: "Team Blue",
+    team2: "Team Green",
+    date: "Apr 5, 2025",
+    time: "7:00 PM",
+  },
+  {
+    id: 5,
+    team1: "Team Red",
+    team2: "Team Yellow",
+    date: "Apr 8, 2025",
+    time: "6:30 PM",
+  },
+  {
+    id: 6,
+    team1: "Team Black",
+    team2: "Team Blue",
+    date: "Apr 12, 2025",
+    time: "7:30 PM",
+  },
+  {
+    id: 7,
+    team1: "Team White",
+    team2: "Team Red",
+    date: "Apr 15, 2025",
+    time: "8:00 PM",
+  },
+  {
+    id: 8,
+    team1: "Team Yellow",
+    team2: "Team Black",
+    date: "Apr 18, 2025",
+    time: "7:00 PM",
+  },
+  {
+    id: 9,
+    team1: "Team Blue",
+    team2: "Team White",
+    date: "Apr 22, 2025",
+    time: "6:30 PM",
+  },
+  {
+    id: 10,
+    team1: "Team Green",
+    team2: "Team Red",
+    date: "Apr 25, 2025",
+    time: "7:30 PM",
+  },
+];
 
 export const TOP_PLAYERS = [
-  { id: 1, name: "Player Name", games: 12, points: 18.5, rebounds: 6.2, assists: 4.1 },
-  { id: 2, name: "Player Name", games: 12, points: 17.2, rebounds: 5.8, assists: 3.9 },
-  { id: 3, name: "Player Name", games: 12, points: 16.8, rebounds: 7.1, assists: 2.5 },
-  { id: 4, name: "Player Name", games: 12, points: 15.9, rebounds: 4.3, assists: 6.7 },
-  { id: 5, name: "Player Name", games: 12, points: 15.1, rebounds: 5.5, assists: 3.2 },
-  { id: 6, name: "Player Name", games: 12, points: 14.7, rebounds: 8.2, assists: 1.8 },
-  { id: 7, name: "Player Name", games: 12, points: 13.9, rebounds: 3.7, assists: 5.4 },
-  { id: 8, name: "Player Name", games: 12, points: 12.5, rebounds: 6.0, assists: 4.8 },
-]
+  {
+    id: 1,
+    name: "Player Name",
+    games: 12,
+    points: 18.5,
+    rebounds: 6.2,
+    assists: 4.1,
+  },
+  {
+    id: 2,
+    name: "Player Name",
+    games: 12,
+    points: 17.2,
+    rebounds: 5.8,
+    assists: 3.9,
+  },
+  {
+    id: 3,
+    name: "Player Name",
+    games: 12,
+    points: 16.8,
+    rebounds: 7.1,
+    assists: 2.5,
+  },
+  {
+    id: 4,
+    name: "Player Name",
+    games: 12,
+    points: 15.9,
+    rebounds: 4.3,
+    assists: 6.7,
+  },
+  {
+    id: 5,
+    name: "Player Name",
+    games: 12,
+    points: 15.1,
+    rebounds: 5.5,
+    assists: 3.2,
+  },
+  {
+    id: 6,
+    name: "Player Name",
+    games: 12,
+    points: 14.7,
+    rebounds: 8.2,
+    assists: 1.8,
+  },
+  {
+    id: 7,
+    name: "Player Name",
+    games: 12,
+    points: 13.9,
+    rebounds: 3.7,
+    assists: 5.4,
+  },
+  {
+    id: 8,
+    name: "Player Name",
+    games: 12,
+    points: 12.5,
+    rebounds: 6.0,
+    assists: 4.8,
+  },
+];
 
 export const PLAN_COMPARISON = [
   {
@@ -289,7 +436,7 @@ export const PLAN_COMPARISON = [
     seasonal: false,
     jrRise: false,
   },
-]
+];
 
 export const REVIEWS = Array.from({ length: 16 }).map((_, index) => ({
   id: index + 1,
@@ -298,5 +445,4 @@ export const REVIEWS = Array.from({ length: 16 }).map((_, index) => ({
   author: "John Smith",
   date: "2 days ago",
   avatar: "/placeholder.svg?height=50&width=50",
-}))
-
+}));
