@@ -1,24 +1,24 @@
-"use client"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { MembershipGrid } from "@/components/ui/membership-grid"
-import { FeatureGrid } from "@/components/ui/feature-grid"
-import { PlanComparisonTable } from "@/components/ui/plan-comparison-table"
-import { Button } from "@/components/ui/button"
-import { VideoHero } from "@/components/ui/video-hero"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { StatsCounter } from "@/components/ui/stats-counter"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { ParticleBackground } from "@/components/ui/particle-background"
-import PartnerLogos from "@/components/partner-logos"
-import { MEMBERSHIP_PLANS, PLAN_COMPARISON } from "@/lib/constants"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { Play, ChevronDown } from "lucide-react"
+"use client";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { MembershipGrid } from "@/components/ui/membership-grid";
+import { FeatureGrid } from "@/components/ui/feature-grid";
+import { PlanComparisonTable } from "@/components/ui/plan-comparison-table";
+import { Button } from "@/components/ui/button";
+import { VideoHero } from "@/components/ui/video-hero";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { StatsCounter } from "@/components/ui/stats-counter";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { ParticleBackground } from "@/components/ui/particle-background";
+import PartnerLogos from "@/components/partner-logos";
+import { MEMBERSHIP_PLANS, PLAN_COMPARISON } from "@/lib/constants";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Play, ChevronDown } from "lucide-react";
 
 export default function Home() {
-  const { scrollYProgress } = useScroll()
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0])
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
   // Disable default cursor
   // useEffect(() => {
@@ -47,7 +47,10 @@ export default function Home() {
       />
 
       {/* Scroll indicator */}
-      <motion.div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30" style={{ opacity }}>
+      <motion.div
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30"
+        style={{ opacity }}
+      >
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
@@ -61,7 +64,11 @@ export default function Home() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      <ParallaxSection bgImage="/placeholder.svg?height=1080&width=1920" overlayOpacity={0.8} className="py-20">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=1080&width=1920"
+        overlayOpacity={0.8}
+        className="py-20"
+      >
         <SectionContainer>
           <div className="text-center mb-12">
             <AnimatedText
@@ -70,14 +77,20 @@ export default function Home() {
               animation="wave"
             />
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Join thousands of athletes who have transformed their game with RISE
+              Join thousands of athletes who have transformed their game with
+              RISE
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={5000} label="ATHLETES TRAINED" delay={0} />
             <StatsCounter value={25} label="PROFESSIONAL COACHES" delay={0.2} />
-            <StatsCounter value={98} label="SUCCESS RATE" suffix="%" delay={0.4} />
+            <StatsCounter
+              value={98}
+              label="SUCCESS RATE"
+              suffix="%"
+              delay={0.4}
+            />
             <StatsCounter value={12} label="YEARS OF EXCELLENCE" delay={0.6} />
           </div>
         </SectionContainer>
@@ -127,9 +140,10 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              Join RISE Performance and gain access to 25 group training classes each month, open gym times, and
-              exclusive perks. Perfect for parents, athletes, or anyone looking to get fit with as part of a thriving
-              community.
+              Join RISE Performance and gain access to 25 group training classes
+              each month, open gym times, and exclusive perks. Perfect for
+              parents, athletes, or anyone looking to get fit with as part of a
+              thriving community.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -223,12 +237,16 @@ export default function Home() {
               className="flex flex-wrap gap-4"
             >
               <Button
+                asChild
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                JOIN NOW
+                <a href="/join">JOIN NOW</a>
               </Button>
-              <Button variant="link" className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all">
+              <Button
+                variant="link"
+                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
+              >
                 Learn More
               </Button>
             </motion.div>
@@ -238,10 +256,17 @@ export default function Home() {
 
       {/* Discover All That RISE Has to Offer */}
       <ParallaxSection bgColor="#000" className="py-20 relative">
-        <ParticleBackground particleColor="#ffb800" particleCount={100} connectParticles={true} />
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={100}
+          connectParticles={true}
+        />
 
         <SectionContainer>
-          <SectionHeading title="Discover All That RISE Has to Offer" centered />
+          <SectionHeading
+            title="Discover All That RISE Has to Offer"
+            centered
+          />
 
           <FeatureGrid
             features={[
@@ -259,17 +284,20 @@ export default function Home() {
               },
               {
                 title: "Group Basketball",
-                description: "Mixed levels group basketball for all members, with affordable rates for non-members.",
+                description:
+                  "Mixed levels group basketball for all members, with affordable rates for non-members.",
                 image: "/placeholder.svg?height=300&width=400",
               },
               {
                 title: "Seasonal Training",
-                description: "Specialized programs for focused coaching during Spring, Summer, Fall or Winter.",
+                description:
+                  "Specialized programs for focused coaching during Spring, Summer, Fall or Winter.",
                 image: "/placeholder.svg?height=300&width=400",
               },
               {
                 title: "Skills Training",
-                description: "Improve your game with specialized training on agility, fundamentals, and jumping.",
+                description:
+                  "Improve your game with specialized training on agility, fundamentals, and jumping.",
                 image: "/placeholder.svg?height=300&width=400",
               },
             ]}
@@ -286,7 +314,11 @@ export default function Home() {
       </SectionContainer>
 
       {/* Compare Plans */}
-      <ParallaxSection bgImage="/placeholder.svg?height=1080&width=1920" overlayOpacity={0.9} className="py-20">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=1080&width=1920"
+        overlayOpacity={0.9}
+        className="py-20"
+      >
         <SectionContainer>
           <SectionHeading title="Compare Plans" centered />
 
@@ -309,8 +341,10 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              The RISE app makes it simple to manage memberships, schedules, and payments. Whether you're tracking your
-              progress or managing multiple athletes, everything you need is right at your fingertips.
+              The RISE app makes it simple to manage memberships, schedules, and
+              payments. Whether you're tracking your progress or managing
+              multiple athletes, everything you need is right at your
+              fingertips.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -419,6 +453,5 @@ export default function Home() {
         </div>
       </SectionContainer>
     </div>
-  )
+  );
 }
-
