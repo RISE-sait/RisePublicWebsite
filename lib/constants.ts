@@ -63,12 +63,14 @@ export const PAYMENT_METHODS = [
 ];
 
 export const PARTNER_LOGOS = [
-  { name: "Partner 1", image: "/placeholder.svg?height=50&width=100" },
-  { name: "Partner 2", image: "/placeholder.svg?height=50&width=100" },
-  { name: "Partner 3", image: "/placeholder.svg?height=50&width=100" },
-  { name: "Partner 4", image: "/placeholder.svg?height=50&width=100" },
-  { name: "Partner 5", image: "/placeholder.svg?height=50&width=100" },
-  { name: "Partner 6", image: "/placeholder.svg?height=50&width=100" },
+  { name: "Havenz Corporation", image: "/partnerImages/havenz.png" },
+  {
+    name: "Luxury Listing Group",
+    image: "/partnerImages/luxury.png",
+  },
+  { name: "Exmerce", image: "/partnerImages/exmerce.png" },
+  { name: "Century 21", image: "/partnerImages/century.png" },
+  { name: "Nike", image: "/partnerImages/nike.png" },
 ];
 
 export const MEMBERSHIP_PLANS = [
