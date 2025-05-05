@@ -38,7 +38,6 @@ export default function PartnerLogos({ className }: PartnerLogosProps) {
             <motion.div
               key={index}
               className="flex items-center mx-8"
-              whileHover={{ scale: 1.1, y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="h-20 w-40 flex items-center justify-center p-2  rounded-lg shadow-lg">
