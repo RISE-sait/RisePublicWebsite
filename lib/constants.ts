@@ -47,10 +47,26 @@ export const FOOTER_LINKS = {
     { label: "Location", href: "/location" },
   ],
   socials: [
-    { label: "Instagram", href: "https://instagram.com", icon: "Instagram" },
-    { label: "Twitter", href: "https://twitter.com", icon: "Twitter" },
-    { label: "YouTube", href: "https://youtube.com", icon: "Youtube" },
-    { label: "Facebook", href: "https://facebook.com", icon: "Facebook" },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/rise.basketball/",
+      icon: "Instagram",
+    },
+    {
+      label: "Twitter",
+      href: "https://x.com/_Risebasketball",
+      icon: "Twitter",
+    },
+    {
+      label: "YouTube",
+      href: "https://www.youtube.com/@rise.basketball",
+      icon: "Youtube",
+    },
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/RisebasketballCalgary/",
+      icon: "Facebook",
+    },
   ],
 };
 
