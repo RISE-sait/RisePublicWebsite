@@ -21,11 +21,11 @@ import { MEMBERSHIP_PLANS, UPCOMING_GAMES, TOP_PLAYERS } from "@/lib/constants";
 import { Play } from "lucide-react";
 
 export default function BasketballPage() {
-  const [activeTab, setActiveTab] = useState("programs");
+  const [activeTab, setActiveTab] = useState("schedules");
 
   const programTabs = [
-    { id: "programs", label: "Programs" },
     { id: "schedules", label: "Schedules" },
+    { id: "programs", label: "Programs" },
     { id: "coaches", label: "Coaches" },
   ];
 
@@ -72,10 +72,50 @@ export default function BasketballPage() {
         <div className="mb-8 max-w-3xl mx-auto">
           <TabNavigation
             tabs={programTabs}
-            defaultTab="programs"
+            defaultTab="schedules"
             onChange={setActiveTab}
           />
         </div>
+
+        {activeTab === "schedules" && (
+          <div className="bg-black/50 p-6 rounded-lg">
+            <h3 className="text-xl font-bold mb-4">Upcoming Sessions</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+                <div>
+                  <h4 className="font-medium">Youth Development</h4>
+                  <p className="text-sm text-gray-400">Ages 5-12</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[#ffb800]">Mon, Wed, Fri</p>
+                  <p className="text-sm">4:00 PM - 5:30 PM</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+                <div>
+                  <h4 className="font-medium">Teen Elite</h4>
+                  <p className="text-sm text-gray-400">Ages 13-18</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[#ffb800]">Tue, Thu</p>
+                  <p className="text-sm">6:00 PM - 8:00 PM</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <div>
+                  <h4 className="font-medium">Adult League</h4>
+                  <p className="text-sm text-gray-400">Ages 18+</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[#ffb800]">Sat, Sun</p>
+                  <p className="text-sm">10:00 AM - 1:00 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -126,46 +166,6 @@ export default function BasketballPage() {
                 Learn More
               </Button>
             </ThreeDCard>
-          </div>
-        )}
-
-        {activeTab === "schedules" && (
-          <div className="bg-black/50 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-4">Upcoming Sessions</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                <div>
-                  <h4 className="font-medium">Youth Development</h4>
-                  <p className="text-sm text-gray-400">Ages 5-12</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Mon, Wed, Fri</p>
-                  <p className="text-sm">4:00 PM - 5:30 PM</p>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                <div>
-                  <h4 className="font-medium">Teen Elite</h4>
-                  <p className="text-sm text-gray-400">Ages 13-18</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Tue, Thu</p>
-                  <p className="text-sm">6:00 PM - 8:00 PM</p>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div>
-                  <h4 className="font-medium">Adult League</h4>
-                  <p className="text-sm text-gray-400">Ages 18+</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Sat, Sun</p>
-                  <p className="text-sm">10:00 AM - 1:00 PM</p>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
