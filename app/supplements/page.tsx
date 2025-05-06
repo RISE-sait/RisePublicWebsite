@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { VideoHero } from "@/components/ui/video-hero"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { ProductGrid } from "@/components/ui/product-grid"
-import { Button } from "@/components/ui/button"
-import { ContactForm } from "@/components/ui/contact-form"
-import { ContactInfo } from "@/components/ui/contact-info"
-import { WaitlistForm } from "@/components/ui/waitlist-form"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { AnimatedText } from "@/components/ui/animated-text"
-import PartnerLogos from "@/components/partner-logos"
-import { SUPPLEMENT_PRODUCTS } from "@/lib/constants"
+import { motion } from "framer-motion";
+import { VideoHero } from "@/components/ui/video-hero";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { ProductGrid } from "@/components/ui/product-grid";
+import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ui/contact-form";
+import { ContactInfo } from "@/components/ui/contact-info";
+import { WaitlistForm } from "@/components/ui/waitlist-form";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { AnimatedText } from "@/components/ui/animated-text";
+import PartnerLogos from "@/components/partner-logos";
+import { SUPPLEMENT_PRODUCTS } from "@/lib/constants";
 
 export default function SupplementsPage() {
   return (
@@ -27,25 +27,20 @@ export default function SupplementsPage() {
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN THE WAITLIST"
         primaryButtonHref="/waitlist"
-        secondaryButtonText="SHOP NOW"
+        secondaryButtonText="COMING SOON"
         secondaryButtonHref="#products"
         height="90vh"
-      >
-        <div className="mb-6">
-          <img
-            src="/placeholder.svg?height=100&width=100"
-            alt="ProRise logo"
-            className="object-contain h-[100px] w-[100px]"
-          />
-        </div>
-      </VideoHero>
+      ></VideoHero>
 
       {/* Partners Section */}
       <PartnerLogos />
 
       {/* Arctic Chilled Water */}
       <SectionContainer className="bg-[#111]">
-        <SectionHeading title="Arctic Chilled Water: Hydration Perfected" centered />
+        <SectionHeading
+          title="Arctic Chilled Water: Hydration Perfected"
+          centered
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[300px]">
@@ -65,7 +60,8 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-4"
             >
-              Stay cool and hydrated with Arctic Chilled Water, a cornerstone of the ProRise brand.
+              Stay cool and hydrated with Arctic Chilled Water, a cornerstone of
+              the ProRise brand.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -74,7 +70,8 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-4"
             >
-              Crafted with micronutrients, mineral-enriched filtered water, for hydration you can trust.
+              Crafted with micronutrients, mineral-enriched filtered water, for
+              hydration you can trust.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -83,8 +80,9 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mb-6"
             >
-              Arctic Chilled Water is clean, crisp, and made to support your active lifestyle. Perfect for every
-              workout, sport, game, and more.
+              Arctic Chilled Water is clean, crisp, and made to support your
+              active lifestyle. Perfect for every workout, sport, game, and
+              more.
             </motion.p>
 
             <motion.div
@@ -184,7 +182,7 @@ export default function SupplementsPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                SHOP NOW
+                COMING SOON
               </Button>
             </motion.div>
           </div>
@@ -198,7 +196,11 @@ export default function SupplementsPage() {
       </SectionContainer>
 
       {/* ProRise Innovation */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <div className="glass-dark p-8 rounded-lg max-w-3xl mx-auto">
             <AnimatedText
@@ -206,7 +208,9 @@ export default function SupplementsPage() {
               className="text-[#ffb800] text-2xl md:text-3xl font-bold mb-4"
               animation="reveal"
             />
-            <h3 className="text-xl font-semibold mb-6">Collaborate, Create, and Learn with Us.</h3>
+            <h3 className="text-xl font-semibold mb-6">
+              Collaborate, Create, and Learn with Us.
+            </h3>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -214,11 +218,14 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-6"
             >
-              At RISE Academy of Sport and Education, we're bringing athletes into the fold to create the future of
-              supplements. Join our ProRise Innovation Group and be part of the journey as we combine professional
-              expertise and scientific knowledge to create products that work for real athletes. Whether it's creating
-              the next great protein powder or perfecting hydration formulas, your voice matters as we build the future
-              of performance supplements—together.
+              At RISE Academy of Sport and Education, we're bringing athletes
+              into the fold to create the future of supplements. Join our
+              ProRise Innovation Group and be part of the journey as we combine
+              professional expertise and scientific knowledge to create products
+              that work for real athletes. Whether it's creating the next great
+              protein powder or perfecting hydration formulas, your voice
+              matters as we build the future of performance
+              supplements—together.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -256,12 +263,15 @@ export default function SupplementsPage() {
       </SectionContainer>
 
       {/* Join the Waitlist */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <WaitlistForm />
         </SectionContainer>
       </ParallaxSection>
     </div>
-  )
+  );
 }
-
