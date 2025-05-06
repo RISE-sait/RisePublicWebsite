@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
 import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Footer() {
   const socialIcons = {
@@ -74,15 +75,23 @@ export default function Footer() {
             Accepted Payment Methods
           </motion.div>
           <div className="flex gap-3 mb-12">
-            {PAYMENT_METHODS.map((method, index) => (
+            {PAYMENT_METHODS.map(({ name, src }, index) => (
               <motion.div
-                key={index}
+                key={name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-                className="bg-[#111] border border-[#333] rounded p-1 w-12 h-7 flex items-center justify-center hover:border-[#ffb800]/30 transition-all"
-              ></motion.div>
+                className="rounded p-1 w-14 h-10 flex items-center justify-center  transition-all"
+              >
+                <Image
+                  src={src}
+                  alt={name}
+                  width={60}
+                  height={60}
+                  className="object-contain"
+                />
+              </motion.div>
             ))}
           </div>
         </div>

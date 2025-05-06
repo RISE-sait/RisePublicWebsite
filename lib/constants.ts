@@ -71,11 +71,11 @@ export const FOOTER_LINKS = {
 };
 
 export const PAYMENT_METHODS = [
-  "Visa",
-  "Mastercard",
-  "American Express",
-  "Apple Pay",
-  "Google Pay",
+  { name: "Visa", src: "/payment-icons/visa.svg" },
+  { name: "Mastercard", src: "/payment-icons/mastercard.svg" },
+  { name: "Apple Pay", src: "/payment-icons/apple-pay.svg" },
+  { name: "Google Pay", src: "/payment-icons/google-pay.svg" },
+  { name: "PayPal", src: "/payment-icons/paypal.svg" },
 ];
 
 export const PARTNER_LOGOS = [
