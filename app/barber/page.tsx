@@ -37,7 +37,7 @@ export default function BarberPage() {
         <SectionHeading title="Schedule a Courtside Cut" centered />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ThreeDCard className="bg-white p-6 text-black rounded-lg overflow-hidden">
+          <div className="bg-white p-6 text-black rounded-lg overflow-hidden">
             <div className="flex justify-between items-start">
               <div className="flex flex-col items-start">
                 <h3 className="font-bold text-lg">RISE Courtside Cuts</h3>
@@ -105,9 +105,9 @@ export default function BarberPage() {
                 ))}
               </div>
             </div>
-          </ThreeDCard>
+          </div>
 
-          <ThreeDCard className="bg-white p-6 text-black rounded-lg overflow-hidden">
+          <div className="bg-white p-6 text-black rounded-lg overflow-hidden">
             <h3 className="font-bold text-lg mb-4">
               Latest/Current Basketball Event
             </h3>
@@ -127,7 +127,7 @@ export default function BarberPage() {
                 <p className="text-xs text-gray-600">April 2, 2025</p>
               </div>
             </div>
-          </ThreeDCard>
+          </div>
         </div>
       </SectionContainer>
 
