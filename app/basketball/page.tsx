@@ -475,7 +475,7 @@ export default function BasketballPage() {
 
       {/* Memberships */}
       <SectionContainer>
-        <SectionHeading title="Memberships" centered />
+        <SectionHeading title="Basketball Memberships" centered />
 
         <MembershipGrid
           plans={MEMBERSHIP_PLANS.filter(
