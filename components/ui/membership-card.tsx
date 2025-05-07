@@ -128,6 +128,7 @@ export function MembershipCard({
 
         <div className="flex flex-col gap-2">
           <Button
+            asChild
             variant={featured ? "default" : "outline"}
             className={cn(
               "transition-all duration-300 hover:scale-105 font-semibold",
@@ -135,9 +136,8 @@ export function MembershipCard({
                 ? "bg-black/80 text-white hover:bg-black"
                 : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
-            onClick={onLearnMoreClick}
           >
-            {learnMoreText}
+            <a href="/learn-more">LEARN MORE</a>
           </Button>
           <Button
             asChild
