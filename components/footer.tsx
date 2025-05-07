@@ -29,9 +29,11 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Link href="/" className="mb-6 inline-block">
-              <span className="text-3xl font-bold text-white">{SITE_NAME}</span>
-            </Link>
+            <div className="mb-6 inline-block text-center justify-center">
+              <span className="text-3xl font-bold text-white ">
+                SUBSCRIBE TO OUR NEWSLETTER!
+              </span>
+            </div>
           </motion.div>
 
           <motion.form
@@ -44,11 +46,11 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Email Address"
-              className="flex-grow px-4 py-3 bg-[#111] border border-[#333] rounded-l-md focus:outline-none focus:ring-1 focus:ring-[#ffb800] focus:border-[#ffb800] transition-all"
+              className="flex-grow px-4 py-3 h-10 bg-[#111] border border-[#333] rounded-l-md focus:outline-0 focus:border-[#ffb800] transition-all"
             />
             <Button
               variant="default"
-              className="bg-[#ffb800] text-black hover:bg-[#e0a300] rounded-l-none hover:scale-105 transition-all shadow-lg"
+              className="px-4 py-3 h-10 bg-[#ffb800] text-black hover:bg-[#e0a300] rounded-l-none hover:scale-105 transition-all shadow-lg "
             >
               Submit
             </Button>
