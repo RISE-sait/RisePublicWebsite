@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { motion, useAnimation, type Variants } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react";
+import { motion, useAnimation, type Variants } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface AnimatedTextProps {
-  text: string
-  className?: string
-  once?: boolean
-  repeatDelay?: number
-  animation?: "typewriter" | "reveal" | "bounce" | "wave"
-  delay?: number
+  text: string;
+  className?: string;
+  once?: boolean;
+  repeatDelay?: number;
+  animation?: "typewriter" | "reveal" | "bounce" | "wave";
+  delay?: number;
 }
 
 export function AnimatedText({
@@ -23,13 +23,13 @@ export function AnimatedText({
   animation = "reveal",
   delay = 0,
 }: AnimatedTextProps) {
-  const controls = useAnimation()
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once })
-  const [replay, setReplay] = useState(false)
+  const controls = useAnimation();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once });
+  const [replay, setReplay] = useState(true);
 
   // Split text into words and characters
-  const words = text.split(" ")
+  const words = text.split(" ");
 
   // Animation variants
   const typewriterVariants: Variants = {
@@ -43,7 +43,7 @@ export function AnimatedText({
         ease: "easeInOut",
       },
     }),
-  }
+  };
 
   const revealVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -56,7 +56,7 @@ export function AnimatedText({
         ease: "easeOut",
       },
     }),
-  }
+  };
 
   const bounceVariants: Variants = {
     hidden: { opacity: 0, scale: 0.5 },
@@ -71,7 +71,7 @@ export function AnimatedText({
         damping: 10,
       },
     }),
-  }
+  };
 
   const waveVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -86,42 +86,42 @@ export function AnimatedText({
         damping: 10,
       },
     }),
-  }
+  };
 
   // Select the appropriate variant based on animation type
   const getVariant = () => {
     switch (animation) {
       case "typewriter":
-        return typewriterVariants
+        return typewriterVariants;
       case "bounce":
-        return bounceVariants
+        return bounceVariants;
       case "wave":
-        return waveVariants
+        return waveVariants;
       case "reveal":
       default:
-        return revealVariants
+        return revealVariants;
     }
-  }
+  };
 
   useEffect(() => {
     if (isInView) {
-      controls.start("visible")
+      controls.start("visible");
     } else {
-      controls.start("hidden")
+      controls.start("hidden");
     }
-  }, [isInView, controls, replay])
+  }, [isInView, controls, replay]);
 
   useEffect(() => {
     if (repeatDelay > 0 && !once) {
       const interval = setInterval(() => {
         controls.start("hidden").then(() => {
-          setReplay(!replay)
-        })
-      }, repeatDelay * 1000)
+          setReplay(!replay);
+        });
+      }, repeatDelay * 1000);
 
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-  }, [controls, once, repeatDelay, replay])
+  }, [controls, once, repeatDelay, replay]);
 
   if (animation === "typewriter") {
     return (
@@ -136,12 +136,12 @@ export function AnimatedText({
           {text}
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
     <div ref={ref} className={cn("overflow-hidden", className)}>
-      <div className="flex flex-wrap">
+      <div className="text-center flex flex-wrap justify-center">
         {words.map((word, wordIndex) => (
           <div key={wordIndex} className="mr-2 mb-2 overflow-hidden">
             {animation === "wave" ? (
@@ -172,6 +172,5 @@ export function AnimatedText({
         ))}
       </div>
     </div>
-  )
+  );
 }
-

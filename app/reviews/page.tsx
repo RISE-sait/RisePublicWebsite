@@ -1,21 +1,25 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { ReviewGrid } from "@/components/ui/review-grid"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import { REVIEWS } from "@/lib/constants"
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { ReviewGrid } from "@/components/ui/review-grid";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import { REVIEWS } from "@/lib/constants";
 
 export default function ReviewsPage() {
   return (
     <div className="flex flex-col">
       {/* Reviews Header */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.8} className="py-32">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.8}
+        className="py-32"
+      >
         <SectionContainer>
           <div className="text-center">
             <AnimatedText
@@ -52,7 +56,10 @@ export default function ReviewsPage() {
                 <span className="text-sm text-gray-500">5.0 ★★★★★ (125)</span>
               </div>
             </div>
-            <Button variant="default" className="bg-blue-500 hover:bg-blue-600 text-white">
+            <Button
+              variant="default"
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+            >
               Review us on Google
             </Button>
           </div>
@@ -63,6 +70,5 @@ export default function ReviewsPage() {
         <ReviewGrid reviews={REVIEWS} />
       </SectionContainer>
     </div>
-  )
+  );
 }
-
