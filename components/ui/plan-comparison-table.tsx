@@ -1,22 +1,30 @@
-import { cn } from "@/lib/utils"
-import { Check, X } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { Check, X } from "lucide-react";
 
 interface PlanFeature {
-  feature: string
-  fullYear: boolean
-  seasonal: boolean
-  jrRise: boolean
+  feature: string;
+  fullYear: boolean;
+  seasonal: boolean;
+  jrRise: boolean;
 }
 
 interface PlanComparisonTableProps {
-  features: PlanFeature[]
-  className?: string
+  features: PlanFeature[];
+  className?: string;
 }
 
-export function PlanComparisonTable({ features, className }: PlanComparisonTableProps) {
+export function PlanComparisonTable({
+  features,
+  className,
+}: PlanComparisonTableProps) {
   return (
-    <div className={cn("overflow-x-auto", className)}>
-      <table className="w-full border-collapse">
+    <div
+      className={cn(
+        "overflow-x-auto border-gray-800 border rounded-lg",
+        className
+      )}
+    >
+      <table className="w-full">
         <thead>
           <tr className="text-left">
             <th className="p-4 bg-[#111] rounded-tl-lg">GEAR PACKAGE</th>
@@ -30,7 +38,7 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
               <div className="text-sm text-gray-400">Ages 5-18</div>
               <div className="text-sm">Non-member</div>
             </th>
-            <th className="p-4 bg-[#111] rounded-tr-lg text-center">
+            <th className="hidden sm:table-cell p-4 bg-[#111] rounded-tr-lg text-center">
               <div>JR. RISE FULL YEAR</div>
               <div className="text-sm text-gray-400">Ages 5-12</div>
               <div className="text-sm">Member</div>
@@ -39,23 +47,23 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
         </thead>
         <tbody>
           {features.map((feature, index) => (
-            <tr key={index}>
-              <td className="p-4 bg-[#111]">{feature.feature}</td>
-              <td className="p-4 bg-[#111] text-center">
+            <tr key={index} className="odd:bg-black even:bg-[#111]">
+              <td className="p-4">{feature.feature}</td>
+              <td className="p-4 text-center">
                 {feature.fullYear ? (
                   <Check className="h-5 w-5 mx-auto text-[#ffb800]" />
                 ) : (
                   <X className="h-5 w-5 mx-auto text-gray-500" />
                 )}
               </td>
-              <td className="p-4 bg-[#111] text-center">
+              <td className="p-4 text-center">
                 {feature.seasonal ? (
                   <Check className="h-5 w-5 mx-auto text-[#ffb800]" />
                 ) : (
                   <X className="h-5 w-5 mx-auto text-gray-500" />
                 )}
               </td>
-              <td className="p-4 bg-[#111] text-center">
+              <td className="hidden sm:table-cell p-4 text-center">
                 {feature.jrRise ? (
                   <Check className="h-5 w-5 mx-auto text-[#ffb800]" />
                 ) : (
@@ -67,6 +75,5 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
         </tbody>
       </table>
     </div>
-  )
+  );
 }
-
