@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { VideoHero } from "@/components/ui/video-hero"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { FeatureGrid } from "@/components/ui/feature-grid"
-import { Button } from "@/components/ui/button"
-import { WaitlistForm } from "@/components/ui/waitlist-form"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { ThreeDCard } from "@/components/ui/3d-card"
-import PartnerLogos from "@/components/partner-logos"
-import CountdownTimer from "@/components/countdown-timer"
-import { COFFEE_FEATURES } from "@/lib/constants"
+import { motion } from "framer-motion";
+import { VideoHero } from "@/components/ui/video-hero";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { FeatureGrid } from "@/components/ui/feature-grid";
+import { Button } from "@/components/ui/button";
+import { WaitlistForm } from "@/components/ui/waitlist-form";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { ThreeDCard } from "@/components/ui/3d-card";
+import PartnerLogos from "@/components/partner-logos";
+import CountdownTimer from "@/components/countdown-timer";
+import { COFFEE_FEATURES } from "@/lib/constants";
 
 export default function CoffeePage() {
   return (
@@ -28,11 +28,7 @@ export default function CoffeePage() {
         secondaryButtonText="Learn More"
         secondaryButtonHref="#about"
         height="90vh"
-      >
-        <div className="mb-6">
-          <img src="/placeholder.svg?height=100&width=200" alt="BOOM Coffee logo" className="object-contain h-[75px]" />
-        </div>
-      </VideoHero>
+      ></VideoHero>
 
       {/* Partners Section */}
       <PartnerLogos />
@@ -59,8 +55,9 @@ export default function CoffeePage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-6"
             >
-              BOOM Coffee is your new destination for fresh coffee, protein shakes powered by ProRise Supplements, and
-              healthy snacks tailored for athletes, kids, members, and the community.
+              BOOM Coffee is your new destination for fresh coffee, protein
+              shakes powered by ProRise Supplements, and healthy snacks tailored
+              for athletes, kids, members, and the community.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -69,10 +66,12 @@ export default function CoffeePage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-6"
             >
-              Our coffee is thoughtfully crafted for optimal fuel, perfect balance between flavor and function. We've
-              partnered with local roasters to create a unique blend of beans with the perfect mix of antioxidant-rich
-              ProRise Supplements and the ingredients of your favorite coffee drinks you'll enjoy before, during, and
-              after your workout.
+              Our coffee is thoughtfully crafted for optimal fuel, perfect
+              balance between flavor and function. We've partnered with local
+              roasters to create a unique blend of beans with the perfect mix of
+              antioxidant-rich ProRise Supplements and the ingredients of your
+              favorite coffee drinks you'll enjoy before, during, and after your
+              workout.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -81,8 +80,8 @@ export default function CoffeePage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mb-6"
             >
-              Opening September 2025, BOOM Coffee is set to become your favorite place to refuel, refresh, and fuel at
-              home.
+              Opening September 2025, BOOM Coffee is set to become your favorite
+              place to refuel, refresh, and fuel at home.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -113,27 +112,21 @@ export default function CoffeePage() {
       <SectionContainer className="bg-black" id="coming-soon">
         <SectionHeading title="Coming Soon - September 2025" centered />
 
-        <div className="glass-dark p-8 rounded-lg max-w-3xl mx-auto mb-8">
+        <div className="p-8 rounded-lg max-w-3xl mx-auto mb-8">
           <CountdownTimer targetDate="2025-09-01T00:00:00" />
-        </div>
-
-        <div className="mt-12 text-center">
-          <Button
-            variant="default"
-            className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
-          >
-            JOIN THE WAITLIST
-          </Button>
         </div>
       </SectionContainer>
 
       {/* Join the Waitlist */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.7} className="py-16">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
         <SectionContainer>
           <WaitlistForm />
         </SectionContainer>
       </ParallaxSection>
     </div>
-  )
+  );
 }
-
