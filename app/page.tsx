@@ -244,10 +244,11 @@ export default function Home() {
                 <a href="/join">JOIN NOW</a>
               </Button>
               <Button
+                asChild
                 variant="link"
                 className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
               >
-                Learn More
+                <a href="/learn-more">LEARN MORE</a>
               </Button>
             </motion.div>
           </div>
