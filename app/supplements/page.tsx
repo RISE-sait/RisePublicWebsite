@@ -14,6 +14,7 @@ import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import PartnerLogos from "@/components/partner-logos";
 import { SUPPLEMENT_PRODUCTS } from "@/lib/constants";
+import CountdownTimer from "@/components/countdown-timer";
 
 export default function SupplementsPage() {
   return (
@@ -193,6 +194,15 @@ export default function SupplementsPage() {
       <SectionContainer id="products">
         <SectionHeading title="Premium Supplements" centered />
         <ProductGrid products={SUPPLEMENT_PRODUCTS} />
+      </SectionContainer>
+
+      {/* Coming Soon */}
+      <SectionContainer className="bg-black" id="coming-soon">
+        <SectionHeading title="Coming Soon - FALL 2026" centered />
+
+        <div className="p-8 rounded-lg max-w-3xl mx-auto mb-8">
+          <CountdownTimer targetDate="2026-09-01T00:00:00" />
+        </div>
       </SectionContainer>
 
       {/* ProRise Innovation */}
