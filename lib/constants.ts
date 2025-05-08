@@ -110,6 +110,7 @@ export const MEMBERSHIP_PLANS = [
   {
     id: "jr-rise",
     featured: false,
+    badge: "GREAT VALUE",
     title: "Jr. RISE Basketball Membership",
     price: 125,
     period: "month",
@@ -126,6 +127,7 @@ export const MEMBERSHIP_PLANS = [
   {
     id: "performance",
     featured: false,
+    badge: "GREAT VALUE",
     title: "RISE Performance Membership",
     price: 145,
     period: "month",
