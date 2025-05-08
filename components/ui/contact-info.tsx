@@ -1,16 +1,16 @@
-import { cn } from "@/lib/utils"
-import { MapPin, Clock } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { MapPin, Clock } from "lucide-react";
 
 interface ContactInfoProps {
-  address: string
-  city: string
-  postalCode: string
-  contactName?: string
-  contactTitle?: string
-  phone?: string
-  email?: string
-  hours?: string[]
-  className?: string
+  address: string;
+  city: string;
+  postalCode: string;
+  contactName?: string;
+  contactTitle?: string;
+  phone?: string;
+  email?: string;
+  hours?: string[];
+  className?: string;
 }
 
 export function ContactInfo({
@@ -25,8 +25,13 @@ export function ContactInfo({
   className,
 }: ContactInfoProps) {
   return (
-    <div className={cn("bg-[#111] p-6 rounded-lg border border-gray-800", className)}>
-      <h3 className="font-bold mb-4 text-white">Get in touch</h3>
+    <div
+      className={cn(
+        "bg-[#111] p-6 rounded-lg border border-gray-800",
+        className
+      )}
+    >
+      <h3 className="font-bold mb-4 text-white">Questions? Get in touch</h3>
       <p className="text-sm mb-4 text-white">
         {address}
         <br />
@@ -39,10 +44,14 @@ export function ContactInfo({
             <MapPin className="h-5 w-5 text-[#ffb800]" />
           </div>
           <div>
-            {contactTitle && <p className="font-semibold text-white">{contactTitle}</p>}
+            {contactTitle && (
+              <p className="font-semibold text-white">{contactTitle}</p>
+            )}
             {contactName && <p className="text-sm text-white">{contactName}</p>}
             {phone && <p className="text-sm text-white">{phone}</p>}
-            {email && <p className="text-sm text-[#ffb800] font-semibold">{email}</p>}
+            {email && (
+              <p className="text-sm text-[#ffb800] font-semibold">{email}</p>
+            )}
           </div>
         </div>
       )}
@@ -62,6 +71,5 @@ export function ContactInfo({
         </div>
       )}
     </div>
-  )
+  );
 }
-
