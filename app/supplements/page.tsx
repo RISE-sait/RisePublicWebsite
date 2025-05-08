@@ -278,7 +278,8 @@ export default function SupplementsPage() {
         overlayOpacity={0.7}
         className="py-16"
       >
-        <SectionContainer>
+        <SectionContainer className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto">
+          <SectionHeading title="JOIN THE SUPPLEMENTS WAITLIST" centered />
           <WaitlistForm />
         </SectionContainer>
       </ParallaxSection>
