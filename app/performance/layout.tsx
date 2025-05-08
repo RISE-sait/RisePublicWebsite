@@ -1,16 +1,9 @@
-import type React from "react"
-import Breadcrumb from "@/components/breadcrumb"
+import type React from "react";
 
 export default function PerformanceLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <div>
-      <Breadcrumb containerClasses="bg-black/50 backdrop-blur-sm" />
-      {children}
-    </div>
-  )
+  return <div>{children}</div>;
 }
-

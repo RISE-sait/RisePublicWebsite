@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ChevronRight, Home } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ChevronRight, Home } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface BreadcrumbProps {
-  className?: string
-  homeElement?: React.ReactNode
-  separator?: React.ReactNode
-  containerClasses?: string
-  listClasses?: string
-  activeItemClasses?: string
-  capitalizeLinks?: boolean
+  className?: string;
+  homeElement?: React.ReactNode;
+  separator?: React.ReactNode;
+  containerClasses?: string;
+  listClasses?: string;
+  activeItemClasses?: string;
+  capitalizeLinks?: boolean;
 }
 
 export default function Breadcrumb({
@@ -26,8 +26,8 @@ export default function Breadcrumb({
   activeItemClasses = "text-[#ffb800]",
   capitalizeLinks = true,
 }: BreadcrumbProps) {
-  const paths = usePathname()
-  const pathNames = paths.split("/").filter((path) => path)
+  const paths = usePathname();
+  const pathNames = paths.split("/").filter((path) => path);
 
   return (
     <div className={cn("py-4 px-4", containerClasses)}>
@@ -43,15 +43,17 @@ export default function Breadcrumb({
             </Link>
           </li>
 
-          {pathNames.length > 0 && <li className="flex items-center">{separator}</li>}
+          {pathNames.length > 0 && (
+            <li className="flex items-center">{separator}</li>
+          )}
 
           {pathNames.map((name, index) => {
-            const routeTo = `/${pathNames.slice(0, index + 1).join("/")}`
-            const isLast = index === pathNames.length - 1
+            const routeTo = `/${pathNames.slice(0, index + 1).join("/")}`;
+            const isLast = index === pathNames.length - 1;
 
             const displayName = capitalizeLinks
               ? name.charAt(0).toUpperCase() + name.slice(1).replace(/-/g, " ")
-              : name.replace(/-/g, " ")
+              : name.replace(/-/g, " ");
 
             return (
               <li key={routeTo} className="flex items-center">
@@ -59,20 +61,23 @@ export default function Breadcrumb({
                   href={routeTo}
                   className={cn(
                     "text-sm font-medium transition-colors",
-                    isLast ? activeItemClasses : "text-gray-400 hover:text-[#ffb800]",
+                    isLast
+                      ? activeItemClasses
+                      : "text-gray-400 hover:text-[#ffb800]"
                   )}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {displayName}
                 </Link>
 
-                {!isLast && <span className="ml-1 flex items-center">{separator}</span>}
+                {!isLast && (
+                  <span className="ml-1 flex items-center">{separator}</span>
+                )}
               </li>
-            )
+            );
           })}
         </ol>
       </nav>
     </div>
-  )
+  );
 }
-
