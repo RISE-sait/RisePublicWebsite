@@ -1,20 +1,24 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { SectionContainer } from "@/components/ui/section-container"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { ContactForm } from "@/components/ui/contact-form"
-import { ContactInfo } from "@/components/ui/contact-info"
-import { ParallaxSection } from "@/components/ui/parallax-section"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { ThreeDCard } from "@/components/ui/3d-card"
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { ContactForm } from "@/components/ui/contact-form";
+import { ContactInfo } from "@/components/ui/contact-info";
+import { ParallaxSection } from "@/components/ui/parallax-section";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { ThreeDCard } from "@/components/ui/3d-card";
 
 export default function ContactPage() {
   return (
     <div className="flex flex-col">
       {/* Contact Us Header */}
-      <ParallaxSection bgImage="/placeholder.svg?height=600&width=1600" overlayOpacity={0.8} className="py-32">
+      <ParallaxSection
+        bgImage="/placeholder.svg?height=600&width=1600"
+        overlayOpacity={0.8}
+        className="py-32"
+      >
         <SectionContainer>
           <div className="text-center">
             <AnimatedText
@@ -28,7 +32,8 @@ export default function ContactPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="text-gray-300 max-w-2xl mx-auto"
             >
-              If you have any question about our programs we would love to hear from you.
+              If you have any question about our programs we would love to hear
+              from you.
             </motion.p>
           </div>
         </SectionContainer>
@@ -37,8 +42,9 @@ export default function ContactPage() {
       {/* Contact Form and Info */}
       <SectionContainer className="py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ThreeDCard>
+          <div>
             <ContactInfo
+              className="h-full"
               address="RISE SPORTS COMPLEX, #01, 33 St NE"
               city="Calgary, AB"
               postalCode="T2E 7K1"
@@ -46,13 +52,16 @@ export default function ContactPage() {
               contactName="James Smith"
               phone="587-999-7473"
               email="info@risesportscomplex.com"
-              hours={["Mon-Fri 8am-5:30pm", "Saturday Closed", "Sunday Closed"]}
+              hours={[
+                "Mon -> Fri - 8am - 5:30pm",
+                "Saturday - Closed",
+                "Sunday - Closed",
+              ]}
             />
-          </ThreeDCard>
-
-          <ThreeDCard>
+          </div>
+          <div>
             <ContactForm />
-          </ThreeDCard>
+          </div>
         </div>
       </SectionContainer>
 
@@ -70,6 +79,5 @@ export default function ContactPage() {
         </ThreeDCard>
       </SectionContainer>
     </div>
-  )
+  );
 }
-
