@@ -502,18 +502,14 @@ export default function BasketballPage() {
 
       {/* Where Dreams Become Achievements */}
       <ParallaxSection bgColor="#000" className="py-16">
-        <SectionContainer>
-          <AnimatedText
-            text="Where Dreams Become Achievements."
-            className="text-[#ffb800] text-3xl md:text-4xl font-bold mb-4"
-            animation="typewriter"
-          />
+        <SectionContainer className="text-center justify-center">
+          <SectionHeading title="WHERE DREAMS BECOME ACHIEVEMENTS" />
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-gray-300 mb-8 max-w-3xl"
+            className="text-gray-300 mb-8 max-w-3xl text-center mx-auto"
           >
             At RISE Basketball, we're not just about the game. We're about the
             journey from beginner to game-changing competitor, from casual
