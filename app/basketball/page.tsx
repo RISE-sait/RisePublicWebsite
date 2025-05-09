@@ -17,8 +17,14 @@ import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import TabNavigation from "@/components/tab-navigation";
 import { useState } from "react";
-import { MEMBERSHIP_PLANS, UPCOMING_GAMES, TOP_PLAYERS } from "@/lib/constants";
+import {
+  MEMBERSHIP_PLANS,
+  UPCOMING_GAMES,
+  TOP_PLAYERS,
+  TOP3,
+} from "@/lib/constants";
 import { Play } from "lucide-react";
+import { RotatingPlayerStats, Player } from "@/components/rotating-top-players";
 
 export default function BasketballPage() {
   const [activeTab, setActiveTab] = useState("schedules");
@@ -453,21 +459,17 @@ export default function BasketballPage() {
               <h2 className="text-white text-2xl font-bold mb-4">
                 PLAYER STATISTICS
               </h2>
-              <ThreeDCard>
-                <PlayerStatsCard
-                  name="CADE CUNNINGHAM"
-                  position="POINT GUARD"
-                  ppg={23.2}
-                />
-              </ThreeDCard>
+              <div>
+                <RotatingPlayerStats players={TOP3} />
+              </div>
             </div>
             <div>
               <h2 className="text-white text-2xl font-bold mb-4">
                 TOP PLAYERS
               </h2>
-              <ThreeDCard>
+              <div>
                 <TopPlayersTable players={TOP_PLAYERS} />
-              </ThreeDCard>
+              </div>
             </div>
           </div>
         </SectionContainer>
