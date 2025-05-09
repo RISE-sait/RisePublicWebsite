@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next/types";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "@/styles/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/scroll-to-top";

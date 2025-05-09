@@ -1,3 +1,4 @@
+import { Player } from "@/components/rotating-top-players";
 export const SITE_NAME = "RISE";
 export const PRIMARY_COLOR = "#ffb800";
 
@@ -466,3 +467,27 @@ export const REVIEWS = Array.from({ length: 16 }).map((_, index) => ({
   date: "2 days ago",
   avatar: "/placeholder.svg?height=50&width=50",
 }));
+
+export const TOP3: Player[] = [
+  {
+    id: "1",
+    name: "CADE CUNNINGHAM",
+    position: "POINT GUARD",
+    ppg: 23.2,
+    avatar: "/partnerImages/nike.png",
+  },
+  {
+    id: "2",
+    name: "CONNOR DAVISON",
+    position: "CENTER",
+    ppg: 3.9,
+    avatar: "/partnerImages/nike.png",
+  },
+  {
+    id: "3",
+    name: "MOSTAPHA ALAHMAIR",
+    position: "SHOOTING GUARD",
+    ppg: 29.8,
+    avatar: "/partnerImages/nike.png",
+  },
+];
