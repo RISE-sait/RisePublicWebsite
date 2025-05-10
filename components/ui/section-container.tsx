@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface SectionContainerProps {
-  children: React.ReactNode
-  className?: string
-  as?: React.ElementType
-  id?: string
-  animate?: boolean
+  children: React.ReactNode;
+  className?: string;
+  as?: React.ElementType;
+  id?: string;
+  animate?: boolean;
 }
 
 export function SectionContainer({
@@ -21,12 +21,15 @@ export function SectionContainer({
   animate = true,
 }: SectionContainerProps) {
   const content = (
-    <Component id={id} className={cn("py-16 px-4 sm:px-8 relative overflow-hidden", className)}>
+    <Component
+      id={id}
+      className={cn("py-16 px-4 sm:px-8 relative overflow-hidden", className)}
+    >
       <div className="max-w-7xl mx-auto relative z-10">{children}</div>
     </Component>
-  )
+  );
 
-  if (!animate) return content
+  if (!animate) return content;
 
   return (
     <motion.div
@@ -37,6 +40,5 @@ export function SectionContainer({
     >
       {content}
     </motion.div>
-  )
+  );
 }
-
