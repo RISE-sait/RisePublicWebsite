@@ -20,17 +20,10 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
-  // Disable default cursor
-  // useEffect(() => {
-  //   document.documentElement.classList.add("custom-cursor")
-  //   return () => {
-  //     document.documentElement.classList.remove("custom-cursor")
-  //   }
-  // }, [])
+
 
   return (
     <div className="flex flex-col">
-      {/* <CustomCursor /> */}
 
       {/* Hero Section */}
       <VideoHero
