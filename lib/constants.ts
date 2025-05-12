@@ -491,3 +491,12 @@ export const TOP3: Player[] = [
     avatar: "/partnerImages/nike.png",
   },
 ];
+
+export const BASKETBALL_PAGE_IMAGES = [
+  { alt: "RISEgirls1", src: "/basketball-page-images/bballpage1.jpg" },
+  {
+    alt: "RISEboys1",
+    src: "/basketball-page-images/bballpage2.jpg",
+  },
+  { alt: "RISEgirls2", src: "/basketball-page-images/bballpage3.jpg" },
+];
