@@ -22,6 +22,7 @@ import {
   UPCOMING_GAMES,
   TOP_PLAYERS,
   TOP3,
+  BASKETBALL_PAGE_IMAGES,
 } from "@/lib/constants";
 import { Play } from "lucide-react";
 import { RotatingPlayerStats, Player } from "@/components/rotating-top-players";
@@ -497,14 +498,14 @@ export default function BasketballPage() {
       {/* Gallery */}
       <SectionContainer>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[1, 2, 3].map((index) => (
-            <ThreeDCard key={index} className="relative h-[250px]">
+          {BASKETBALL_PAGE_IMAGES.map((img, index) => (
+            <div key={index} className="relative h-[250px]">
               <img
-                src="/placeholder.svg?height=400&width=600"
-                alt={`Basketball image ${index}`}
-                className="object-cover rounded-lg h-full w-full"
+                src={img.src}
+                alt={img.alt}
+                className="object-cover rounded-lg h-full w-full [object-position:center_20%]"
               />
-            </ThreeDCard>
+            </div>
           ))}
         </div>
       </SectionContainer>
