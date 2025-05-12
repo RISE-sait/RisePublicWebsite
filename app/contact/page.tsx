@@ -19,7 +19,7 @@ export default function ContactPage() {
         overlayOpacity={0.8}
         className="py-32"
       >
-        <SectionContainer>
+        <SectionContainer animate={false}>
           <div className="text-center">
             <AnimatedText
               text="Contact Us"
@@ -40,7 +40,7 @@ export default function ContactPage() {
       </ParallaxSection>
 
       {/* Contact Form and Info */}
-      <SectionContainer className="py-16">
+      <SectionContainer animate={false} className="py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <ContactInfo

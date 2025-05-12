@@ -20,7 +20,7 @@ export default function ReviewsPage() {
         overlayOpacity={0.8}
         className="py-32"
       >
-        <SectionContainer>
+        <SectionContainer animate={false}>
           <div className="text-center">
             <AnimatedText
               text="Customer Reviews"
@@ -39,7 +39,7 @@ export default function ReviewsPage() {
         </SectionContainer>
       </ParallaxSection>
 
-      <SectionContainer className="py-16">
+      <SectionContainer animate={false} className="py-16">
         {/* Google Reviews Header */}
         <ThreeDCard className="mb-12">
           <div className="bg-white text-black p-6 rounded-lg flex justify-between items-center">
