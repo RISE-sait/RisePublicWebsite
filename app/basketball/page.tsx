@@ -457,9 +457,9 @@ export default function BasketballPage() {
 
       {/* Player Statistics */}
       <ParallaxSection
-        bgImage="/placeholder.svg?height=800&width=1600"
-        overlayOpacity={0.7}
-        className="py-16"
+        bgImage="/basketball-page-images/topplayers.jpg"
+        overlayOpacity={0.8}
+        className="py-36"
       >
         <SectionContainer>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
