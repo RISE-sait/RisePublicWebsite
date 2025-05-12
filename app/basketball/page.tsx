@@ -224,6 +224,13 @@ export default function BasketballPage() {
                 and fun.
               </p>
             </ThreeDCard>
+            <Button
+              asChild
+              variant="outline"
+              className="mt-2 col-span-1 justify-self-center md:col-start-2 md:row-start-2 md:mt-0 md:self-center border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
+            >
+              <a href="/coaches">VIEW ALL COACHES</a>
+            </Button>
           </div>
         )}
       </SectionContainer>
