@@ -240,20 +240,13 @@ export default function BasketballPage() {
       <SectionContainer id="why-rise" className="bg-[#111]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px]">
-            <ThreeDCard className="h-full">
+            <div className="h-full">
               <img
-                src="/placeholder.svg?height=600&width=800"
+                src="/basketball-page-images/bballwhyrise.jpg"
                 alt="Basketball training"
-                className="object-cover rounded-lg h-full w-full"
+                className="object-cover rounded-lg h-full w-full object-top"
               />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white/20 backdrop-blur-sm rounded-full p-4 hover:bg-white/30 transition-all shadow-xl"
-                ></motion.button>
-              </div>
-            </ThreeDCard>
+            </div>
           </div>
           <div>
             <SectionHeading
@@ -366,13 +359,13 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                JOIN NOW
+                <a href="/join">JOIN NOW</a>
               </Button>
               <Button
                 variant="link"
-                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
+                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all p-4"
               >
-                Learn More
+                <a href="/learn-more">LEARN MORE</a>
               </Button>
             </motion.div>
           </div>
