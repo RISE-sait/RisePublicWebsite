@@ -176,25 +176,25 @@ export const COFFEE_FEATURES = [
     title: "Coffee and Tea",
     description:
       "A selection of freshly brewed coffee and premium teas crafted to energize and delight.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/coffee-page-images/coffeecupsoon.webp",
   },
   {
     title: "Protein Shakes",
     description:
       "Robust protein shakes designed to support recovery and performance, made with premium ProRise Supplements.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/coffee-page-images/smoothiesoon.png",
   },
   {
     title: "Healthy Snacks and Treats",
     description:
       "Grab and go nutritious snacks perfect for before or after your workout, made with quality ingredients.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/coffee-page-images/snackssoon.png",
   },
   {
     title: "Community Space",
     description:
       "A hub of freshly brewed coffee and premium fuel crafted to energize the RISE community.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/coffee-page-images/communitysoon.png",
   },
 ];
 
