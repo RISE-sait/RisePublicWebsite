@@ -10,9 +10,9 @@ export default function CoachesPage() {
     <div className="flex flex-col">
       {/* OUR COACHES SECTION */}
       <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
-        overlayOpacity={0.8}
-        className="py-32"
+        bgImage="/coaches-page-images/allcoaches.jpg"
+        overlayOpacity={0.7}
+        className="py-52 object object-top"
       >
         <SectionContainer animate={false}>
           <div className="text-center">
