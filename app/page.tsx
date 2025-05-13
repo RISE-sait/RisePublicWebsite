@@ -20,11 +20,8 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
-
-
   return (
     <div className="flex flex-col">
-
       {/* Hero Section */}
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
@@ -416,14 +413,14 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                DOWNLOAD APP
+                COMING SOON
               </Button>
               <div className="relative w-24 h-24 shadow-lg rounded-lg overflow-hidden">
-                <img
+                {/* <img
                   src="/placeholder.svg?height=100&width=100"
                   alt="QR Code"
                   className="object-contain w-full h-full"
-                />
+                /> */}
               </div>
             </motion.div>
           </div>
@@ -432,15 +429,15 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="relative h-[500px] md:h-[600px]"
+            className="m-10"
           >
-            <ThreeDCard className="h-full">
+            <div className="w-full h-full border-4 border-[#ffb800] rounded-lg overflow-hidden shadow-lg">
               <img
-                src="/placeholder.svg?height=600&width=300"
+                src="/home-page-images/riseapp.svg"
                 alt="RISE App"
-                className="object-contain w-full h-full drop-shadow-2xl"
+                className="w-full h-full"
               />
-            </ThreeDCard>
+            </div>
             <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-[#ffb800]/20 rounded-full blur-3xl"></div>
             <div className="absolute bottom-1/4 left-1/4 w-24 h-24 bg-[#ffb800]/10 rounded-full blur-2xl"></div>
           </motion.div>
