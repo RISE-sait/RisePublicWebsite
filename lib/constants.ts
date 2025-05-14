@@ -204,28 +204,28 @@ export const SUPPLEMENT_PRODUCTS = [
     title: "Arctic Chilled Water",
     description: "Clean, filtered water + minerals",
     price: 4.99,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/supplements-page-images/risewater.png",
   },
   {
     id: "whey-chocolate",
     title: "Whey Protein Powder",
     description: "Chocolate flavor",
     price: 49.99,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/supplements-page-images/chocolate.png",
   },
   {
     id: "magnesium",
     title: "Magnesium Powder",
     description: "Unflavored",
     price: 39.99,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/supplements-page-images/magnesium.png",
   },
   {
     id: "whey-vanilla",
     title: "Whey Protein Powder",
     description: "Vanilla flavor",
     price: 49.99,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/supplements-page-images/vanilla.png",
   },
 ];
 

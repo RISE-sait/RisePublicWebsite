@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -15,8 +15,12 @@ import { AnimatedText } from "@/components/ui/animated-text";
 import PartnerLogos from "@/components/partner-logos";
 import { SUPPLEMENT_PRODUCTS } from "@/lib/constants";
 import CountdownTimer from "@/components/countdown-timer";
+import { ParticleBackground } from "@/components/ui/particle-background";
+import { ChevronDown } from "lucide-react";
 
 export default function SupplementsPage() {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -24,14 +28,28 @@ export default function SupplementsPage() {
         title="PRORISE SUPPLEMENTS"
         subtitle="Elevate Your Game with Clean, Customized, Canadian-Approved Supplements"
         description="From protein powders to magnesium and beyond, we're creating clean, high-quality supplements that meet Canadian standards."
-        videoSrc="/placeholder.mp4"
+        videoSrc="/particlebackground.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN THE WAITLIST"
-        primaryButtonHref="/waitlist"
+        primaryButtonHref="#waitlist"
         secondaryButtonText="COMING SOON"
         secondaryButtonHref="#products"
         height="90vh"
       ></VideoHero>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30"
+        style={{ opacity }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
+          className="flex flex-col items-center"
+        >
+          <ChevronDown className="h-8 w-8 text-white" />
+        </motion.div>
+      </motion.div>
 
       {/* Partners Section */}
       <PartnerLogos />
@@ -44,14 +62,14 @@ export default function SupplementsPage() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="relative h-[300px]">
-            <ThreeDCard className="h-full">
+          <div className="relative">
+            <div className="h-full">
               <img
-                src="/placeholder.svg?height=600&width=800"
+                src="/supplements-page-images/arcticsoon.png"
                 alt="Arctic Chilled Water bottle"
                 className="object-cover rounded-lg h-full w-full"
               />
-            </ThreeDCard>
+            </div>
           </div>
           <div>
             <motion.p
@@ -206,12 +224,13 @@ export default function SupplementsPage() {
       </SectionContainer>
 
       {/* ProRise Innovation */}
-      <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
-        overlayOpacity={0.7}
-        className="py-16"
-      >
+      <ParallaxSection overlayOpacity={0.7} className="py-16" bgColor="#111">
         <SectionContainer>
+          <ParticleBackground
+            particleColor="#ffb800"
+            particleCount={100}
+            connectParticles={true}
+          />
           <div className="glass-dark p-8 rounded-lg max-w-3xl mx-auto">
             <AnimatedText
               text="ProRise Innovation: Built by Athletes, For Athletes"
@@ -273,16 +292,21 @@ export default function SupplementsPage() {
       </SectionContainer>
 
       {/* Join the Waitlist */}
-      <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
-        overlayOpacity={0.7}
-        className="py-16"
-      >
-        <SectionContainer className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto">
+      <SectionContainer className="py-16 bg-[#111]" id="waitlist">
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={100}
+          connectParticles={true}
+        />
+        <ParallaxSection
+          bgColor="#111"
+          overlayOpacity={0.7}
+          className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto"
+        >
           <SectionHeading title="JOIN THE SUPPLEMENTS WAITLIST" centered />
           <WaitlistForm />
-        </SectionContainer>
-      </ParallaxSection>
+        </ParallaxSection>
+      </SectionContainer>
     </div>
   );
 }
