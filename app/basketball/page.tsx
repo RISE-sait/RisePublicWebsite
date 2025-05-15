@@ -6,9 +6,6 @@ import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MembershipGrid } from "@/components/ui/membership-grid";
 import { GameGrid } from "@/components/ui/game-grid";
-import { PlayerStatsCard } from "@/components/ui/player-stats-card";
-import { TopPlayersTable } from "@/components/ui/top-players-table";
-import { WaitlistForm } from "@/components/ui/waitlist-form";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ThreeDCard } from "@/components/ui/3d-card";
@@ -20,12 +17,12 @@ import { useState } from "react";
 import {
   MEMBERSHIP_PLANS,
   UPCOMING_GAMES,
-  TOP_PLAYERS,
-  TOP3,
   BASKETBALL_PAGE_IMAGES,
 } from "@/lib/constants";
 import { Play } from "lucide-react";
 import { RotatingPlayerStats, Player } from "@/components/rotating-top-players";
+import { TopPlayersSection } from "@/components/topPlayersSection";
+import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 
 export default function BasketballPage() {
   const [activeTab, setActiveTab] = useState("schedules");
@@ -461,7 +458,7 @@ export default function BasketballPage() {
                 PLAYER STATISTICS
               </h2>
               <div>
-                <RotatingPlayerStats players={TOP3} />
+                <RotatingTopPlayers />
               </div>
             </div>
             <div>
@@ -469,7 +466,7 @@ export default function BasketballPage() {
                 TOP PLAYERS
               </h2>
               <div>
-                <TopPlayersTable players={TOP_PLAYERS} />
+                <TopPlayersSection />
               </div>
             </div>
           </div>
