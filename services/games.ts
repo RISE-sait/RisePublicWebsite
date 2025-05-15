@@ -26,8 +26,10 @@ export interface Game {
   date: string;
   /** Formatted display time (e.g. “9:23 PM”) */
   time: string;
-  /** Optional logo URL */
-  image?: string;
+  /** home logo URL */
+  homeLogo?: string;
+  /** away logo URL */
+  awayLogo?: string;
 }
 
 /**
@@ -70,7 +72,8 @@ export async function getGames(limit?: number): Promise<Game[]> {
         hour: "numeric",
         minute: "2-digit",
       }),
-      image: g.home_team_logo_url || undefined,
+      homeLogo: g.home_team_logo_url,
+      awayLogo: g.away_team_logo_url,
     };
   });
 }
