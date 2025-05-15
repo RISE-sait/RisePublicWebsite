@@ -11,6 +11,7 @@ import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import PartnerLogos from "@/components/partner-logos";
 import { BARBER_SERVICES } from "@/lib/constants";
+import { HaircutGallerySection } from "@/components/haircutGallerySection";
 
 export default function BarberPage() {
   return (
@@ -182,26 +183,7 @@ export default function BarberPage() {
       <SectionContainer>
         <SectionHeading title="Haircut Gallery" centered />
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <div
-              key={index}
-              className="relative h-[150px] overflow-hidden rounded-lg border border-gray-800 group hover:border-[#ffb800]/50 transition-all duration-300 shadow-md"
-            >
-              <img
-                src={`https://source.unsplash.com/random/300x300?haircut,barber&sig=${index}`}
-                alt={`Haircut style ${index + 1}`}
-                className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-xs text-white font-medium">
-                  Style #{index + 1}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <HaircutGallerySection limit={10} />
 
         <div className="text-center mt-8">
           <Button
