@@ -23,6 +23,7 @@ import { Play } from "lucide-react";
 import { RotatingPlayerStats, Player } from "@/components/rotating-top-players";
 import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
+import { UpcomingGamesSection } from "@/components/gamesSection";
 
 export default function BasketballPage() {
   const [activeTab, setActiveTab] = useState("schedules");
@@ -427,12 +428,12 @@ export default function BasketballPage() {
       <ParallaxSection bgColor="#000" className="py-16">
         <SectionContainer>
           <AnimatedText
-            text="ALL GAMES"
+            text="UPCOMING GAMES"
             className="text-3xl md:text-4xl font-bold text-center mb-8"
             animation="wave"
           />
 
-          <GameGrid games={UPCOMING_GAMES} />
+          <UpcomingGamesSection columns={5} limit={10} />
 
           <div className="text-center mt-8">
             <Button
