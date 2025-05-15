@@ -15,6 +15,7 @@ import PartnerLogos from "@/components/partner-logos";
 import { MEMBERSHIP_PLANS, PLAN_COMPARISON } from "@/lib/constants";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ChevronDown } from "lucide-react";
+import { MembershipsSection } from "@/components/membershipsSection";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -300,8 +301,7 @@ export default function Home() {
       {/* Memberships Section */}
       <SectionContainer id="memberships">
         <SectionHeading title="Memberships" centered />
-
-        <MembershipGrid plans={MEMBERSHIP_PLANS} />
+        <MembershipsSection />
       </SectionContainer>
 
       {/* Compare Plans */}
