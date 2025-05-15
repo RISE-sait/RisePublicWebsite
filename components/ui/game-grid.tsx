@@ -15,8 +15,10 @@ interface Game {
   date: string;
   /** Formatted time string (e.g. "9:23 PM") */
   time: string;
-  /** Optional URL for a team logo or placeholder image */
-  image?: string;
+  /** URL for the home team logo */
+  homeLogo?: string;
+  /** URL for the away team logo */
+  awayLogo?: string;
 }
 
 //
@@ -76,7 +78,8 @@ export function GameGrid({
           team2={game.team2}
           date={game.date}
           time={game.time}
-          image={game.image}
+          homeLogo={game.homeLogo}
+          awayLogo={game.awayLogo}
         />
       ))}
     </div>

@@ -23,12 +23,14 @@ interface GameCardProps {
   date: string;
   /** Formatted time string (e.g. "9:23 PM") */
   time: string;
-  /** Optional URL for the game’s image or logo */
-  image?: string;
   /** Additional CSS classes to apply to the card container */
   className?: string;
   /** Index used to stagger the animation delay */
   index?: number;
+  /** URL for the team/logo image  */
+  homeLogo?: string;
+  /** URL for the team/logo image  */
+  awayLogo?: string;
 }
 
 /**
@@ -51,7 +53,8 @@ export function GameCard({
   team2,
   date,
   time,
-  image = "/placeholder.svg?height=200&width=300",
+  homeLogo,
+  awayLogo,
   className,
   index = 0,
 }: GameCardProps) {
@@ -71,16 +74,29 @@ export function GameCard({
       )}
     >
       {/* Image container with hover zoom and gradient overlay */}
-      <div className="relative h-32 overflow-hidden group">
-        <Image
-          src={image}
-          alt={`${team1} vs ${team2}`}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        {/* Dark gradient to improve text contrast */}
+      <div className="relative h-32 overflow-hidden group grid grid-cols-2">
+        {homeLogo && (
+          <div className="relative w-full h-full">
+            <Image
+              src={homeLogo}
+              alt={`${team1} logo`}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+        )}
+        {awayLogo && (
+          <div className="relative w-full h-full">
+            <Image
+              src={awayLogo}
+              alt={`${team2} logo`}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+        )}
+        {/* retain your gradient & badge */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-        {/* Badge showing either "GAME {rank}" or fallback to raw ID */}
         <div className="absolute top-2 right-2 bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded shadow-md">
           GAME {rank ?? id}
         </div>
