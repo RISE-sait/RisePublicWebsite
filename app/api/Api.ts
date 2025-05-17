@@ -364,7 +364,8 @@ export interface MembershipPlanPlanRequestDto {
   stripe_price_id: string;
 }
 
-export interface MembershipPlanPlanResponse {
+export interface MembershipPlanResponse {
+  price: number;
   amt_periods?: number;
   created_at?: string;
   id?: string;
@@ -1713,7 +1714,7 @@ export class Api<
      * @request GET:/memberships/{id}/plans
      */
     plansDetail: (id: string, params: RequestParams = {}) =>
-      this.request<MembershipPlanPlanResponse[], Record<string, any>>({
+      this.request<MembershipPlanResponse[], Record<string, any>>({
         path: `/memberships/${id}/plans`,
         method: "GET",
         type: ContentType.Json,
