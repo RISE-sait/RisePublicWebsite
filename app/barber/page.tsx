@@ -1,19 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BarberServiceCard } from "@/components/ui/barber-service-card";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection } from "@/components/ui/parallax-section";
-import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import PartnerLogos from "@/components/partner-logos";
 import { BARBER_SERVICES } from "@/lib/constants";
 import { HaircutGallerySection } from "@/components/haircutGallerySection";
+import { ChevronDown } from "lucide-react";
 
 export default function BarberPage() {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -21,14 +23,28 @@ export default function BarberPage() {
         title="COURTSIDE CUTS"
         subtitle="Experience the Game, Style, and Culture"
         description="Get Fresh Fades While Watching Live Basketball. Courtside Cuts is where style meets the game."
-        videoSrc="/placeholder.mp4"
+        videoSrc="/headervideos/barberhead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
-        primaryButtonText="JOIN THE WAITLIST"
-        primaryButtonHref="/waitlist"
-        secondaryButtonText="BOOK NOW"
-        secondaryButtonHref="#book"
+        primaryButtonText="BOOK NOW"
+        primaryButtonHref="#book"
+        secondaryButtonText="VIEW GALLERY"
+        secondaryButtonHref="#gallery"
         height="90vh"
       />
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30"
+        style={{ opacity }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
+          className="flex flex-col items-center"
+        >
+          <ChevronDown className="h-8 w-8 text-white" />
+        </motion.div>
+      </motion.div>
 
       {/* Partners Section */}
       <PartnerLogos />
@@ -180,7 +196,7 @@ export default function BarberPage() {
       </ParallaxSection>
 
       {/* Haircut Gallery */}
-      <SectionContainer>
+      <SectionContainer id="gallery">
         <SectionHeading title="Haircut Gallery" centered />
 
         <HaircutGallerySection limit={10} />
