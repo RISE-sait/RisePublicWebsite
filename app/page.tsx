@@ -12,7 +12,7 @@ import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import PartnerLogos from "@/components/partner-logos";
-import { MEMBERSHIP_PLANS, PLAN_COMPARISON } from "@/lib/constants";
+import { PLAN_COMPARISON } from "@/lib/constants";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
@@ -28,10 +28,10 @@ export default function Home() {
         title="RISE ABOVE THE COMPETITION"
         subtitle="Year-Round Basketball Membership for All Ages"
         description="Join Calgary's premier basketball community for top-tier coaching, skill training, leagues, and exclusive programs for all ages."
-        videoSrc="/placeholder.mp4"
+        videoSrc="\headervideos\mainhead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/join"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="EXPLORE"
         secondaryButtonHref="#memberships"
         height="100vh"
