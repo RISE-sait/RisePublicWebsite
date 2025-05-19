@@ -1,11 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MembershipGrid } from "@/components/ui/membership-grid";
-import { GameGrid } from "@/components/ui/game-grid";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ThreeDCard } from "@/components/ui/3d-card";
@@ -14,18 +13,15 @@ import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import TabNavigation from "@/components/tab-navigation";
 import { useState } from "react";
-import {
-  MEMBERSHIP_PLANS,
-  UPCOMING_GAMES,
-  BASKETBALL_PAGE_IMAGES,
-} from "@/lib/constants";
-import { Play } from "lucide-react";
-import { RotatingPlayerStats, Player } from "@/components/rotating-top-players";
+import { MEMBERSHIP_PLANS, BASKETBALL_PAGE_IMAGES } from "@/lib/constants";
+import { ChevronDown, Play } from "lucide-react";
 import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
 
 export default function BasketballPage() {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const [activeTab, setActiveTab] = useState("schedules");
 
   const programTabs = [
@@ -41,14 +37,28 @@ export default function BasketballPage() {
         title="ELEVATE YOUR GAME WITH RISE BASKETBALL"
         subtitle="Join Calgary's premier basketball community"
         description="Year-round training, leagues, and development for players of all ages and skill levels."
-        videoSrc="/placeholder.mp4"
+        videoSrc="/headervideos/basketballhead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/join"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
       />
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30"
+        style={{ opacity }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
+          className="flex flex-col items-center"
+        >
+          <ChevronDown className="h-8 w-8 text-white" />
+        </motion.div>
+      </motion.div>
 
       {/* Partners Section */}
       <PartnerLogos />
