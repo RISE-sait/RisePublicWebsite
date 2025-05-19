@@ -1,22 +1,22 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FeatureGrid } from "@/components/ui/feature-grid";
 import { MembershipGrid } from "@/components/ui/membership-grid";
-import { ContactForm } from "@/components/ui/contact-form";
-import { ContactInfo } from "@/components/ui/contact-info";
-import { WaitlistForm } from "@/components/ui/waitlist-form";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ThreeDCard } from "@/components/ui/3d-card";
 import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 export default function PerformancePage() {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -24,14 +24,28 @@ export default function PerformancePage() {
         title="RISE PERFORMANCE: ELEVATE YOUR FITNESS"
         subtitle="Get Fit & Strong with Comprehensive Training"
         description="Whether you're a young athlete or an adult, our group classes are designed to help you get fit, strong, and ready for the day ahead."
-        videoSrc="/placeholder.mp4"
+        videoSrc="/headervideos/performancehead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
-        primaryButtonText="APPLY NOW"
-        primaryButtonHref="/apply"
+        primaryButtonText="JOIN NOW"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
       />
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-30"
+        style={{ opacity }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
+          className="flex flex-col items-center"
+        >
+          <ChevronDown className="h-8 w-8 text-white" />
+        </motion.div>
+      </motion.div>
 
       {/* Partners Section */}
       <PartnerLogos />
