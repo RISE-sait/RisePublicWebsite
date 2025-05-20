@@ -240,6 +240,19 @@ export interface GameRequestDto {
 }
 
 export interface GameResponseDto {
+  home_team_id: any;
+  home_team_name: any;
+  home_team_logo_url: string;
+  away_team_id: any;
+  away_team_name: any;
+  away_team_logo_url: string;
+  home_score: any;
+  away_score: any;
+  start_time: any;
+  end_time: any;
+  location_id: any;
+  location_name: any;
+  status: any;
   created_at?: string;
   description?: string;
   id?: string;

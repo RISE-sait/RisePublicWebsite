@@ -18,6 +18,7 @@ import { ChevronDown, Play } from "lucide-react";
 import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
+import ScheduleCalendar from "@/components/scheduleCalendar";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -92,49 +93,11 @@ export default function BasketballPage() {
           />
         </div>
 
-        {activeTab === "schedules" && (
-          <div className="bg-black/50 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-4">Upcoming Sessions</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                <div>
-                  <h4 className="font-medium">Youth Development</h4>
-                  <p className="text-sm text-gray-400">Ages 5-12</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Mon, Wed, Fri</p>
-                  <p className="text-sm">4:00 PM - 5:30 PM</p>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                <div>
-                  <h4 className="font-medium">Teen Elite</h4>
-                  <p className="text-sm text-gray-400">Ages 13-18</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Tue, Thu</p>
-                  <p className="text-sm">6:00 PM - 8:00 PM</p>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div>
-                  <h4 className="font-medium">Adult League</h4>
-                  <p className="text-sm text-gray-400">Ages 18+</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[#ffb800]">Sat, Sun</p>
-                  <p className="text-sm">10:00 AM - 1:00 PM</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeTab === "schedules" && <ScheduleCalendar />}
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
+            <div className="bg-black/50 p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
                 Youth Development
               </h3>
@@ -148,9 +111,9 @@ export default function BasketballPage() {
               >
                 Learn More
               </Button>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
+            <div className="bg-black/50 p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
                 Teen Elite
               </h3>
@@ -164,9 +127,9 @@ export default function BasketballPage() {
               >
                 Learn More
               </Button>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
+            <div className="bg-black/50 p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
                 Adult Leagues
               </h3>
@@ -180,13 +143,13 @@ export default function BasketballPage() {
               >
                 Learn More
               </Button>
-            </ThreeDCard>
+            </div>
           </div>
         )}
 
         {activeTab === "coaches" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
+            <div className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
                 <img
                   src="/placeholder.svg?height=100&width=100"
@@ -200,9 +163,9 @@ export default function BasketballPage() {
                 Former professional player with 15+ years of coaching
                 experience.
               </p>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
+            <div className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
                 <img
                   src="/placeholder.svg?height=100&width=100"
@@ -216,9 +179,9 @@ export default function BasketballPage() {
                 NCAA Division I player specializing in shooting and ball
                 handling.
               </p>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
+            <div className="bg-black/50 p-6 rounded-lg text-center">
               <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
                 <img
                   src="/placeholder.svg?height=100&width=100"
@@ -232,7 +195,7 @@ export default function BasketballPage() {
                 Specializes in youth development with a focus on fundamentals
                 and fun.
               </p>
-            </ThreeDCard>
+            </div>
             <Button
               asChild
               variant="outline"
