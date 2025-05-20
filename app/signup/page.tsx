@@ -47,11 +47,11 @@ export default function SignupPage() {
     has_consent_to_sms: false,
     waivers: [
   {
-    is_waiver_signed: true,
+    is_waiver_signed: false,
     waiver_url: "https://storage.googleapis.com/rise-sports/waivers/code.pdf", // mentioned in the error
   },
   {
-    is_waiver_signed: true,
+    is_waiver_signed: false,
     waiver_url: "https://storage.googleapis.com/rise-sports/waivers/tetris.pdf", // hypothetical second required waiver
   },
 ],
@@ -163,7 +163,7 @@ export default function SignupPage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-gray-300"
           >
-            Create your account to get started
+            Create your athlete account to get started
           </motion.p>
         </div>
 
