@@ -6,7 +6,7 @@ import { getUpcomingGames } from "@/services/gamesCalendar"; // Service to fetch
 import { getUpcomingPractices } from "@/services/practice"; // Service to fetch practice data
 import { Game } from "@/types/game"; // Type definition for Game
 import { Practice } from "@/types/practice"; // Type definition for Practice
-import { parseISO } from "date-fns"; // Utility to parse ISO date strings
+import { parseISO, isValid } from "date-fns"; // Utility to parse ISO date strings
 
 // Combined event type discriminated by `type` field
 type EventItem = ({ type: "game" } & Game) | ({ type: "practice" } & Practice);
@@ -34,18 +34,27 @@ export default function EventCalendar() {
       .catch(console.error); // Log any fetch errors
   }, []); // Empty dependency array: run once on mount
 
-  // Group events by date (YYYY-MM-DD) for quick lookup
   const eventsByDate = useMemo(() => {
     return events.reduce<Record<string, EventItem[]>>((acc, ev) => {
-      // Determine which date field to use
       const raw = ev.type === "game" ? ev.start_time : ev.start_at;
-      // Normalize to ISO date key
-      const key = parseISO(raw).toISOString().split("T")[0];
-      // Initialize array if first event on this date
+      if (!raw) return acc;
+
+      // Fix Go-style time: "2025-09-01 20:42:00 +0000 UTC"
+      const normalized = raw
+        .replace(" +0000 UTC", "Z") // remove Go suffix
+        .replace(" ", "T"); // turn space into ISO format
+
+      const parsed = new Date(normalized);
+      if (isNaN(parsed.getTime())) {
+        console.warn("Invalid date:", raw, "→ normalized as", normalized);
+        return acc;
+      }
+
+      const key = parsed.toISOString().split("T")[0];
       (acc[key] ||= []).push(ev);
       return acc;
     }, {});
-  }, [events]); // Recompute when `events` changes
+  }, [events]);
 
   // Key for currently selected date
   const todayKey = selectedDate.toISOString().split("T")[0];
@@ -126,10 +135,12 @@ export default function EventCalendar() {
               // Pick appropriate start time
               const raw = ev.type === "game" ? ev.start_time : ev.start_at;
               // Format time for display
-              const time = parseISO(raw).toLocaleTimeString([], {
+
+              const time = new Date(raw).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
+
               // Render game vs practice differently
               if (ev.type === "game") {
                 return (
