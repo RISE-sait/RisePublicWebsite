@@ -1,14 +1,31 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import { firebaseApp } from "@/configs/firebase"
 import { motion } from "framer-motion"
-import { ChevronRight, Mail, Lock, CheckCircle, AlertCircle } from "lucide-react"
+import { ChevronRight, Mail, Lock, CheckCircle, AlertCircle, User, Phone, Calendar, Flag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ParticleBackground } from "@/components/ui/particle-background"
+
+interface WaiverType {
+  is_waiver_signed: boolean
+  waiver_url: string
+}
+
+interface AthleteData {
+  first_name: string
+  last_name: string
+  dob: string
+  gender: string
+  phone_number: string
+  country_code: string
+  has_consent_to_email_marketing: boolean
+  has_consent_to_sms: boolean
+  waivers: WaiverType[]
+  email: string
+}
 
 export default function SignupPage() {
   const auth = getAuth(firebaseApp)
@@ -18,19 +35,103 @@ export default function SignupPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-    try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      setSuccess(true)
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
+  // Additional fields from the JSON schema
+  const [athleteData, setAthleteData] = useState<AthleteData>({
+    first_name: "",
+    last_name: "",
+    dob: "2000-01-01", // Default value
+    gender: "M", // Default value
+    phone_number: "",
+    country_code: "CA", // Default for Canada
+    has_consent_to_email_marketing: false,
+    has_consent_to_sms: false,
+    waivers: [
+  {
+    is_waiver_signed: true,
+    waiver_url: "https://storage.googleapis.com/rise-sports/waivers/code.pdf", // mentioned in the error
+  },
+  {
+    is_waiver_signed: true,
+    waiver_url: "https://storage.googleapis.com/rise-sports/waivers/tetris.pdf", // hypothetical second required waiver
+  },
+],
+    email: "",
+  })
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement
+
+    if (type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked
+
+      if (name === "waiver_signed") {
+        setAthleteData((prev) => ({
+          ...prev,
+          waivers: [
+            {
+              ...prev.waivers[0],
+              is_waiver_signed: checked,
+            },
+          ],
+        }))
+      } else {
+        setAthleteData((prev) => ({
+          ...prev,
+          [name]: checked,
+        }))
+      }
+    } else {
+      setAthleteData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
     }
   }
+
+ const handleSignup = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setLoading(true)
+  setError("")
+  setSuccess(false)
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const firebaseUser = userCredential.user
+    const idToken = await firebaseUser.getIdToken()
+
+    const { email: _, ...cleanAthleteData } = athleteData
+
+    const athletePayload = {
+      ...cleanAthleteData,
+    }
+
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/register/athlete`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify(athletePayload),
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.json()
+      console.error("⚠️ Backend error:", errorBody)
+      throw new Error(errorBody.message || "Failed to register athlete in database")
+    }
+
+    setSuccess(true)
+  } catch (err: any) {
+    console.error(err)
+    setError(err.message)
+  } finally {
+    setLoading(false)
+  }
+}
+
+
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-black relative overflow-hidden">
@@ -45,7 +146,7 @@ export default function SignupPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="z-10 w-full max-w-md"
+        className="z-10 w-full max-w-2xl"
       >
         <div className="text-center mb-8">
           <motion.h1
@@ -54,7 +155,7 @@ export default function SignupPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-3xl md:text-4xl font-bold text-white mb-2"
           >
-            CREATE A <span className="text-[#ffb800]">RISE</span> ACCOUNT
+            JOIN <span className="text-[#ffb800]">RISE</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -73,45 +174,278 @@ export default function SignupPage() {
           className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg shadow-xl border border-gray-800"
         >
           <form onSubmit={handleSignup} className="space-y-5">
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+            {/* Personal Information Section */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">
+                Personal Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* First Name */}
+                <div className="space-y-2">
+                  <label htmlFor="first_name" className="block text-sm font-medium text-gray-300">
+                    First Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <User className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="first_name"
+                      name="first_name"
+                      type="text"
+                      placeholder="John"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.first_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
                 </div>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+
+                {/* Last Name */}
+                <div className="space-y-2">
+                  <label htmlFor="last_name" className="block text-sm font-medium text-gray-300">
+                    Last Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <User className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="last_name"
+                      name="last_name"
+                      type="text"
+                      placeholder="Doe"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.last_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Date of Birth */}
+                <div className="space-y-2">
+                  <label htmlFor="dob" className="block text-sm font-medium text-gray-300">
+                    Date of Birth
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Calendar className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="dob"
+                      name="dob"
+                      type="date"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.dob}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Gender */}
+                <div className="space-y-2">
+                  <label htmlFor="gender" className="block text-sm font-medium text-gray-300">
+                    Gender
+                  </label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    className="w-full pl-3 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                    value={athleteData.gender}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+            {/* Contact Information Section */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">
+                Contact Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Email */}
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={email}
+                      onChange={(e) => {
+                      setEmail(e.target.value) 
+                    }}
+                      required
+                    />
+                  </div>
                 </div>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+
+                {/* Password */}
+                <div className="space-y-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">Password must be at least 6 characters</p>
+                </div>
+
+                {/* Country Code */}
+                <div className="space-y-2">
+                  <label htmlFor="country_code" className="block text-sm font-medium text-gray-300">
+                    Country
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Flag className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      id="country_code"
+                      name="country_code"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.country_code}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="CA">Canada</option>
+                      <option value="US">United States</option>
+                      <option value="UK">United Kingdom</option>
+                      <option value="AU">Australia</option>
+                      {/* Add more countries as needed */}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Phone Number */}
+                <div className="space-y-2">
+                  <label htmlFor="phone_number" className="block text-sm font-medium text-gray-300">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Phone className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="phone_number"
+                      name="phone_number"
+                      type="tel"
+                      placeholder="+15141234567"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.phone_number}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">Format: +15141234567</p>
+                </div>
               </div>
-              <p className="text-xs text-gray-400 mt-1">Password must be at least 6 characters</p>
+            </div>
+
+            {/* Consent and Waivers Section */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Consent & Waivers</h2>
+
+              <div className="space-y-4">
+                {/* Waiver Agreement */}
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="waiver_signed"
+                      name="waiver_signed"
+                      type="checkbox"
+                      className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
+                      checked={athleteData.waivers[0].is_waiver_signed}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="waiver_signed" className="font-medium text-gray-300">
+                      I agree to the{" "}
+                      <a
+                        href={athleteData.waivers[0].waiver_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#ffb800] underline"
+                      >
+                        waiver terms
+                      </a>
+                    </label>
+                    <p className="text-gray-400">
+                      By checking this box, you acknowledge that you have read and agree to the waiver terms.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Email Marketing Consent */}
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="has_consent_to_email_marketing"
+                      name="has_consent_to_email_marketing"
+                      type="checkbox"
+                      className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
+                      checked={athleteData.has_consent_to_email_marketing}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="has_consent_to_email_marketing" className="font-medium text-gray-300">
+                      Email Marketing
+                    </label>
+                    <p className="text-gray-400">I consent to receive promotional emails from RISE.</p>
+                  </div>
+                </div>
+
+                {/* SMS Consent */}
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="has_consent_to_sms"
+                      name="has_consent_to_sms"
+                      type="checkbox"
+                      className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
+                      checked={athleteData.has_consent_to_sms}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="has_consent_to_sms" className="font-medium text-gray-300">
+                      SMS Notifications
+                    </label>
+                    <p className="text-gray-400">I consent to receive SMS notifications from RISE.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <Button
