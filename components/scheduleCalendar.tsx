@@ -11,17 +11,21 @@ import { Event } from "@/types/event";
 import { parseISO } from "date-fns";
 
 export default function GameCalendar() {
+  // State hooks to hold fetched data for each event type
   const [games, setGames] = useState<Game[]>([]);
   const [others, setOthers] = useState<Event[]>([]);
   const [courses, setCourses] = useState<Event[]>([]);
+  // State hook to track which date is selected
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
+  // Fetch all three event types once on component mount
   useEffect(() => {
     getUpcomingGames().then(setGames).catch(console.error);
     getOtherEvents().then(setOthers).catch(console.error);
     getCourseEvents().then(setCourses).catch(console.error);
   }, []);
 
+  // Group games by their date (YYYY-MM-DD) for quick lookup
   const gamesByDate = useMemo(() => {
     return games.reduce<Record<string, Game[]>>((acc, game) => {
       const key = parseISO(game.start_time).toISOString().split("T")[0];
@@ -30,6 +34,7 @@ export default function GameCalendar() {
     }, {});
   }, [games]);
 
+  // Group "other" events by date
   const othersByDate = useMemo(() => {
     return others.reduce<Record<string, Event[]>>((acc, ev) => {
       const key = parseISO(ev.start_time).toISOString().split("T")[0];
@@ -38,6 +43,7 @@ export default function GameCalendar() {
     }, {});
   }, [others]);
 
+  // Group courses by date
   const coursesByDate = useMemo(() => {
     return courses.reduce<Record<string, Event[]>>((acc, ev) => {
       const key = parseISO(ev.start_time).toISOString().split("T")[0];
@@ -46,18 +52,21 @@ export default function GameCalendar() {
     }, {});
   }, [courses]);
 
+  // Convert selectedDate to string key for lookups
   const todayKey = selectedDate.toISOString().split("T")[0];
 
   return (
     <div className="w-full p-6 text-white">
       <div className="flex flex-col lg:flex-row gap-8 justify-center">
-        {/* Left column: calendar */}
+        {/* Left column: interactive calendar */}
         <div className="w-full lg:w-2/3">
           <Calendar
             mode="single"
             selected={selectedDate}
+            // When a user clicks a date, update selectedDate
             onSelect={(date) => date && setSelectedDate(date)}
             className="w-full h-full border border-gray-700 bg-black p-4 rounded-lg"
+            // Override default cell size and font size via CSS vars
             style={
               {
                 "--rdp-cell-size": "9rem",
@@ -65,6 +74,7 @@ export default function GameCalendar() {
               } as React.CSSProperties
             }
             components={{
+              // Custom render function for each day cell
               DayContent: ({ date }) => {
                 const key = date.toISOString().split("T")[0];
                 const dayGames = gamesByDate[key] || [];
@@ -73,20 +83,24 @@ export default function GameCalendar() {
 
                 return (
                   <div className="relative h-full w-full px-1 pt-1">
+                    {/* Day number badge in top-left */}
                     <span className="absolute top-2 left-2 text-sm font-semibold text-white">
                       {date.getDate()}
                     </span>
+                    {/* Pills indicating event types */}
                     <div className="flex flex-col items-center gap-1 mt-8">
-                      {/* GAME pills */}
+                      {/* Show up to 3 "GAME" pills */}
                       {dayGames.slice(0, 3).map((game) => (
                         <React.Fragment key={`g-${game.id}`}>
+                          {/* Tiny dot on mobile */}
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-yellow-500 rounded-full" />
+                          {/* Full pill on tablet+ */}
                           <span className="hidden sm:flex items-center justify-center text-xs bg-yellow-500 text-black px-2 py-1 rounded-full font-semibold w-full">
                             GAME
                           </span>
                         </React.Fragment>
                       ))}
-                      {/* COURSE pills */}
+                      {/* Show up to 3 "COURSE" pills */}
                       {dayCourses.slice(0, 3).map((ev) => (
                         <React.Fragment key={`c-${ev.id}`}>
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-blue-500 rounded-full" />
@@ -95,7 +109,7 @@ export default function GameCalendar() {
                           </span>
                         </React.Fragment>
                       ))}
-                      {/* OTHER pills */}
+                      {/* Show up to 3 "OTHER" pills */}
                       {dayOthers.slice(0, 3).map((ev) => (
                         <React.Fragment key={`o-${ev.id}`}>
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-green-500 rounded-full" />
@@ -112,7 +126,7 @@ export default function GameCalendar() {
           />
         </div>
 
-        {/* Right column: events list */}
+        {/* Right column: list of events for the selected date */}
         <div className="w-full lg:w-1/3">
           <h2 className="text-lg font-semibold mb-4">
             Events on {selectedDate.toDateString()}
@@ -120,11 +134,12 @@ export default function GameCalendar() {
 
           {/* Games Section */}
           <div>
+            {/* Header pill for "Games" */}
             <span className="inline-block text-[11px] font-semibold text-black bg-yellow-500 px-2 py-0.5 rounded-full">
               GAME
             </span>
-
             {gamesByDate[todayKey]?.length ? (
+              // List each game with details
               <ul className="space-y-3 mt-2">
                 {gamesByDate[todayKey]!.map((g) => (
                   <li
@@ -154,10 +169,12 @@ export default function GameCalendar() {
 
           {/* Courses Section */}
           <div className="mt-6">
+            {/* Header pill for "Courses" */}
             <span className="inline-block text-[11px] font-semibold text-black bg-blue-500 px-2 py-0.5 rounded-full">
               COURSE
             </span>
             {coursesByDate[todayKey]?.length ? (
+              // List each course with details
               <ul className="space-y-3 mt-2">
                 {coursesByDate[todayKey]!.map((c) => (
                   <li
@@ -185,10 +202,12 @@ export default function GameCalendar() {
 
           {/* Other Section */}
           <div className="mt-6">
+            {/* Header pill for "Other" */}
             <span className="inline-block text-[11px] font-semibold text-black bg-green-500 px-2 py-0.5 rounded-full">
               OTHER
             </span>
             {othersByDate[todayKey]?.length ? (
+              // List each "other" event with details
               <ul className="space-y-3 mt-2">
                 {othersByDate[todayKey]!.map((o) => (
                   <li

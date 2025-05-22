@@ -1,4 +1,3 @@
-// src/types/event.ts
 export interface Event {
   id: string;
   program_type: string;
