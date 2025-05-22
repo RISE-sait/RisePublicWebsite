@@ -77,31 +77,28 @@ export default function GameCalendar() {
                       {date.getDate()}
                     </span>
                     <div className="flex flex-col items-center gap-1 mt-8">
+                      {/* GAME pills */}
                       {dayGames.slice(0, 3).map((game) => (
                         <React.Fragment key={`g-${game.id}`}>
-                          {/* Mobile: tiny yellow dot */}
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-yellow-500 rounded-full" />
-                          {/* Tablet+ : centered "GAME" pill */}
                           <span className="hidden sm:flex items-center justify-center text-xs bg-yellow-500 text-black px-2 py-1 rounded-full font-semibold w-full">
                             GAME
                           </span>
                         </React.Fragment>
                       ))}
+                      {/* OTHER pills */}
                       {dayOthers.slice(0, 3).map((ev) => (
                         <React.Fragment key={`o-${ev.id}`}>
-                          {/* Mobile: tiny green dot */}
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-green-500 rounded-full" />
-                          {/* Tablet+ : centered "OTHER" pill */}
                           <span className="hidden sm:flex items-center justify-center text-xs bg-green-500 text-black px-2 py-1 rounded-full font-semibold w-full">
                             OTHER
                           </span>
                         </React.Fragment>
                       ))}
+                      {/* COURSE pills */}
                       {dayCourses.slice(0, 3).map((ev) => (
                         <React.Fragment key={`c-${ev.id}`}>
-                          {/* Mobile: tiny blue dot */}
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-blue-500 rounded-full" />
-                          {/* Tablet+ : centered "COURSE" pill */}
                           <span className="hidden sm:flex items-center justify-center text-xs bg-blue-500 text-black px-2 py-1 rounded-full font-semibold w-full">
                             COURSE
                           </span>
@@ -150,36 +147,6 @@ export default function GameCalendar() {
             )}
           </div>
 
-          {/* Courses Section */}
-          <div className="mt-6">
-            <h3 className="font-medium">Courses</h3>
-            {coursesByDate[todayKey]?.length ? (
-              <ul className="space-y-3">
-                {coursesByDate[todayKey]!.map((c) => (
-                  <li
-                    key={`c-list-${c.id}`}
-                    className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
-                  >
-                    <div className="font-medium mb-1">
-                      {c.program_type} – {c.program_id}
-                    </div>
-                    <div className="text-sm text-gray-300">
-                      @{" "}
-                      {parseISO(c.start_time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-400">
-                No course events scheduled for this day.
-              </p>
-            )}
-          </div>
-
           {/* Other Section */}
           <div className="mt-6">
             <h3 className="font-medium">Other</h3>
@@ -190,15 +157,14 @@ export default function GameCalendar() {
                     key={`o-list-${o.id}`}
                     className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
                   >
-                    <div className="font-medium mb-1">
-                      {o.program_type} - {o.program_id}
-                    </div>
+                    <div className="font-medium mb-1">{o.program_name}</div>
                     <div className="text-sm text-gray-300">
                       @{" "}
                       {parseISO(o.start_time).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}
+                      })}{" "}
+                      - {o.location_name}
                     </div>
                   </li>
                 ))}
@@ -206,6 +172,35 @@ export default function GameCalendar() {
             ) : (
               <p className="text-gray-400">
                 No other events scheduled for this day.
+              </p>
+            )}
+          </div>
+
+          {/* Courses Section */}
+          <div className="mt-6">
+            <h3 className="font-medium">Courses</h3>
+            {coursesByDate[todayKey]?.length ? (
+              <ul className="space-y-3">
+                {coursesByDate[todayKey]!.map((c) => (
+                  <li
+                    key={`c-list-${c.id}`}
+                    className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
+                  >
+                    <div className="font-medium mb-1">{c.program_name}</div>
+                    <div className="text-sm text-gray-300">
+                      @{" "}
+                      {parseISO(c.start_time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}{" "}
+                      - {c.location_name}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-400">
+                No course events scheduled for this day.
               </p>
             )}
           </div>
