@@ -133,7 +133,14 @@ export interface EventEventRequestDto {
   team_id?: string;
 }
 
-export interface EventEventResponseDto {
+export interface EventResponseDto {
+  program_type: any;
+  program_id: null;
+  participant_id: null;
+  location_id: null;
+  team_id: null;
+  start_time: any;
+  end_time: null;
   capacity?: number;
   created_by?: EventPersonResponseDto;
   customers?: EventCustomerResponseDto[];
@@ -240,6 +247,19 @@ export interface GameRequestDto {
 }
 
 export interface GameResponseDto {
+  home_team_id: any;
+  home_team_name: any;
+  home_team_logo_url: string;
+  away_team_id: any;
+  away_team_name: any;
+  away_team_logo_url: string;
+  home_score: any;
+  away_score: any;
+  start_time: any;
+  end_time: any;
+  location_id: any;
+  location_name: any;
+  status: any;
   created_at?: string;
   description?: string;
   id?: string;
@@ -1158,7 +1178,7 @@ export class Api<
      * @request GET:/events/{id}
      */
     eventsDetail: (id: string, params: RequestParams = {}) =>
-      this.request<EventEventResponseDto, Record<string, any>>({
+      this.request<EventResponseDto, Record<string, any>>({
         path: `/events/${id}`,
         method: "GET",
         type: ContentType.Json,
