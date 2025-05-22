@@ -86,21 +86,21 @@ export default function GameCalendar() {
                           </span>
                         </React.Fragment>
                       ))}
-                      {/* OTHER pills */}
-                      {dayOthers.slice(0, 3).map((ev) => (
-                        <React.Fragment key={`o-${ev.id}`}>
-                          <span className="block sm:hidden mx-auto w-2 h-2 bg-green-500 rounded-full" />
-                          <span className="hidden sm:flex items-center justify-center text-xs bg-green-500 text-black px-2 py-1 rounded-full font-semibold w-full">
-                            OTHER
-                          </span>
-                        </React.Fragment>
-                      ))}
                       {/* COURSE pills */}
                       {dayCourses.slice(0, 3).map((ev) => (
                         <React.Fragment key={`c-${ev.id}`}>
                           <span className="block sm:hidden mx-auto w-2 h-2 bg-blue-500 rounded-full" />
                           <span className="hidden sm:flex items-center justify-center text-xs bg-blue-500 text-black px-2 py-1 rounded-full font-semibold w-full">
                             COURSE
+                          </span>
+                        </React.Fragment>
+                      ))}
+                      {/* OTHER pills */}
+                      {dayOthers.slice(0, 3).map((ev) => (
+                        <React.Fragment key={`o-${ev.id}`}>
+                          <span className="block sm:hidden mx-auto w-2 h-2 bg-green-500 rounded-full" />
+                          <span className="hidden sm:flex items-center justify-center text-xs bg-green-500 text-black px-2 py-1 rounded-full font-semibold w-full">
+                            OTHER
                           </span>
                         </React.Fragment>
                       ))}
@@ -120,9 +120,12 @@ export default function GameCalendar() {
 
           {/* Games Section */}
           <div>
-            <h3 className="font-medium">Games</h3>
+            <span className="inline-block text-[11px] font-semibold text-black bg-yellow-500 px-2 py-0.5 rounded-full">
+              GAME
+            </span>
+
             {gamesByDate[todayKey]?.length ? (
-              <ul className="space-y-3">
+              <ul className="space-y-3 mt-2">
                 {gamesByDate[todayKey]!.map((g) => (
                   <li
                     key={`g-list-${g.id}`}
@@ -143,44 +146,19 @@ export default function GameCalendar() {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400">No games scheduled for this day.</p>
-            )}
-          </div>
-
-          {/* Other Section */}
-          <div className="mt-6">
-            <h3 className="font-medium">Other</h3>
-            {othersByDate[todayKey]?.length ? (
-              <ul className="space-y-3">
-                {othersByDate[todayKey]!.map((o) => (
-                  <li
-                    key={`o-list-${o.id}`}
-                    className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
-                  >
-                    <div className="font-medium mb-1">{o.program_name}</div>
-                    <div className="text-sm text-gray-300">
-                      @{" "}
-                      {parseISO(o.start_time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}{" "}
-                      - {o.location_name}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-400">
-                No other events scheduled for this day.
+              <p className="text-gray-400 mt-2">
+                No games scheduled for this day.
               </p>
             )}
           </div>
 
           {/* Courses Section */}
           <div className="mt-6">
-            <h3 className="font-medium">Courses</h3>
+            <span className="inline-block text-[11px] font-semibold text-black bg-blue-500 px-2 py-0.5 rounded-full">
+              COURSE
+            </span>
             {coursesByDate[todayKey]?.length ? (
-              <ul className="space-y-3">
+              <ul className="space-y-3 mt-2">
                 {coursesByDate[todayKey]!.map((c) => (
                   <li
                     key={`c-list-${c.id}`}
@@ -199,8 +177,39 @@ export default function GameCalendar() {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400">
+              <p className="text-gray-400 mt-2">
                 No course events scheduled for this day.
+              </p>
+            )}
+          </div>
+
+          {/* Other Section */}
+          <div className="mt-6">
+            <span className="inline-block text-[11px] font-semibold text-black bg-green-500 px-2 py-0.5 rounded-full">
+              OTHER
+            </span>
+            {othersByDate[todayKey]?.length ? (
+              <ul className="space-y-3 mt-2">
+                {othersByDate[todayKey]!.map((o) => (
+                  <li
+                    key={`o-list-${o.id}`}
+                    className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
+                  >
+                    <div className="font-medium mb-1">{o.program_name}</div>
+                    <div className="text-sm text-gray-300">
+                      @{" "}
+                      {parseISO(o.start_time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}{" "}
+                      - {o.location_name}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-400 mt-2">
+                No other events scheduled for this day.
               </p>
             )}
           </div>
