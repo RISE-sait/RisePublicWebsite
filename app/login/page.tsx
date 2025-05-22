@@ -1,71 +1,92 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
-import { firebaseApp } from "@/configs/firebase"
-import { motion } from "framer-motion"
-import { Mail, Lock, ChevronRight, CheckCircle, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ParticleBackground } from "@/components/ui/particle-background"
+import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseApp } from "@/configs/firebase";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Lock,
+  ChevronRight,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ParticleBackground } from "@/components/ui/particle-background";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const auth = getAuth(firebaseApp)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState("")
+  const auth = getAuth(firebaseApp);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
-const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setLoading(true)
-  setError("")
-  setSuccess(false)
+  // grab 'plan' query-param and next/router
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const plan = searchParams.get("plan");
 
-  try {
-    // Step 1: Firebase sign-in
-    const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    const firebaseUser = userCredential.user
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
 
-    // Step 2: Get Firebase ID token
-    const idToken = await firebaseUser.getIdToken()
+    try {
+      // Step 1: Firebase sign-in
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const firebaseUser = userCredential.user;
 
-    // Step 3: Exchange token with your backend
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-    })
+      // Step 2: Get Firebase ID token
+      const idToken = await firebaseUser.getIdToken();
 
-    if (!response.ok) {
-      const errorBody = await response.json()
-      console.error("❌ Backend /auth error:", errorBody)
-      throw new Error(errorBody.message || "Failed to authenticate with backend")
+      // Step 3: Exchange token with your backend
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        console.error("❌ Backend /auth error:", errorBody);
+        throw new Error(
+          errorBody.message || "Failed to authenticate with backend"
+        );
+      }
+
+      const userData = await response.json();
+      console.log("✅ Logged in user:", userData);
+
+      // mark success and redirect back to checkout if there was a plan
+      setSuccess(true);
+      router.push(plan ? `/checkout?plan=${plan}` : "/");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
-
-    const userData = await response.json()
-
-    // Optionally store user data or JWT in localStorage or context
-    console.log("✅ Logged in user:", userData)
-    setSuccess(true)
-
-    // Redirect if needed
-    // router.push("/dashboard")
-
-  } catch (err: any) {
-    console.error(err)
-    setError(err.message || "Login failed")
-  } finally {
-    setLoading(false)
-  }
-}
-
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-black relative overflow-hidden">
-      <ParticleBackground particleColor="#ffb800" particleCount={50} connectParticles={true} />
+      <ParticleBackground
+        particleColor="#ffb800"
+        particleCount={50}
+        connectParticles={true}
+      />
       <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-[#ffb800]/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 left-1/4 w-24 h-24 bg-[#ffb800]/10 rounded-full blur-2xl"></div>
 
@@ -103,7 +124,10 @@ const handleLogin = async (e: React.FormEvent) => {
           <form onSubmit={handleLogin} className="space-y-5">
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-300"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -124,7 +148,10 @@ const handleLogin = async (e: React.FormEvent) => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-300"
+              >
                 Password
               </label>
               <div className="relative">
@@ -184,12 +211,15 @@ const handleLogin = async (e: React.FormEvent) => {
         >
           <p className="text-gray-400">
             Don’t have an account?{" "}
-            <a href="/signup" className="text-[#ffb800] hover:underline">
+            <a
+              href={plan ? `/signup?plan=${plan}` : "/signup"}
+              className="text-[#ffb800] hover:underline"
+            >
               Sign up
             </a>
           </p>
         </motion.div>
       </motion.div>
     </div>
-  )
+  );
 }
