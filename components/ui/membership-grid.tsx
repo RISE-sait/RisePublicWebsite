@@ -35,6 +35,7 @@ export function MembershipGrid({
     <div className={cn(`grid ${gridCols[columns]} gap-6`, className)}>
       {plans.map((plan) => (
         <MembershipCard
+          id={plan.id}
           key={plan.id}
           featured={plan.featured}
           badge={plan.badge}

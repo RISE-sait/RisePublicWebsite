@@ -19,6 +19,7 @@ import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
 import ScheduleCalendar from "@/components/scheduleCalendar";
+import Link from "next/link";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -330,13 +331,7 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <a href="/join">JOIN NOW</a>
-              </Button>
-              <Button
-                variant="link"
-                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all p-4"
-              >
-                <a href="/learn-more">LEARN MORE</a>
+                <Link href="/allmemberships">JOIN NOW</Link>
               </Button>
             </motion.div>
           </div>
