@@ -13,6 +13,7 @@ import PartnerLogos from "@/components/partner-logos";
 import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export default function PerformancePage() {
   const { scrollYProgress } = useScroll();
@@ -66,13 +67,13 @@ export default function PerformancePage() {
       <SectionContainer id="why-rise" className="bg-[#111]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px]">
-            <ThreeDCard className="h-full">
+            <div className="h-full">
               <img
                 src="/placeholder.svg?height=600&width=800"
                 alt="Fitness training"
                 className="object-cover rounded-lg h-full w-full"
               />
-            </ThreeDCard>
+            </div>
           </div>
           <div>
             <SectionHeading
@@ -185,13 +186,7 @@ export default function PerformancePage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                JOIN NOW
-              </Button>
-              <Button
-                variant="link"
-                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
-              >
-                Learn More
+                <Link href="/allmemberships">JOIN NOW</Link>
               </Button>
             </motion.div>
           </div>

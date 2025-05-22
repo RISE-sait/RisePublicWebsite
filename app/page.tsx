@@ -232,14 +232,7 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <a href="/join">JOIN NOW</a>
-              </Button>
-              <Button
-                asChild
-                variant="link"
-                className="text-white hover:text-[#ffb800] px-0 hover:scale-105 transition-all"
-              >
-                <a href="/learn-more">LEARN MORE</a>
+                <a href="/allmemberships">JOIN NOW</a>
               </Button>
             </motion.div>
           </div>

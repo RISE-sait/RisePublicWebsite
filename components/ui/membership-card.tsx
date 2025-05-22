@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface MembershipCardProps {
+  id: string;
   featured?: boolean;
   badge?: string;
   title: string;
@@ -13,15 +15,14 @@ interface MembershipCardProps {
   period: string;
   description: string;
   features: string[];
-  ctaText: string;
-  learnMoreText: string;
-  onCtaClick?: () => void;
-  onLearnMoreClick?: () => void;
+  ctaText?: string;
+  learnMoreText?: string;
   className?: string;
   index?: number;
 }
 
 export function MembershipCard({
+  id,
   featured = false,
   badge,
   title,
@@ -31,8 +32,6 @@ export function MembershipCard({
   features,
   ctaText,
   learnMoreText,
-  onCtaClick,
-  onLearnMoreClick,
   className,
   index = 0,
 }: MembershipCardProps) {
@@ -65,10 +64,10 @@ export function MembershipCard({
                 featured ? "text-black" : "text-white"
               )}
             >
-              {title.split("<br/>").map((part, i) => (
+              {title.split("<br/>").map((part, i, arr) => (
                 <span key={i}>
                   {part}
-                  {i < title.split("<br/>").length - 1 && <br />}
+                  {i < arr.length - 1 && <br />}
                 </span>
               ))}
             </h3>
@@ -100,9 +99,9 @@ export function MembershipCard({
         </p>
 
         <ul className="space-y-3 mb-6">
-          {features.map((feature, index) => (
+          {features.map((feature, idx) => (
             <li
-              key={index}
+              key={idx}
               className={cn(
                 "flex items-center text-sm",
                 featured ? "text-black" : "text-white"
@@ -137,19 +136,19 @@ export function MembershipCard({
                 : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
           >
-            <a href="/learn-more">LEARN MORE</a>
+            <Link href="/allmemberships">VIEW MORE</Link>
           </Button>
           <Button
             asChild
             variant="default"
             className={cn(
-              "transition-all duration-300 hover:scale-105 shadow-lg font-bold",
+              "w-full transition-all duration-300 hover:scale-105 shadow-lg font-bold",
               featured
                 ? "bg-black text-white hover:bg-gray-800"
                 : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
             )}
           >
-            <a href="/join">JOIN NOW</a>
+            <Link href={`/memberships/${id}`}>JOIN NOW</Link>
           </Button>
         </div>
       </div>
