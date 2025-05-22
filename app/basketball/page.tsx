@@ -18,6 +18,7 @@ import { ChevronDown, Play } from "lucide-react";
 import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
+import ScheduleCalendar from "@/components/scheduleCalendar";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -92,7 +93,9 @@ export default function BasketballPage() {
           />
         </div>
 
-        {activeTab === "schedules" && (
+        {activeTab === "schedules" && <ScheduleCalendar />}
+
+        {/* {activeTab === "schedules" && (
           <div className="bg-black/50 p-6 rounded-lg">
             <h3 className="text-xl font-bold mb-4">Upcoming Sessions</h3>
             <div className="space-y-4">
@@ -130,7 +133,7 @@ export default function BasketballPage() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
