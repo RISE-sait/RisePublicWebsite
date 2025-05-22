@@ -11,6 +11,7 @@ export default function CheckoutPage() {
   const plan = params.get("plan");
   const [error, setError] = useState<string>("");
   const auth = getAuth(firebaseApp);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
     if (!plan) {
@@ -20,31 +21,55 @@ export default function CheckoutPage() {
 
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // Not signed in → send them to login, keep plan in the URL
         router.replace(`/login?plan=${plan}`);
         return;
       }
 
       try {
-        // Authed! Get fresh token and call your endpoint that creates the Stripe session.
         const idToken = await user.getIdToken(true);
-        const res = await fetch(`/api/checkout/membership_plans/${plan}`, {
+        console.log("🔥 Firebase ID Token:", idToken);
+
+        // STEP 1: Exchange Firebase ID token for backend JWT
+        const authRes = await fetch(`${apiBaseUrl}/auth`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${idToken}`,
           },
         });
 
-        // If your API does a 303 redirect to Stripe, follow it:
-        if (res.redirected) {
-          window.location.href = res.url;
-          return;
+        if (!authRes.ok) {
+          throw new Error("Failed to authenticate with backend");
         }
 
-        // Or, if it returns { url }, handle it:
-        const { url } = await res.json();
-        window.location.href = url;
+        const jwtHeader = authRes.headers.get("authorization");
+        const backendJwt = jwtHeader?.replace("Bearer ", "");
+
+        if (!backendJwt) {
+          throw new Error("JWT missing from response headers");
+        }
+
+        console.log("🔐 Backend JWT:", backendJwt);
+        localStorage.setItem("jwt", backendJwt);
+
+        // STEP 2: Start Stripe checkout session
+        const checkoutRes = await fetch(
+          `${apiBaseUrl}/checkout/membership_plans/${plan}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${backendJwt}`,
+            },
+          }
+        );
+
+        const responseBody = await checkoutRes.json();
+
+        if (checkoutRes.ok && responseBody.payment_url) {
+          window.location.href = responseBody.payment_url;
+        } else {
+          console.error("❌ Checkout failed:", checkoutRes.status, responseBody);
+          throw new Error("Failed to start checkout");
+        }
       } catch (err: any) {
         console.error(err);
         setError(err.message ?? "Checkout failed");
@@ -52,7 +77,7 @@ export default function CheckoutPage() {
     });
 
     return () => unsub();
-  }, [auth, plan, router]);
+  }, [auth, plan, router, apiBaseUrl]);
 
   if (error) return <p className="text-red-500">{error}</p>;
   return <p className="text-center mt-20">Redirecting you to Stripe…</p>;

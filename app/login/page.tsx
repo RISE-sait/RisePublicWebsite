@@ -66,8 +66,15 @@ export default function LoginPage() {
         );
       }
 
-      const userData = await response.json();
-      console.log("✅ Logged in user:", userData);
+      const jwtHeader = response.headers.get("authorization");
+      const jwt = jwtHeader?.replace("Bearer ", "");
+
+      if (!jwt) {
+        throw new Error("JWT missing from response headers");
+      }
+
+console.log("✅ Received JWT:", jwt);
+localStorage.setItem("jwt", jwt);
 
       // mark success and redirect back to checkout if there was a plan
       setSuccess(true);
