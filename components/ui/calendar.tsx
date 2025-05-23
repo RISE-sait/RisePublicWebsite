@@ -1,88 +1,159 @@
-"use client"; // Indicates this component runs on the client side in Next.js
+"use client";
 
-import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Icons for navigation
-import { DayPicker } from "react-day-picker"; // Base calendar component
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  addMonths, subMonths, startOfMonth, endOfMonth,
+  startOfWeek, endOfWeek, isSameMonth, isSameDay,
+  addDays, format, parseISO
+} from "date-fns";
+import { getUpcomingGames } from "@/services/gamesCalendar";
+import { getOtherEvents, getCourseEvents } from "@/services/eventsCalendar";
+import { Game } from "@/types/game";
+import { Event } from "@/types/event";
 
-import { cn } from "@/lib/utils"; // Utility for conditional classNames
-import { buttonVariants } from "@/components/ui/button"; // Tailwind button style variants
+export default function SimpleCalendar() {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [games, setGames] = useState<Game[]>([]);
+  const [others, setOthers] = useState<Event[]>([]);
+  const [courses, setCourses] = useState<Event[]>([]);
 
-// Props type inherits all DayPicker props
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+  useEffect(() => {
+    getUpcomingGames().then(setGames).catch(console.error);
+    getOtherEvents().then(setOthers).catch(console.error);
+    getCourseEvents().then(setCourses).catch(console.error);
+  }, []);
 
-/**
- * Calendar:
- * A wrapper around react-day-picker that applies custom styling
- * and navigation icons to match the app's theme.
- */
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true, // Whether to render days from adjacent months
-  ...props
-}: CalendarProps) {
+  const getDayKey = (date: Date) => format(date, "yyyy-MM-dd");
+  const selectedDayKey = getDayKey(selectedDate);
+
+  const filteredGames = useMemo(() =>
+    games.filter(g => getDayKey(parseISO(g.start_time)) === selectedDayKey), [games, selectedDayKey]);
+  const filteredCourses = useMemo(() =>
+    courses.filter(e => getDayKey(parseISO(e.start_time)) === selectedDayKey), [courses, selectedDayKey]);
+  const filteredOthers = useMemo(() =>
+    others.filter(e => getDayKey(parseISO(e.start_time)) === selectedDayKey), [others, selectedDayKey]);
+
+  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
+  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
+
+  const renderHeader = () => (
+    <div className="flex justify-between items-center mb-4 text-yellow-500">
+      <button onClick={prevMonth} className="px-2 py-1 bg-[#111] rounded">&lt;</button>
+      <h2 className="text-xl font-bold">{format(currentMonth, "MMMM yyyy")}</h2>
+      <button onClick={nextMonth} className="px-2 py-1 bg-[#111] rounded">&gt;</button>
+    </div>
+  );
+
+  const renderDays = () => {
+    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return (
+      <div className="grid grid-cols-7 gap-2 mb-2">
+        {weekdays.map((day, idx) => (
+          <div key={idx} className="text-center font-bold text-gray-300">
+            {day}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderCells = () => {
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
+
+    const rows = [];
+    let days = [];
+    let day = new Date(startDate);
+
+    while (day <= endDate) {
+      for (let i = 0; i < 7; i++) {
+        const key = getDayKey(day);
+        const isCurrentMonth = isSameMonth(day, monthStart);
+        const isSelected = isSameDay(day, selectedDate);
+        const isToday = isSameDay(day, new Date());
+
+        const hasGames = games.some(g => getDayKey(parseISO(g.start_time)) === key);
+        const hasCourses = courses.some(c => getDayKey(parseISO(c.start_time)) === key);
+        const hasOthers = others.some(o => getDayKey(parseISO(o.start_time)) === key);
+
+        const dayCopy = new Date(day);
+
+        days.push(
+          <div
+            key={day.toString()}
+            onClick={() => setSelectedDate(dayCopy)}
+            className={`relative p-2 rounded cursor-pointer border-2 border-[#111] text-center min-h-[6rem] transition-all duration-150
+              ${isSelected ? "bg-yellow-600 text-black font-bold"
+              : isToday ? "bg-gray-700 text-white"
+              : isCurrentMonth ? "text-white"
+              : "text-gray-500"}`}
+          >
+            <span className="absolute top-1 right-2 text-xs font-semibold">
+              {format(day, "d")}
+            </span>
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
+              {hasGames && <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>}
+              {hasCourses && <span className="w-2 h-2 bg-blue-500 rounded-full"></span>}
+              {hasOthers && <span className="w-2 h-2 bg-green-500 rounded-full"></span>}
+            </div>
+          </div>
+        );
+
+        day = addDays(day, 1);
+      }
+
+      rows.push(
+        <div key={day.toString()} className="grid grid-cols-7 gap-2 mb-1">
+          {days}
+        </div>
+      );
+      days = [];
+    }
+
+    return <div>{rows}</div>;
+  };
+
+  const renderEvents = (label: string, items: (Game | Event)[], color: string) => (
+    <div className="mt-4">
+      <span className={`inline-block text-xs font-semibold text-black px-2 py-0.5 rounded-full ${color}`}>{label}</span>
+      {items.length > 0 ? (
+        <ul className="space-y-3 mt-2">
+          {items.map(item => (
+            <li key={item.id} className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200">
+              <div className="font-medium mb-1">
+                {"home_team_name" in item
+                  ? `${item.home_team_name} vs ${item.away_team_name}`
+                  : item.program_name}
+              </div>
+              <div className="text-sm text-gray-300">
+                @ {parseISO(item.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} - {item.location_name}
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-400 mt-2">No {label.toLowerCase()} events scheduled.</p>
+      )}
+    </div>
+  );
+
   return (
-    <DayPicker
-      showOutsideDays={showOutsideDays}
-      className={cn("w-full h-full p-3", className)} // Always fill parent box + padding
-      classNames={{
-        // Container for multiple months (stacked on mobile, row on desktop)
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4 w-full", // Wrapper for a single month
-        caption: "flex justify-between items-center px-4 pt-2", // Header area
-        caption_label: "text-lg font-bold", // Month label text
-        nav: "space-x-1 flex items-center", // Navigation button container
-        nav_button: cn(
-          buttonVariants({ variant: "outline" }), // Outline button style
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100" // Size and hover
-        ),
-        nav_button_previous: "", // Use default
-        nav_button_next: "", // Use default
-        table: "w-full table-fixed border-collapse", // Calendar grid
-        head_row: "flex w-full", // Weekday header row
-        head_cell:
-          "text-muted-foreground font-semibold text-base text-center flex-1", // Weekday cell
-        row: "flex w-full", // Day rows
-        cell:
-          // Day cell styles: custom dark bg, border, sizing, and responsive rounding
-          "w-[14.28%] h-28 sm:h-32 border border-[#b08900] bg-black text-center p-1 relative " +
-          "[&:has([aria-selected].day-range-end)]:rounded-r-md " +
-          "[&:has([aria-selected].day-outside)]:bg-accent/50 " +
-          "[&:has([aria-selected])]:bg-accent " +
-          "first:[&:has([aria-selected])]:rounded-l-md " +
-          "last:[&:has([aria-selected])]:rounded-r-md " +
-          "focus-within:relative focus-within:z-20",
-        day: cn(
-          buttonVariants({ variant: "ghost" }), // Ghost button style
-          "h-full w-full p-1 font-normal aria-selected:opacity-100 " +
-            "flex flex-col items-start justify-start text-sm sm:text-base relative"
-        ),
-        day_selected:
-          // Custom selected day: black text, yellow circle background
-          "text-black font-bold relative z-10",
-        day_today: "bg-accent text-accent-foreground", // Style for today's date
-        day_outside:
-          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground", // Days outside current month
-        day_disabled: "text-muted-foreground opacity-50", // Disabled days
-        day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground", // Range selection middle
-        day_hidden: "invisible", // Hidden days
-        ...classNames, // Allow overriding specific classNames
-      }}
-      components={{
-        // Custom navigation icons
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("h-4 w-4", className)} {...props} />
-        ),
-      }}
-      {...props} // Pass through any additional DayPicker props
-    />
+    <div className="flex flex-col lg:flex-row gap-8 p-6 text-white bg-black rounded-lg shadow-lg max-w-7xl mx-auto">
+      <div className="w-full lg:w-2/3">
+        {renderHeader()}
+        {renderDays()}
+        {renderCells()}
+      </div>
+
+      <div className="w-full lg:w-1/3">
+        <h2 className="text-lg font-semibold mb-4">Events on {selectedDate.toDateString()}</h2>
+        {renderEvents("Games", filteredGames, "bg-yellow-500")}
+        {renderEvents("Courses", filteredCourses, "bg-blue-500")}
+        {renderEvents("Other", filteredOthers, "bg-green-500")}
+      </div>
+    </div>
   );
 }
-
-Calendar.displayName = "Calendar";
-
-export { Calendar };
