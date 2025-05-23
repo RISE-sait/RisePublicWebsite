@@ -97,27 +97,18 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="relative h-[400px]"
           >
-            <ThreeDCard className="h-full">
-              <div className="absolute inset-0 bg-black rounded-lg overflow-hidden shadow-xl">
+            <div className="h-full">
+              <div className="absolute inset-0 rounded-lg overflow-hidden shadow-xl">
                 <div className="relative h-full w-full">
                   <img
-                    src="/placeholder.svg?height=600&width=800"
-                    alt="Training session"
+                    src="/home-page-images/performancehome.jpg"
+                    alt="Performance Gym Home"
                     className="object-cover h-full w-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-white/20 backdrop-blur-sm rounded-full p-4 hover:bg-white/30 transition-all shadow-xl"
-                    >
-                      <Play className="h-8 w-8 text-white" />
-                    </motion.button>
-                  </div>
                 </div>
               </div>
-            </ThreeDCard>
+            </div>
           </motion.div>
           <div>
             <SectionHeading
