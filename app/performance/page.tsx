@@ -69,7 +69,7 @@ export default function PerformancePage() {
           <div className="relative h-[400px]">
             <div className="h-full">
               <img
-                src="/placeholder.svg?height=600&width=800"
+                src="/performance-page-images/performancewhyrise.jpg"
                 alt="Fitness training"
                 className="object-cover rounded-lg h-full w-full"
               />
