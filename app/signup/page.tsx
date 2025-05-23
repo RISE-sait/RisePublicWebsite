@@ -90,11 +90,40 @@ export default function SignupPage() {
     }
   }
 
- const handleSignup = async (e: React.FormEvent) => {
+const handleSignup = async (e: React.FormEvent) => {
   e.preventDefault()
   setLoading(true)
   setError("")
   setSuccess(false)
+
+  const {
+    first_name,
+    last_name,
+    dob,
+    gender,
+    phone_number,
+    waivers,
+    email,
+  } = athleteData
+
+  //  Waiver validation
+  const allWaiversSigned = waivers.every(w => w.is_waiver_signed)
+
+  //  Required fields check
+  if (
+    !first_name.trim() ||
+    !last_name.trim() ||
+    !dob ||
+    !gender ||
+    !email.trim() ||
+    !phone_number ||
+    !allWaiversSigned ||
+    !password.trim()
+  ) {
+    setError("Please fill out all required fields.")
+    setLoading(false)
+    return
+  }
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
