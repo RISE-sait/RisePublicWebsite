@@ -83,7 +83,7 @@ export default async function MembershipPage({ params }: PageProps) {
                     variant="default"
                     className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition shadow-lg"
                   >
-                    <a href={`/signup?plan=${plan.id}`}>BUY NOW</a>
+                    <a href={`/checkout?plan=${plan.id}`}>BUY NOW</a>
                   </Button>
                 </li>
               ))}

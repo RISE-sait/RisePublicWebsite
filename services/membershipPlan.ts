@@ -1,52 +1,32 @@
 // services/membershipPlan.ts
 import { MembershipPlanResponse } from "@/app/api/Api";
-import getValue from "@/configs/constants";
 import { MembershipPlan } from "@/types/membership";
 
-const API_BASE = getValue("API"); // Base URL for all API calls
+// Read directly from the environment variable
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
-/**
- * getPlansForMembership:
- * Fetches all plans for a given membership ID and
- * transforms the API response into the front-end `MembershipPlan` shape.
- *
- * @param membershipId  The ID of the membership to load plans for.
- * @returns             Promise resolving to an array of MembershipPlan.
- */
 export async function getPlansForMembership(
   membershipId: string
 ): Promise<MembershipPlan[]> {
   try {
-    // Send GET request to the membership plans endpoint
-    const response = await fetch(
-      `${getValue("API")}memberships/${membershipId}/plans`
-    );
+    const res = await fetch(`${apiBaseUrl}/memberships/${membershipId}/plans`);
 
-    // If the response status isn't 2xx, throw an error with details
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch membership plans: ${response.status} ${response.statusText}`
-      );
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`❌ Failed to fetch plans:`, res.status, errorText);
+      throw new Error("Could not load membership plans");
     }
 
-    // Parse the JSON payload into the API response type
-    const plansResponse: MembershipPlanResponse[] = await response.json();
+    const data: MembershipPlanResponse[] = await res.json();
 
-    // Map each API object into our front-end MembershipPlan type
-    const plans: MembershipPlan[] = plansResponse.map((plan) => ({
+    return data.map((plan) => ({
       id: plan.id!,
       membership_id: plan.membership_id!,
       name: plan.name || "Unnamed Plan",
       price: plan.price ?? 0,
-      // add any other fields you need here, e.g.:
-      // description: plan.description || "",
-      // features: Array.isArray(plan.features) ? plan.features : [],
     }));
-
-    return plans;
-  } catch (error) {
-    // Log unexpected errors and re-throw for upstream handling
-    console.error("Error fetching membership plans:", error);
-    throw error;
+  } catch (err) {
+    console.error("🔥 Error loading membership plans:", err);
+    throw err;
   }
 }

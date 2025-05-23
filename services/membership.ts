@@ -1,10 +1,12 @@
 import { MembershipResponse } from "@/app/api/Api";
-import getValue from "@/configs/constants";
 import { Membership } from "@/types/membership";
+
+// Directly use the API base URL from your env.local
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
 export async function getAllMemberships(): Promise<Membership[]> {
   try {
-    const response = await fetch(`${getValue("API")}memberships`);
+    const response = await fetch(`${apiBaseUrl}/memberships`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch memberships: ${response.statusText}`);
