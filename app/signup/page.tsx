@@ -8,6 +8,8 @@ import { motion } from "framer-motion"
 import { ChevronRight, Mail, Lock, CheckCircle, AlertCircle, User, Phone, Calendar, Flag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ParticleBackground } from "@/components/ui/particle-background"
+import PhoneInput from "react-phone-number-input"
+
 
 interface WaiverType {
   is_waiver_signed: boolean
@@ -65,15 +67,15 @@ export default function SignupPage() {
       const checked = (e.target as HTMLInputElement).checked
 
       if (name === "waiver_signed") {
-        setAthleteData((prev) => ({
-          ...prev,
-          waivers: [
-            {
-              ...prev.waivers[0],
-              is_waiver_signed: checked,
-            },
-          ],
-        }))
+  setAthleteData((prev) => ({
+    ...prev,
+    waivers: prev.waivers.map((waiver) => ({
+      ...waiver,
+      is_waiver_signed: checked,
+    })),
+  }))
+
+
       } else {
         setAthleteData((prev) => ({
           ...prev,
@@ -347,26 +349,30 @@ export default function SignupPage() {
 
                 {/* Phone Number */}
                 <div className="space-y-2">
-                  <label htmlFor="phone_number" className="block text-sm font-medium text-gray-300">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="phone_number"
-                      name="phone_number"
-                      type="tel"
-                      placeholder="+15141234567"
-                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
-                      value={athleteData.phone_number}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <p className="text-xs text-gray-400 mt-1">Format: +15141234567</p>
+                <label htmlFor="phone_number" className="block text-sm font-medium text-gray-300">
+                  Phone Number
+                </label>
+
+                <div className="relative">
+                  
+
+                  <PhoneInput
+                    international
+                    defaultCountry="CA"
+                    id="phone_number"
+                    placeholder="e.g. +1 514 123 4567"
+                    value={athleteData.phone_number}
+                    onChange={(value) =>
+                      setAthleteData((prev) => ({
+                        ...prev,
+                        phone_number: value || "",
+                      }))
+                    }
+                    className="phone-input-wrapper"
+                  />
                 </div>
+                <p className="text-xs text-gray-400 mt-1">Format: international e.g. +1 514 123 4567</p>
+              </div>
               </div>
             </div>
 
