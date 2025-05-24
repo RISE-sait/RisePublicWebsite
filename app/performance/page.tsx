@@ -71,7 +71,7 @@ export default function PerformancePage() {
               <img
                 src="/performance-page-images/performancewhyrise.jpg"
                 alt="Fitness training"
-                className="object-cover rounded-lg h-full w-full"
+                className="object-fill rounded-lg h-full w-full"
               />
             </div>
           </div>

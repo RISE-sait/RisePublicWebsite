@@ -148,25 +148,25 @@ export const PERFORMANCE_FEATURES = [
     title: "Top-Quality Fitness Room",
     description:
       "State-of-the-art equipment for all your fitness needs, from cardio to strength training.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/performance-page-images/qualityfitness.jpg",
   },
   {
     title: "Strength Training Zone",
     description:
       "Dedicated area with weights and racks for building strength and endurance at all levels.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/performance-page-images/strength.jpg",
   },
   {
     title: "Functional Training Area",
     description:
       "Flexible training space with turf and equipment for dynamic workouts.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/performance-page-images/functional.jpg",
   },
   {
     title: "High-Energy Group Classes",
     description:
       "Join our expert-led classes that combine fun and results for all fitness levels.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/performance-page-images/groupclass.jpg",
   },
 ];
 
