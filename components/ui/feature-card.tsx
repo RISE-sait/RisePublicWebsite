@@ -1,18 +1,24 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface FeatureCardProps {
-  title: string
-  description: string
-  image: string
-  className?: string
-  index?: number
+  title: string;
+  description: string;
+  image: string;
+  className?: string;
+  index?: number;
 }
 
-export function FeatureCard({ title, description, image, className, index = 0 }: FeatureCardProps) {
+export function FeatureCard({
+  title,
+  description,
+  image,
+  className,
+  index = 0,
+}: FeatureCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -23,7 +29,7 @@ export function FeatureCard({ title, description, image, className, index = 0 }:
       className={cn(
         "bg-[#111] rounded-lg overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300",
         "hover:border-[#ffb800]/30",
-        className,
+        className
       )}
     >
       <div className="h-48 relative overflow-hidden group">
@@ -31,7 +37,7 @@ export function FeatureCard({ title, description, image, className, index = 0 }:
           src={image || "/placeholder.svg"}
           alt={title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-fill transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
@@ -40,6 +46,5 @@ export function FeatureCard({ title, description, image, className, index = 0 }:
         <p className="text-sm text-white">{description}</p>
       </div>
     </motion.div>
-  )
+  );
 }
-
