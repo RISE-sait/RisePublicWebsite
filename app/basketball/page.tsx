@@ -20,6 +20,7 @@ import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
 import ScheduleCalendar from "@/components/scheduleCalendar";
 import Link from "next/link";
+import CoachesSection from "@/components/coachesSection";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -83,7 +84,7 @@ export default function BasketballPage() {
       </ParallaxSection>
 
       {/* Program Tabs */}
-      <SectionContainer id="programs" className="bg-[#111]">
+      <SectionContainer id="programs" className="">
         <SectionHeading title="BASKETBALL INFORMATION" centered />
 
         <div className="mb-8 max-w-3xl mx-auto">
@@ -149,61 +150,21 @@ export default function BasketballPage() {
         )}
 
         {activeTab === "coaches" && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
-              <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="Coach"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-1">Coach Mike</h3>
-              <p className="text-[#ffb800] mb-2">Head Coach</p>
-              <p className="text-sm">
-                Former professional player with 15+ years of coaching
-                experience.
-              </p>
-            </ThreeDCard>
+          // use vertical spacing between the grid and the button
+          <div className="space-y-6">
+            {/* your 3‑coach grid */}
+            <CoachesSection ids={[1, 2, 3]} showHeadings={false} />
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
-              <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="Coach"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-1">Coach Sarah</h3>
-              <p className="text-[#ffb800] mb-2">Skills Development</p>
-              <p className="text-sm">
-                NCAA Division I player specializing in shooting and ball
-                handling.
-              </p>
-            </ThreeDCard>
-
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg text-center">
-              <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                <img
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="Coach"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-1">Coach James</h3>
-              <p className="text-[#ffb800] mb-2">Youth Coach</p>
-              <p className="text-sm">
-                Specializes in youth development with a focus on fundamentals
-                and fun.
-              </p>
-            </ThreeDCard>
-            <Button
-              asChild
-              variant="outline"
-              className="mt-2 col-span-1 justify-self-center md:col-start-2 md:row-start-2 md:mt-0 md:self-center border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
-            >
-              <a href="/coaches">VIEW ALL COACHES</a>
-            </Button>
+            {/* wrap the button in a flex container to center it */}
+            <div className="flex justify-center">
+              <Button
+                asChild
+                variant="outline"
+                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
+              >
+                <a href="/coaches">VIEW ALL COACHES</a>
+              </Button>
+            </div>
           </div>
         )}
       </SectionContainer>
