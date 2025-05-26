@@ -16,9 +16,9 @@ export default function ReviewsPage() {
     <div className="flex flex-col">
       {/* Reviews Header */}
       <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
-        overlayOpacity={0.8}
-        className="py-32"
+        bgImage="/reviews-page-images/reviews.jpg"
+        overlayOpacity={0.7}
+        className="py-32 h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px]"
       >
         <SectionContainer animate={false}>
           <div className="text-center">
