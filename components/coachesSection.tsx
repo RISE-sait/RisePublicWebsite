@@ -11,7 +11,7 @@ interface CoachesSectionProps {
    * If provided, only coaches with matching IDs (in this order) will render.
    * If omitted, all fetched coaches are shown.
    */
-  ids?: number[];
+  ids?: string[];
   showHeadings?: boolean;
 }
 

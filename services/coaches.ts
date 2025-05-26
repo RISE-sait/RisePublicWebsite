@@ -1,5 +1,5 @@
 export interface Coach {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   role_name: string;
@@ -17,8 +17,8 @@ export async function getCoaches(): Promise<Coach[]> {
   }
 
   const data: Coach[] = await res.json();
-  return data.map((c, idx) => ({
-    id: idx + 1,
+  return data.map((c) => ({
+    id: c.id,
     first_name: c.first_name ?? "",
     last_name: c.last_name ?? "",
     role_name: c.role_name ?? "",

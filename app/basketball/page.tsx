@@ -153,7 +153,14 @@ export default function BasketballPage() {
           // use vertical spacing between the grid and the button
           <div className="space-y-6">
             {/* your 3‑coach grid */}
-            <CoachesSection ids={[1, 2, 3]} showHeadings={false} />
+            <CoachesSection
+              ids={[
+                "151453fe-b666-44f4-b4da-c8a216a7e5b3",
+                "f58fe0c7-b5ad-4433-9ec0-84d64863dbf8",
+                "bf62b2a5-71bb-46fe-91fe-a44e4e65848b",
+              ]}
+              showHeadings={false}
+            />
 
             {/* wrap the button in a flex container to center it */}
             <div className="flex justify-center">
