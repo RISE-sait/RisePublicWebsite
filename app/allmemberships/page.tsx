@@ -11,6 +11,7 @@ import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Membership } from "@/types/membership";
 import { getAllMemberships } from "@/services/membership";
+import Link from "next/link";
 
 /**
  * MembershipsPage:
@@ -200,11 +201,14 @@ export default function MembershipsPage() {
                           ? "bg-black text-white hover:bg-gray-800"
                           : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
                       }`}
-                      onClick={() =>
-                        router.push(`/memberships/${membership.id}`)
-                      }
                     >
-                      VIEW PLANS
+                      <Link
+                        href={
+                          "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                        }
+                      >
+                        VIEW PLANS
+                      </Link>
                     </Button>
                   </div>
                 </div>
