@@ -1,6 +1,3 @@
-// app/services/topPlayers.ts
-import getValue from "@/configs/constants";
-
 export interface TopPlayerResponse {
   photo_url: any;
   id?: string;
@@ -24,8 +21,10 @@ export interface TopPlayer {
   assists: number;
 }
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 export async function getTopPlayers(limit?: number): Promise<TopPlayer[]> {
-  const baseUrl = `${getValue("API")}athletes`;
+  const baseUrl = `${apiBaseUrl}/athletes`;
   const url = typeof limit === "number" ? `${baseUrl}?limit=${limit}` : baseUrl;
 
   const res = await fetch(url);

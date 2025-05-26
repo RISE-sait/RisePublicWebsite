@@ -1,6 +1,5 @@
 // services/gameService.ts
 import { GameResponseDto } from "@/app/api/Api"; // DTO shape from API
-import getValue from "@/configs/constants"; // Function to get environment constants
 import { Game } from "@/types/game"; // Front-end Game type definition
 
 /**
@@ -9,10 +8,14 @@ import { Game } from "@/types/game"; // Front-end Game type definition
  * transforms the API DTO into our front-end Game type,
  * and returns the resulting array.
  */
+
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 export async function getUpcomingGames(): Promise<Game[]> {
   try {
     // Build the endpoint URL using base API constant and 'games' path
-    const response = await fetch(`${getValue("API")}games`);
+    // const response = await fetch(`${getValue("API")}games`);
+    const response = await fetch(`${apiBaseUrl}/games`);
 
     // If the response status is not in the 200–299 range, throw an error
     if (!response.ok) {

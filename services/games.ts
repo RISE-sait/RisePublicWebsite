@@ -1,5 +1,3 @@
-import getValue from "@/configs/constants";
-
 /**
  * The raw shape of each game object returned by the API.
  */
@@ -40,9 +38,13 @@ export interface Game {
  * @returns A Promise resolving to an array of UI‑ready Game objects.
  * @throws Error if the network request fails.
  */
+
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 export async function getGames(limit?: number): Promise<Game[]> {
   // Always filter for upcoming games
-  let url = `${getValue("API")}games?filter=upcoming`;
+  // let url = `${getValue("API")}games?filter=upcoming`;
+  let url = `${apiBaseUrl}/games?filter=upcoming`;
 
   // Append &limit=N if caller specified a number
   if (typeof limit === "number") {
