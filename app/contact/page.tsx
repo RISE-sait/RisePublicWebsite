@@ -15,9 +15,9 @@ export default function ContactPage() {
     <div className="flex flex-col">
       {/* Contact Us Header */}
       <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
+        bgImage="/contact-page-images/contact.jpg"
         overlayOpacity={0.8}
-        className="py-32"
+        className="py-32 h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px]"
       >
         <SectionContainer animate={false}>
           <div className="text-center">

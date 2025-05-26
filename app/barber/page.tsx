@@ -150,18 +150,18 @@ export default function BarberPage() {
 
       {/* Barber Up at Courtside Cuts */}
       <ParallaxSection
-        bgImage="/placeholder.svg?height=600&width=1600"
+        bgImage="/barber-page-images/barberchair.jpg"
         overlayOpacity={0.7}
         className="py-16"
       >
         <SectionContainer>
-          <div className="glass-dark p-8 rounded-lg max-w-3xl mx-auto">
+          <div className="backdrop-blur-sm p-8 rounded-lg max-w-3xl mx-auto">
             <AnimatedText
               text="Barber Up at Courtside Cuts"
               className="text-[#ffb800] text-3xl md:text-4xl font-bold mb-4"
               animation="reveal"
             />
-            <h3 className="text-xl font-semibold mb-6">
+            <h3 className="text-xl font-semibold mb-6 text-center">
               Rent the Chair, Own the Vibes
             </h3>
             <motion.p
@@ -169,7 +169,7 @@ export default function BarberPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="mb-8"
+              className="mb-8 text-center"
             >
               We're a premier Courtside Cut & Style studio designed to showcase
               your style in a setting that brings a professional feel to a cool
@@ -183,6 +183,7 @@ export default function BarberPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-center"
             >
               <Button
                 variant="default"
