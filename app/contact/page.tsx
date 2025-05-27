@@ -9,6 +9,7 @@ import { ContactInfo } from "@/components/ui/contact-info";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { ThreeDCard } from "@/components/ui/3d-card";
+import { GoogleMap } from "@/components/google-map";
 
 export default function ContactPage() {
   return (
@@ -68,15 +69,9 @@ export default function ContactPage() {
       {/* Map */}
       <SectionContainer className="py-16">
         <SectionHeading title="Find Us" centered />
-        <ThreeDCard className="h-[400px] w-full overflow-hidden">
-          <Image
-            src="/placeholder.svg?height=800&width=1600"
-            alt="Map location"
-            width={1600}
-            height={800}
-            className="w-full h-full object-cover"
-          />
-        </ThreeDCard>
+        <div className="h-[400px] w-full">
+          <GoogleMap />
+        </div>
       </SectionContainer>
     </div>
   );
