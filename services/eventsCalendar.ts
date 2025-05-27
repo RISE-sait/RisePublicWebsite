@@ -1,3 +1,4 @@
+import getValue from "@/configs/constants"; // helper to retrieve API base URL from config
 import { Event } from "@/types/event"; // our front-end Event type
 
 /**
@@ -29,15 +30,13 @@ interface EventApiDto {
   end_at: string;
 }
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
-
 /**
  * Generic fetcher that hits `/events?program_type=...`,
  * parses the backend shape, and returns our flattened Event[]
  */
-export async function fetchEventsByType(type: string): Promise<Event[]> {
+async function fetchEventsByType(type: string): Promise<Event[]> {
   // Build URL like `${API_BASE}events?program_type=other`
-  const res = await fetch(`${apiBaseUrl}/events?program_type=${type}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/events?program_type=${type}`);
 
   // If server responds with error status, reject promise
   if (!res.ok) {
