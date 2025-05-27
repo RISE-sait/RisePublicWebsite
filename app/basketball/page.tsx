@@ -44,7 +44,8 @@ export default function BasketballPage() {
         videoSrc="/headervideos/basketballhead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/allmemberships"
+        // primaryButtonHref="/allmemberships"
+        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
@@ -300,7 +301,14 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="/allmemberships">JOIN NOW</Link>
+                {/* <Link href="/allmemberships">JOIN NOW</Link> */}
+                <Link
+                  href={
+                    "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  }
+                >
+                  JOIN NOW
+                </Link>
               </Button>
             </motion.div>
           </div>
@@ -459,7 +467,13 @@ export default function BasketballPage() {
               variant="outline"
               className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
             >
-              JOIN THE PREMIER TEAM
+              <Link
+                href={
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                }
+              >
+                JOIN THE PREMIER TEAM
+              </Link>
             </Button>
           </motion.div>
         </SectionContainer>

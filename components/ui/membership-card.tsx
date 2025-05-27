@@ -144,7 +144,14 @@ export function MembershipCard({
                 : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
           >
-            <Link href="/allmemberships">VIEW MORE</Link>
+            {/* <Link href="/allmemberships">VIEW MORE</Link> */}
+            <Link
+              href={
+                "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              }
+            >
+              VIEW MORE
+            </Link>
           </Button>
           <Button
             asChild
@@ -156,7 +163,14 @@ export function MembershipCard({
                 : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
             )}
           >
-            <Link href={`/memberships/${id}`}>JOIN NOW</Link>
+            {/* <Link href={`/memberships/${id}`}>JOIN NOW</Link> */}
+            <Link
+              href={
+                "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              }
+            >
+              JOIN NOW
+            </Link>
           </Button>
         </div>
       </div>
