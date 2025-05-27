@@ -475,3 +475,20 @@ export const BASKETBALL_PAGE_IMAGES = [
   },
   { alt: "RISEgirls2", src: "/basketball-page-images/bballpage3.jpg" },
 ];
+
+export const STARTING_PRICE = {
+  "b540343f-b311-46fb-9c50-ce71acad79f5": 103.8, // RISE FULL YEAR Basketball Membership
+  "4353fe3b-6e14-4dbe-a140-65911d4819e0": 135.0, // Jr. RISE Elite Hooper (Ages 5-8)
+  "7bbbc0ab-4766-48bb-9161-b1ea8911ad3f": 0, //2025 Spring Club Membership
+  "2dc352ca-55e1-4969-b6a2-4e403fe86c88": 0, //Seasonal Membership- Winter Rise League
+  "c2bfdfaa-47be-48ec-86af-9c73888f3f35": 0, //High School Pro Club
+  "c4ba2d9c-582c-4c26-8eed-ff42f8ff35d3": 0, //Gym Membership
+  "80dd34b6-152d-4957-aa1b-59594a741a37": 141.66, //Jr. Rise Seasonal (3 Months)
+  "2bd90cd0-8c7b-4e89-aecd-01da27ddc8be": 47.0, //Open Gym- Strength Room and Courts
+  "a74fce85-94c9-4ee3-a193-5dd25fcbe526": 0, //PAYMENT PLAN 2025 SPRING CLUB
+  "4d78eeee-febf-4a97-9f23-6583f271088e": 0, //Rise Basketball Full Year Membership No.2
+  "05372c50-0451-4630-8f37-5402023bb4a4": 85.0, //Rise Full Year Family Member Guided Strength Gym Membership
+  "3d7aea9f-6a42-43c8-8d28-c5ec37907d97": 0, //Seasonal member - Rise WINTER LEAGUE
+  "ca06387b-3e2a-4f2b-8b17-9996df2f25fa": 0, //SPRING RISE LEAGUE 2025
+  "077bbea4-6374-44fd-a13d-4e3dd197c073": 155.0, //Strength Room Unlimited Membership
+};

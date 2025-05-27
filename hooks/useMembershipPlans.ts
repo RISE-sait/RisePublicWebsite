@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllMemberships } from "@/services/membership";
 import type { MembershipPlan } from "@/components/ui/membership-grid";
+import { STARTING_PRICE } from "@/lib/constants";
 
 export function useMembershipPlans() {
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
@@ -15,7 +16,7 @@ export function useMembershipPlans() {
           featured: false,
           badge: m.badge ?? "",
           title: m.name,
-          price: m.price ?? 0,
+          price: STARTING_PRICE[m.id as keyof typeof STARTING_PRICE] ?? m.price,
           period: m.period ?? "month",
           description: m.description ?? "",
           features: m.benefits ?? [],

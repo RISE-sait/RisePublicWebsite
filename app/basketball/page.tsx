@@ -21,6 +21,7 @@ import { UpcomingGamesSection } from "@/components/gamesSection";
 import ScheduleCalendar from "@/components/scheduleCalendar";
 import Link from "next/link";
 import CoachesSection from "@/components/coachesSection";
+import { BasketballMembershipsSection } from "@/components/basketballMembershipSection";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -413,13 +414,7 @@ export default function BasketballPage() {
       {/* Memberships */}
       <SectionContainer>
         <SectionHeading title="Basketball Memberships" centered />
-
-        <MembershipGrid
-          plans={MEMBERSHIP_PLANS.filter(
-            (plan) => plan.id === "full-year" || plan.id === "jr-rise"
-          )}
-          columns={2}
-        />
+        <BasketballMembershipsSection />
       </SectionContainer>
 
       {/* Gallery */}

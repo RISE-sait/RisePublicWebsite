@@ -14,6 +14,7 @@ import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { PerformanceMembershipsSection } from "@/components/performanceMembershipSection";
 
 export default function PerformancePage() {
   const { scrollYProgress } = useScroll();
@@ -205,12 +206,7 @@ export default function PerformancePage() {
       <SectionContainer className="bg-black">
         <SectionHeading title="Memberships" centered />
 
-        <MembershipGrid
-          plans={MEMBERSHIP_PLANS.filter(
-            (plan) => plan.id === "performance" || plan.id === "full-year"
-          )}
-          columns={2}
-        />
+        <PerformanceMembershipsSection />
       </SectionContainer>
 
       {/* Gallery */}
