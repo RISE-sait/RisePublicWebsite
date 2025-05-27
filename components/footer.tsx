@@ -6,6 +6,7 @@ import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
 import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import NewsletterSection from "./newsletter-form";
 
 export default function Footer() {
   const socialIcons = {
@@ -23,38 +24,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="mb-6 inline-block text-center justify-center">
-              <span className="text-3xl font-bold text-white ">
-                SUBSCRIBE TO OUR NEWSLETTER!
-              </span>
-            </div>
-          </motion.div>
-
-          <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex max-w-md w-full mb-6"
-          >
-            <input
-              type="email"
-              placeholder="Email Address"
-              className="flex-grow px-4 py-3 h-10 bg-[#111] border border-[#333] rounded-l-md focus:outline-0 focus:border-[#ffb800] transition-all"
-            />
-            <Button
-              variant="default"
-              className="px-4 py-3 h-10 bg-[#ffb800] text-black hover:bg-[#e0a300] rounded-l-none hover:scale-105 transition-all shadow-lg "
-            >
-              Submit
-            </Button>
-          </motion.form>
+          <NewsletterSection />
 
           <motion.p
             initial={{ opacity: 0 }}
