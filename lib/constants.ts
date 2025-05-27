@@ -31,9 +31,6 @@ export const FOOTER_LINKS = {
   company: [
     { label: "RISE Basketball", href: "/basketball" },
     { label: "RISE Performance", href: "/performance" },
-    { label: "RISE Academy Sport & Education", href: "/academy" },
-    { label: "RISE Playground", href: "/playground" },
-    { label: "Teams & Players", href: "/teams" },
     { label: "Game Schedule", href: "/schedule" },
     { label: "BOOM Coffee", href: "/coffee" },
     { label: "ProRise Nutrition", href: "/supplements" },
@@ -44,7 +41,7 @@ export const FOOTER_LINKS = {
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms and Conditions", href: "/terms" },
     { label: "Cookie Preferences", href: "/cookies" },
-    { label: "Location", href: "/location" },
+    { label: "Location", href: "/contact" },
   ],
   socials: [
     {
