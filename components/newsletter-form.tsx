@@ -1,46 +1,56 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface NewsletterSectionProps {
-  tag?: string // optional tag prop
+  tag?: string; // optional tag prop
 }
 
-export default function NewsletterSection({ tag = 'general-newsletter' }: NewsletterSectionProps) {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
+export default function NewsletterSection({
+  tag = "general-newsletter",
+}: NewsletterSectionProps) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading">("idle");
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-    setMessage('')
+    e.preventDefault();
+    setStatus("loading");
 
     try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, tag }),
-      })
+      });
+      const data = await res.json();
 
-      const data = await res.json()
       if (res.ok) {
-        setStatus('success')
-        setMessage(data.message || 'Thanks for subscribing!')
-        setEmail('')
+        toast({
+          title: "Subscription successful",
+          description: data.message || "Thanks for subscribing!",
+        });
+        setEmail("");
       } else {
-        setStatus('error')
-        setMessage(data.error || 'Something went wrong.')
+        toast({
+          variant: "destructive",
+          title: "Subscription failed",
+          description: data.error || "Something went wrong.",
+        });
       }
-    } catch (err) {
-      setStatus('error')
-      setMessage('Network error. Please try again.')
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Network error",
+        description: "Please check your connection and try again.",
+      });
+    } finally {
+      setStatus("idle");
     }
-
-    setStatus('idle')
-  }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -72,23 +82,18 @@ export default function NewsletterSection({ tag = 'general-newsletter' }: Newsle
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={status === "loading"}
             className="flex-grow px-4 py-3 h-10 bg-[#111] border border-[#333] rounded-l-md focus:outline-0 focus:border-[#ffb800] transition-all"
           />
           <Button
             type="submit"
-            disabled={status === 'loading'}
+            disabled={status === "loading"}
             className="px-4 py-3 h-10 bg-[#ffb800] text-black hover:bg-[#e0a300] rounded-l-none hover:scale-105 transition-all shadow-lg"
           >
-            {status === 'loading' ? 'Submitting...' : 'Submit'}
+            {status === "loading" ? "Submitting..." : "Submit"}
           </Button>
         </motion.form>
-
-        {message && (
-          <p className={`text-sm ${status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
-            {message}
-          </p>
-        )}
       </div>
     </div>
-  )
+  );
 }
