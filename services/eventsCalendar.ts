@@ -50,23 +50,42 @@ async function fetchEventsByType(type: string): Promise<Event[]> {
 
   // Map each DTO into our front-end Event interface
   return raw.map((e) => {
-    // Convert Go’s timestamp string into a JS Date, then to an ISO string
-    const startDate = new Date(e.start_at);
-    const endDate = e.end_at ? new Date(e.end_at) : null;
+    let start_time: string | null = null;
+    let end_time: string | null = null;
+
+    try {
+      // Reformat Go's timestamp to ISO if needed (Safari fix)
+      const startISO = e.start_at.replace(" +0000 UTC", "Z").replace(" ", "T");
+      const endISO = e.end_at?.replace(" +0000 UTC", "Z").replace(" ", "T");
+
+      const startDate = new Date(startISO);
+      const endDate = endISO ? new Date(endISO) : null;
+
+      if (!isNaN(startDate.getTime())) {
+        start_time = startDate.toISOString();
+      }
+      if (endDate && !isNaN(endDate.getTime())) {
+        end_time = endDate.toISOString();
+      }
+    } catch (err) {
+      console.error("Invalid event date:", e, err);
+    }
 
     return {
       id: e.id,
-      program_type: e.program.type, // e.g. "other" or "course"
-      program_id: e.program.id, // nested program ID
-      program_name: e.program.name, // nested program name
-      location_id: e.location.id, // nested location ID
-      location_name: e.location.name, // nested location display name
-      start_time: startDate.toISOString(), // normalized ISO timestamp
-      end_time: endDate ? endDate.toISOString() : null,
+      program_type: e.program.type,
+      program_id: e.program.id,
+      program_name: e.program.name,
+      location_id: e.location.id,
+      location_name: e.location.name,
+      start_time: start_time ?? "",
+      end_time: end_time ?? "",
       created_by: `${e.created_by.first_name} ${e.created_by.last_name}`,
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
     };
   });
+
+
 }
 
 /** Fetch all events with program_type="other" */
