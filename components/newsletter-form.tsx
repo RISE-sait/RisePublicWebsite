@@ -1,42 +1,46 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
 
-export default function NewsletterSection() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [message, setMessage] = useState("");
+interface NewsletterSectionProps {
+  tag?: string // optional tag prop
+}
+
+export default function NewsletterSection({ tag = 'general-newsletter' }: NewsletterSectionProps) {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    setMessage("");
+    e.preventDefault()
+    setStatus('loading')
+    setMessage('')
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        body: JSON.stringify({ email }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tag }),
+      })
 
-      const data = await res.json();
+      const data = await res.json()
       if (res.ok) {
-        setStatus("success");
-        setMessage("Thanks for subscribing!");
-        setEmail("");
+        setStatus('success')
+        setMessage(data.message || 'Thanks for subscribing!')
+        setEmail('')
       } else {
-        setStatus("error");
-        setMessage(data.error || "Something went wrong.");
+        setStatus('error')
+        setMessage(data.error || 'Something went wrong.')
       }
     } catch (err) {
-      setStatus("error");
-      setMessage("Network error. Please try again.");
+      setStatus('error')
+      setMessage('Network error. Please try again.')
     }
-  };
+
+    setStatus('idle')
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -72,23 +76,19 @@ export default function NewsletterSection() {
           />
           <Button
             type="submit"
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             className="px-4 py-3 h-10 bg-[#ffb800] text-black hover:bg-[#e0a300] rounded-l-none hover:scale-105 transition-all shadow-lg"
           >
-            {status === "loading" ? "Submitting..." : "Submit"}
+            {status === 'loading' ? 'Submitting...' : 'Submit'}
           </Button>
         </motion.form>
 
         {message && (
-          <p
-            className={`text-sm ${
-              status === "success" ? "text-green-400" : "text-red-400"
-            }`}
-          >
+          <p className={`text-sm ${status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
             {message}
           </p>
         )}
       </div>
     </div>
-  );
+  )
 }

@@ -8,15 +8,15 @@ import { ProductGrid } from "@/components/ui/product-grid";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ui/contact-form";
 import { ContactInfo } from "@/components/ui/contact-info";
-import { WaitlistForm } from "@/components/ui/waitlist-form";
 import { ParallaxSection } from "@/components/ui/parallax-section";
-import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import PartnerLogos from "@/components/partner-logos";
 import { SUPPLEMENT_PRODUCTS } from "@/lib/constants";
 import CountdownTimer from "@/components/countdown-timer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { ChevronDown } from "lucide-react";
+import NewsletterSection from "@/components/newsletter-form";
+
 
 export default function SupplementsPage() {
   const { scrollYProgress } = useScroll();
@@ -304,7 +304,7 @@ export default function SupplementsPage() {
           className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto"
         >
           <SectionHeading title="JOIN THE SUPPLEMENTS WAITLIST" centered />
-          <WaitlistForm />
+          <NewsletterSection tag="supplements-interest" />
         </ParallaxSection>
       </SectionContainer>
     </div>

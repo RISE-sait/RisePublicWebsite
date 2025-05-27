@@ -13,6 +13,7 @@ import CountdownTimer from "@/components/countdown-timer";
 import { COFFEE_FEATURES } from "@/lib/constants";
 import { ChevronDown } from "lucide-react";
 import { ParticleBackground } from "@/components/ui/particle-background";
+import NewsletterSection from "@/components/newsletter-form";
 
 export default function CoffeePage() {
   const { scrollYProgress } = useScroll();
@@ -143,7 +144,7 @@ export default function CoffeePage() {
         />
         <SectionContainer className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto">
           <SectionHeading title="JOIN THE COFFEE WAITLIST" centered />
-          <WaitlistForm />
+          <NewsletterSection tag="coffee-shop-interest" />
         </SectionContainer>
       </ParallaxSection>
     </div>
