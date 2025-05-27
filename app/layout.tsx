@@ -9,8 +9,7 @@ import ScrollToTop from "@/components/scroll-to-top";
 import PageTransition from "@/components/page-transition";
 import { SITE_NAME } from "@/lib/constants";
 import { ThemeProvider } from "@/components/theme-provider";
-import 'react-phone-number-input/style.css'
-
+import "react-phone-number-input/style.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

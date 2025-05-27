@@ -74,6 +74,14 @@ export function MembershipCard({
             <div className="mt-2 flex items-baseline">
               <span
                 className={cn(
+                  "text-sm mr-1",
+                  featured ? "text-black" : "text-white"
+                )}
+              >
+                starts at
+              </span>
+              <span
+                className={cn(
                   "text-3xl font-bold",
                   featured ? "text-black" : "text-white"
                 )}
