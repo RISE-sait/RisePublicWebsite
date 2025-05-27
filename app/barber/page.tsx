@@ -113,15 +113,6 @@ export default function BarberPage() {
         <SectionHeading title="Haircut Gallery" centered />
 
         <HaircutGallerySection limit={10} />
-
-        <div className="text-center mt-8">
-          <Button
-            variant="outline"
-            className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:scale-105 transition-all"
-          >
-            View More
-          </Button>
-        </div>
       </SectionContainer>
 
       {/* Barber Up at Courtside Cuts */}

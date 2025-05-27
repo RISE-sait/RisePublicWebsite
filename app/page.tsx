@@ -16,6 +16,7 @@ import { PLAN_COMPARISON } from "@/lib/constants";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
+import Link from "next/link";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -31,7 +32,8 @@ export default function Home() {
         videoSrc="\headervideos\mainhead.mp4"
         fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/allmemberships"
+        // primaryButtonHref="/allmemberships"
+        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
         secondaryButtonText="EXPLORE"
         secondaryButtonHref="#memberships"
         height="100vh"
@@ -223,7 +225,14 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <a href="/allmemberships">JOIN NOW</a>
+                {/* <Link href="/allmemberships">JOIN NOW</Link> */}
+                <Link
+                  href={
+                    "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  }
+                >
+                  JOIN NOW
+                </Link>
               </Button>
             </motion.div>
           </div>
