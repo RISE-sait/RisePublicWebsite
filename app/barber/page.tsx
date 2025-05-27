@@ -12,6 +12,7 @@ import PartnerLogos from "@/components/partner-logos";
 import { BARBER_SERVICES } from "@/lib/constants";
 import { HaircutGallerySection } from "@/components/haircutGallerySection";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export default function BarberPage() {
   const { scrollYProgress } = useScroll();
@@ -49,102 +50,77 @@ export default function BarberPage() {
       {/* Partners Section */}
       <PartnerLogos />
 
-      {/* Schedule a Barber Appointment */}
-      <SectionContainer id="book">
-        <SectionHeading title="Schedule a Courtside Cut" centered />
+      {/* Book Your Haircut Section */}
+      <ParallaxSection
+        bgImage="/barber-page-images/barberpole.jpg"
+        overlayOpacity={0.7}
+        className="py-16"
+      >
+        <SectionContainer id="book">
+          <div className="p-8 rounded-lg max-w-3xl mx-auto">
+            <AnimatedText
+              text="Book Your Haircut at Courtside Cuts"
+              className="text-[#ffb800] text-3xl md:text-4xl font-bold mb-4"
+              animation="reveal"
+            />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 text-black rounded-lg overflow-hidden">
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col items-start">
-                <h3 className="font-bold text-lg">RISE Courtside Cuts</h3>
-                <p className="text-sm text-gray-600">
-                  4.8/5 ★★★★★ (125 reviews)
-                </p>
-              </div>
-              <button className="text-gray-600">
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 6L6 18M6 6L18 18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <div className="mt-6">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search for service"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
-                />
-                <svg
-                  className="h-5 w-5 absolute right-3 top-2.5 text-gray-600"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold">Popular services</h4>
-                <span className="text-xs text-gray-600">(5 items)</span>
-              </div>
-
-              <div className="space-y-4">
-                {BARBER_SERVICES.map((service) => (
-                  <BarberServiceCard
-                    key={service.id}
-                    id={service.id}
-                    title={service.title}
-                    duration={service.duration}
-                    price={service.price}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 text-black rounded-lg overflow-hidden">
-            <h3 className="font-bold text-lg mb-4">
-              Latest/Current Basketball Event
+            <h3 className="text-xl font-semibold mb-6 text-center">
+              Explore Our Services & Pricing
             </h3>
-            <p className="text-sm mb-2">Team A vs Team B</p>
 
-            <div className="space-y-4 mt-6">
-              <div>
-                <h4 className="text-sm font-semibold">Next Event/Game</h4>
-                <p className="text-xs text-gray-600">March 25, 2025</p>
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold">Next Event/Game</h4>
-                <p className="text-xs text-gray-600">March 27, 2025</p>
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold">Next Event/Game</h4>
-                <p className="text-xs text-gray-600">April 2, 2025</p>
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-8"
+            >
+              <p className="text-center text-gray-100 mb-4">
+                We offer a full range of services tailored to your style:
+              </p>
+              <ul className="list-disc list-inside mx-auto max-w-xs text-gray-100 space-y-1 mb-4 text-center">
+                <li>Regular Haircut</li>
+                <li>Beard Trim</li>
+                <li>Razor Shave</li>
+                <li>Buzz Cut</li>
+                <li>…and more!</li>
+              </ul>
+              <p className="text-center text-gray-100">
+                Pricing varies by barber - call us to learn which artist fits
+                your needs and to check availability.
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-center"
+            >
+              <Button
+                variant="default"
+                className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
+              >
+                <Link href="tel:+15879997473">CALL FOR AVAILABILITY</Link>
+              </Button>
+            </motion.div>
           </div>
+        </SectionContainer>
+      </ParallaxSection>
+
+      {/* Haircut Gallery */}
+      <SectionContainer id="gallery">
+        <SectionHeading title="Haircut Gallery" centered />
+
+        <HaircutGallerySection limit={10} />
+
+        <div className="text-center mt-8">
+          <Button
+            variant="outline"
+            className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:scale-105 transition-all"
+          >
+            View More
+          </Button>
         </div>
       </SectionContainer>
 
@@ -189,28 +165,12 @@ export default function BarberPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                RENT A BARBER SPOT
+                <Link href="tel:+15879997473">CLICK AND CALL TO RENT</Link>
               </Button>
             </motion.div>
           </div>
         </SectionContainer>
       </ParallaxSection>
-
-      {/* Haircut Gallery */}
-      <SectionContainer id="gallery">
-        <SectionHeading title="Haircut Gallery" centered />
-
-        <HaircutGallerySection limit={10} />
-
-        <div className="text-center mt-8">
-          <Button
-            variant="outline"
-            className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:scale-105 transition-all"
-          >
-            View More
-          </Button>
-        </div>
-      </SectionContainer>
     </div>
   );
 }
