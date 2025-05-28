@@ -1,44 +1,62 @@
-import React, { useState } from "react"
-import { cn } from "@/lib/utils"
-import { Check, X } from "lucide-react"
-import { motion } from "framer-motion"
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Check, X } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface PlanFeature {
-  feature: string
-  fullYear: boolean
-  seasonal: boolean
-  jrRise: boolean
-  category?: string
+  feature: string;
+  fullYear: boolean;
+  seasonal: boolean;
+  jrRise: boolean;
+  category?: string;
 }
 
 interface PlanComparisonTableProps {
-  features: PlanFeature[]
-  className?: string
+  features: PlanFeature[];
+  className?: string;
 }
 
-export function PlanComparisonTable({ features, className }: PlanComparisonTableProps) {
-  const [selectedPlan, setSelectedPlan] = useState<number>(0)
+export function PlanComparisonTable({
+  features,
+  className,
+}: PlanComparisonTableProps) {
+  const [selectedPlan, setSelectedPlan] = useState<number>(0);
 
   // Group features by category
-  const groupedFeatures = features.reduce(
-    (acc, feature) => {
-      const category = feature.category || "General"
-      if (!acc[category]) {
-        acc[category] = []
-      }
-      acc[category].push(feature)
-      return acc
-    },
-    {} as Record<string, PlanFeature[]>,
-  )
+  const groupedFeatures = features.reduce((acc, feature) => {
+    const category = feature.category || "General";
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(feature);
+    return acc;
+  }, {} as Record<string, PlanFeature[]>);
 
-  const categories = Object.keys(groupedFeatures)
+  const categories = Object.keys(groupedFeatures);
 
   const plans = [
-    { name: "RISE FULL YEAR", ages: "Ages 5-18", type: "Member", index: 0, color: "#FFB800" },
-    { name: "RISE SEASONAL", ages: "Ages 5-18", type: "Non-member", index: 1, color: "#FFFFFF" },
-    { name: "JR. RISE FULL YEAR", ages: "Ages 5-12", type: "Member", index: 2, color: "#FFB800" },
-  ]
+    {
+      name: "RISE FULL YEAR",
+      ages: "Ages 5-18",
+      type: "Member",
+      index: 0,
+      color: "#FFB800",
+    },
+    {
+      name: "RISE SEASONAL",
+      ages: "Ages 5-18",
+      type: "Non-member",
+      index: 1,
+      color: "#FFFFFF",
+    },
+    {
+      name: "JR. RISE FULL YEAR",
+      ages: "Ages 5-12",
+      type: "Member",
+      index: 2,
+      color: "#FFB800",
+    },
+  ];
 
   // Check mark component for better reusability
   const CheckMark = () => (
@@ -47,7 +65,7 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
         <Check className="h-4 w-4 text-amber-500" />
       </div>
     </div>
-  )
+  );
 
   // X mark component for better reusability
   const XMark = () => (
@@ -56,7 +74,7 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
         <X className="h-4 w-4 text-gray-500" />
       </div>
     </div>
-  )
+  );
 
   return (
     <div className={cn("w-full max-w-6xl mx-auto", className)}>
@@ -75,14 +93,19 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
                     className="w-2/9 p-5 text-center bg-gradient-to-b from-zinc-900 to-black border-b border-amber-500/20"
                   >
                     <div className="space-y-2">
-                      <div className="text-lg font-bold" style={{ color: plan.color }}>
+                      <div
+                        className="text-lg font-bold"
+                        style={{ color: plan.color }}
+                      >
                         {plan.name}
                       </div>
                       <div className="text-sm text-gray-400">{plan.ages}</div>
                       <div
                         className={cn(
                           "text-sm font-medium rounded-full px-3 py-0.5 inline-block mt-1",
-                          plan.type === "Member" ? "bg-amber-500 text-black" : "bg-zinc-700 text-white",
+                          plan.type === "Member"
+                            ? "bg-amber-500 text-black"
+                            : "bg-zinc-700 text-white"
                         )}
                       >
                         {plan.type}
@@ -106,9 +129,14 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
                     </tr>
                   )}
                   {groupedFeatures[category].map((feature, index) => (
-                    <tr key={`${category}-${index}`} className="transition-colors hover:bg-zinc-900">
+                    <tr
+                      key={`${category}-${index}`}
+                      className="transition-colors hover:bg-zinc-900"
+                    >
                       <td className="px-6 py-4 border-t border-zinc-800">
-                        <div className="font-medium text-gray-200">{feature.feature}</div>
+                        <div className="font-medium text-gray-200">
+                          {feature.feature}
+                        </div>
                       </td>
                       <td className="p-4 text-center border-t border-zinc-800">
                         {feature.fullYear ? <CheckMark /> : <XMark />}
@@ -137,7 +165,9 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
               onClick={() => setSelectedPlan(index)}
               className={cn(
                 "flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                selectedPlan === index ? "bg-amber-500 text-black" : "bg-zinc-800 text-white hover:bg-zinc-700",
+                selectedPlan === index
+                  ? "bg-amber-500 text-black"
+                  : "bg-zinc-800 text-white hover:bg-zinc-700"
               )}
             >
               {plan.name}
@@ -152,14 +182,21 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
           className="rounded-xl overflow-hidden border border-amber-500/20 bg-black shadow-xl"
         >
           <div className="p-5 bg-gradient-to-r from-black to-zinc-900 border-b border-amber-500/20">
-            <h3 className="text-xl font-bold" style={{ color: plans[selectedPlan].color }}>
+            <h3
+              className="text-xl font-bold"
+              style={{ color: plans[selectedPlan].color }}
+            >
               {plans[selectedPlan].name}
             </h3>
-            <div className="text-sm text-gray-400 mt-1">{plans[selectedPlan].ages}</div>
+            <div className="text-sm text-gray-400 mt-1">
+              {plans[selectedPlan].ages}
+            </div>
             <div
               className={cn(
                 "text-sm font-medium rounded-full px-3 py-0.5 inline-block mt-2",
-                plans[selectedPlan].type === "Member" ? "bg-amber-500 text-black" : "bg-zinc-700 text-white",
+                plans[selectedPlan].type === "Member"
+                  ? "bg-amber-500 text-black"
+                  : "bg-zinc-700 text-white"
               )}
             >
               {plans[selectedPlan].type}
@@ -176,25 +213,35 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
                 )}
                 {groupedFeatures[category].map((feature, index) => {
                   const isIncluded =
-                    selectedPlan === 0 ? feature.fullYear : selectedPlan === 1 ? feature.seasonal : feature.jrRise
+                    selectedPlan === 0
+                      ? feature.fullYear
+                      : selectedPlan === 1
+                      ? feature.seasonal
+                      : feature.jrRise;
 
                   return (
                     <div
                       key={`mobile-${category}-${index}`}
-                      className="flex items-center justify-between p-4 hover:bg-zinc-900"
+                      className="flex items-start justify-between p-4 hover:bg-zinc-900"
                     >
-                      <div className="font-medium text-gray-200">{feature.feature}</div>
-                      {isIncluded ? (
-                        <div className="h-6 w-6 rounded-full bg-amber-500/20 flex items-center justify-center">
-                          <Check className="h-4 w-4 text-amber-500" />
-                        </div>
-                      ) : (
-                        <div className="h-6 w-6 rounded-full bg-zinc-800/30 flex items-center justify-center">
-                          <X className="h-4 w-4 text-gray-500" />
-                        </div>
-                      )}
+                      <div className="flex-1 pr-4">
+                        <span className="block font-medium text-gray-200">
+                          {feature.feature}
+                        </span>
+                      </div>
+                      <div className="flex-shrink-0 mt-1">
+                        {isIncluded ? (
+                          <div className="h-8 w-8 rounded-full bg-amber-500/20 flex items-center justify-center">
+                            <Check className="h-5 w-5 text-amber-500" />
+                          </div>
+                        ) : (
+                          <div className="h-8 w-8 rounded-full bg-zinc-800/30 flex items-center justify-center">
+                            <X className="h-5 w-5 text-gray-500" />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             ))}
@@ -202,5 +249,5 @@ export function PlanComparisonTable({ features, className }: PlanComparisonTable
         </motion.div>
       </div>
     </div>
-  )
+  );
 }
