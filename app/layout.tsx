@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description:
     "Year-round basketball membership for all ages, fitness training, and more.",
   metadataBase: new URL("https://risesportscomplex.com"),
+  icons:{
+        icon: "/favicon.ico",
+        apple: "/apple-touch-icon.png",
+        shortcut: "/favicon-32x32.png",
+      },
   openGraph: {
     title: `${SITE_NAME} - Basketball, Performance, Academy & More`,
     description:
