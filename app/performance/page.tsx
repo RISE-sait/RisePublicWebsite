@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { PerformanceMembershipsSection } from "@/components/performanceMembershipSection";
+import { ParticleBackground } from "@/components/ui/particle-background";
 
 export default function PerformancePage() {
   const { scrollYProgress } = useScroll();
@@ -54,7 +55,12 @@ export default function PerformancePage() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      <ParallaxSection bgColor="#111" className="py-16">
+      <ParallaxSection className="py-16">
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={150}
+          connectParticles={true}
+        />
         <SectionContainer>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={25} label="CLASSES PER MONTH" delay={0} />

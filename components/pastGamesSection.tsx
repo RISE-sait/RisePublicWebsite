@@ -54,6 +54,9 @@ export function PastGamesSection({ limit }: { limit?: number }) {
 
             {/* away */}
             <div className="flex items-center gap-1 sm:gap-2">
+              <span className="text-sm font-bold text-[#ffb800]">
+                {g.awayScore}
+              </span>
               {g.awayLogo && (
                 <img
                   src={g.awayLogo}
@@ -61,10 +64,8 @@ export function PastGamesSection({ limit }: { limit?: number }) {
                   className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
                 />
               )}
+
               <span className="text-sm font-medium text-white">{g.team2}</span>
-              <span className="text-sm font-bold text-[#ffb800]">
-                {g.awayScore}
-              </span>
             </div>
           </div>
         </div>
