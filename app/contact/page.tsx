@@ -53,11 +53,7 @@ export default function ContactPage() {
               contactName="James Smith"
               phone="587-999-7473"
               email="info@risesportscomplex.com"
-              hours={[
-                "Mon -> Fri - 8am - 5:30pm",
-                "Saturday - Closed",
-                "Sunday - Closed",
-              ]}
+              hours={["Everyday 9:00 am - 11:00pm", ``]}
             />
           </div>
           <div>

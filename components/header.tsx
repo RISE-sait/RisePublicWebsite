@@ -56,6 +56,11 @@ export default function Header() {
       { href: "/games", label: "Games" },
     ],
     "/performance": [{ href: "/allmemberships", label: "Memberships" }],
+    "/contact": [
+      { href: "/contact", label: "Contact Us" },
+      { href: "/reviews", label: "Reviews" },
+      { href: "/faq", label: "FAQ" },
+    ],
   };
 
   return (
