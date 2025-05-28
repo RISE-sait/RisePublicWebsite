@@ -14,6 +14,7 @@ import { COFFEE_FEATURES } from "@/lib/constants";
 import { ChevronDown } from "lucide-react";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import NewsletterSection from "@/components/newsletter-form";
+import Link from "next/link";
 
 export default function CoffeePage() {
   const { scrollYProgress } = useScroll();
@@ -111,7 +112,7 @@ export default function CoffeePage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                JOIN THE WAITLIST
+                <Link href="#waitlist">JOIN THE WAITLIST</Link>
               </Button>
             </motion.div>
           </div>
@@ -136,6 +137,7 @@ export default function CoffeePage() {
       </SectionContainer>
 
       {/* Join the Waitlist */}
+      <div id="waitlist"></div>
       <ParallaxSection bgColor="#111" overlayOpacity={0.7} className="py-16">
         <ParticleBackground
           particleColor="#ffb800"

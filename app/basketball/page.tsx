@@ -21,6 +21,7 @@ import Link from "next/link";
 import CoachesSection from "@/components/coachesSection";
 import { BasketballMembershipsSection } from "@/components/basketballMembershipSection";
 import { PastGamesSection } from "@/components/pastGamesSection";
+import { ParticleBackground } from "@/components/ui/particle-background";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -69,6 +70,11 @@ export default function BasketballPage() {
 
       {/* Stats Section */}
       <ParallaxSection bgColor="#111" className="py-16">
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={150}
+          connectParticles={true}
+        />
         <SectionContainer>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={250} label="ACTIVE MEMBERS" delay={0} />
