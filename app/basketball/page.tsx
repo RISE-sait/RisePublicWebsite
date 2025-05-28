@@ -4,17 +4,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { MembershipGrid } from "@/components/ui/membership-grid";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection } from "@/components/ui/parallax-section";
-import { ThreeDCard } from "@/components/ui/3d-card";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import TabNavigation from "@/components/tab-navigation";
 import { useState } from "react";
-import { MEMBERSHIP_PLANS, BASKETBALL_PAGE_IMAGES } from "@/lib/constants";
-import { ChevronDown, Play } from "lucide-react";
+import { BASKETBALL_PAGE_IMAGES } from "@/lib/constants";
+import { ChevronDown } from "lucide-react";
 import { TopPlayersSection } from "@/components/topPlayersSection";
 import { RotatingTopPlayers } from "@/components/rotatingTopThree";
 import { UpcomingGamesSection } from "@/components/gamesSection";
@@ -22,6 +20,7 @@ import ScheduleCalendar from "@/components/scheduleCalendar";
 import Link from "next/link";
 import CoachesSection from "@/components/coachesSection";
 import { BasketballMembershipsSection } from "@/components/basketballMembershipSection";
+import { PastGamesSection } from "@/components/pastGamesSection";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
@@ -101,53 +100,51 @@ export default function BasketballPage() {
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+            <div className="bg-black/50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Youth Development
               </h3>
-              <p className="mb-4">
+              <img
+                src="basketball-page-images/youth.jpg"
+                alt="Youth Development"
+                className="mx-auto mb-4 object-fit rounded-lg h-96"
+              />
+              <p className="mb-4 text-center">
                 Comprehensive skill development for players ages 5-12, focusing
                 on fundamentals and fun.
               </p>
-              <Button
-                variant="outline"
-                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
-              >
-                Learn More
-              </Button>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+            <div className="bg-black/50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Teen Elite
               </h3>
-              <p className="mb-4">
+              <img
+                src="basketball-page-images/teen.jpg"
+                alt="Teen Elite"
+                className="mx-auto mb-4 object-fit rounded-lg h-96"
+              />
+
+              <p className="mb-4 text-center">
                 Advanced training for players ages 13-18 looking to compete at
                 higher levels.
               </p>
-              <Button
-                variant="outline"
-                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
-              >
-                Learn More
-              </Button>
-            </ThreeDCard>
+            </div>
 
-            <ThreeDCard className="bg-black/50 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#ffb800]">
+            <div className="bg-black/50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Adult Leagues
               </h3>
-              <p className="mb-4">
+              <img
+                src="/basketball-page-images/adult.jpg"
+                alt="Adult Leagues"
+                className="mx-auto mb-4 object-fit rounded-lg h-96"
+              />
+              <p className="mb-4 text-center">
                 Competitive and recreational leagues for adults of all skill
                 levels.
               </p>
-              <Button
-                variant="outline"
-                className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10"
-              >
-                Learn More
-              </Button>
-            </ThreeDCard>
+            </div>
           </div>
         )}
 
@@ -317,54 +314,25 @@ export default function BasketballPage() {
 
       {/* Latest Events */}
       <SectionContainer>
-        <SectionHeading title="Latest Events" animate={true} />
+        <SectionHeading
+          title="Latest Events"
+          animate={true}
+          className="text-center"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <ThreeDCard className="relative h-[300px] md:h-[400px]">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <video
-                className="object-contain w-[400px]"
-                src="/testgame.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {/* single image, full width on mobile */}
+          <div className="w-full h-auto md:h-[600px] relative">
+            <img
+              src="/basketball-page-images/summerleague.jpg"
+              alt="Summer League"
+              className="h-full object-cover rounded-lg"
+            />
+          </div>
 
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/20 backdrop-blur-sm rounded-full p-4 hover:bg-white/30 transition-all shadow-xl"
-              >
-                <Play className="h-8 w-8 text-white" />
-              </motion.button>
-            </div>
-          </ThreeDCard>
-          <div className="glass-dark p-6 rounded-lg">
-            <div className="bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded inline-block mb-4">
-              LIVE
-            </div>
-            <h3 className="text-xl font-bold mb-4">
-              Latest/Current Basketball Event
-            </h3>
-            <p className="text-sm text-gray-300 mb-2">Team A vs Team B</p>
-
-            <div className="space-y-4 mt-6">
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Next Event/Game</span>
-                <span className="text-sm text-gray-400">March 25, 2025</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Next Event/Game</span>
-                <span className="text-sm text-gray-400">March 27, 2025</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Next Event/Game</span>
-                <span className="text-sm text-gray-400">April 2, 2025</span>
-              </div>
-            </div>
+          {/* past games list */}
+          <div className="glass-dark p-4 sm:p-6 rounded-lg overflow-y-auto max-h-[400px]">
+            <PastGamesSection limit={5} />
           </div>
         </div>
       </SectionContainer>
