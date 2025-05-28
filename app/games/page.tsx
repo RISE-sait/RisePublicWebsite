@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { SectionContainer } from "@/components/ui/section-container";
-import { SectionHeading } from "@/components/ui/section-heading";
-import TabNavigation from "@/components/tab-navigation";
 import { getGames } from "@/services/games";
 import { getPastGames } from "@/services/pastGames";
+import TabNavigation from "@/components/tab-navigation";
 import { ParallaxSection } from "@/components/ui/parallax-section";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { AnimatedText } from "@/components/ui/animated-text";
 
 interface Game {
@@ -36,16 +36,13 @@ export default function GamesPage() {
         setGames(pastGames);
       } else {
         const allGames: Game[] = await getGames();
-
         const now = new Date();
+
         const filtered = allGames.filter((game) => {
           const gameDate = new Date(`${game.date} ${game.time}`);
           if (activeTab === "upcoming") return gameDate > now;
           if (activeTab === "current")
-            return (
-              Math.abs(now.getTime() - gameDate.getTime()) <
-              2 * 60 * 60 * 1000
-            );
+            return Math.abs(now.getTime() - gameDate.getTime()) < 2 * 60 * 60 * 1000;
           return true;
         });
 
@@ -59,7 +56,7 @@ export default function GamesPage() {
   return (
     <div className="flex flex-col">
       <ParallaxSection
-        bgImage="basketball-page-images/game1.jpg"
+        bgImage="/basketball-page-images/game1.jpg"
         overlayOpacity={0.8}
         className="py-32 object-top object"
       >
@@ -86,23 +83,21 @@ export default function GamesPage() {
         <SectionHeading title="Games" centered />
 
         <div className="mb-6 max-w-3xl mx-auto">
-            <TabNavigation
+          <TabNavigation
             tabs={[
-                { id: "upcoming", label: "Upcoming" },
-                { id: "current", label: "Live Now" },
-                { id: "past", label: "Completed" },
+              { id: "upcoming", label: "Upcoming" },
+              { id: "current", label: "Live Now" },
+              { id: "past", label: "Completed" },
             ]}
             defaultTab="upcoming"
             onChange={setActiveTab}
             className="text-lg font-semibold gap-4"
-            />
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {games.length === 0 ? (
-            <p className="text-center col-span-full text-gray-500">
-              No games found.
-            </p>
+            <p className="text-center col-span-full text-gray-500">No games found.</p>
           ) : (
             games.map((game) =>
               "homeScore" in game ? (
@@ -119,57 +114,133 @@ export default function GamesPage() {
 }
 
 function GameCard({ game }: { game: Game }) {
+  const gameDate = new Date(`${game.date} ${game.time}`);
+  const now = new Date();
+  const isLive = Math.abs(now.getTime() - gameDate.getTime()) < 2 * 60 * 60 * 1000;
+
   return (
-    <div className="glass-dark p-5 rounded-xl shadow-md">
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
-          {game.homeLogo && (
-            <img src={game.homeLogo} alt={game.team1} className="w-10 h-10" />
-          )}
-          <span className="font-semibold text-white text-lg">{game.team1}</span>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="relative bg-gradient-to-br from-gray-900 to-black border border-orange-500/20 rounded-2xl p-6 shadow-xl hover:shadow-orange-500/10 transition-all duration-300"
+    >
+      {isLive && (
+        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+          <div className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            LIVE
+          </div>
         </div>
-        <span className="text-gray-400 font-bold text-lg">VS</span>
-        <div className="flex items-center gap-3">
-          <span className="font-semibold text-white text-lg">{game.team2}</span>
-          {game.awayLogo && (
-            <img src={game.awayLogo} alt={game.team2} className="w-10 h-10" />
+      )}
+
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col items-center gap-2 flex-1">
+          {game.homeLogo ? (
+            <img
+              src={game.homeLogo}
+              alt={game.team1}
+              className="w-12 h-12 rounded-full border-2 border-orange-500/30"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <span className="text-orange-500 font-bold text-lg">{game.team1.charAt(0)}</span>
+            </div>
           )}
+          <span className="font-bold text-white text-center text-sm">{game.team1}</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2 px-4">
+          <div className="text-orange-500 font-bold text-lg">VS</div>
+          <div className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">
+            {new Date(game.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-2 flex-1">
+          {game.awayLogo ? (
+            <img
+              src={game.awayLogo}
+              alt={game.team2}
+              className="w-12 h-12 rounded-full border-2 border-orange-500/30"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <span className="text-orange-500 font-bold text-lg">{game.team2.charAt(0)}</span>
+            </div>
+          )}
+          <span className="font-bold text-white text-center text-sm">{game.team2}</span>
         </div>
       </div>
-      <p className="text-base text-gray-400 text-center font-medium">
-        {game.date} @ {game.time}
-      </p>
-    </div>
+
+      <div className="text-center">
+        <div className="text-orange-500 font-semibold text-lg">{game.time}</div>
+        <div className="text-gray-400 text-sm mt-1">Game Time</div>
+      </div>
+    </motion.div>
   );
 }
-
 
 function PastGameCard({ game }: { game: PastGame }) {
+  const winner = game.homeScore > game.awayScore ? "home" : "away";
+
   return (
-    <div className="glass-dark p-5 rounded-xl shadow-md">
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
-          {game.homeLogo && (
-            <img src={game.homeLogo} alt={game.team1} className="w-10 h-10" />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="relative bg-gradient-to-br from-gray-900 to-black border border-orange-500/20 rounded-2xl p-6 shadow-xl hover:shadow-orange-500/10 transition-all duration-300"
+    >
+      <div className="absolute top-4 right-4">
+        <div className="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded-full">FINAL</div>
+      </div>
+
+      <div className="flex items-center justify-between mb-6">
+        <div className={`flex flex-col items-center gap-2 flex-1 ${winner === "home" ? "opacity-100" : "opacity-60"}`}>
+          {game.homeLogo ? (
+            <img
+              src={game.homeLogo}
+              alt={game.team1}
+              className="w-12 h-12 rounded-full border-2 border-orange-500/30"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <span className="text-orange-500 font-bold text-lg">{game.team1.charAt(0)}</span>
+            </div>
           )}
-          <span className="font-semibold text-white text-lg">{game.team1}</span>
+          <span className="font-bold text-white text-center text-sm">{game.team1}</span>
+          {winner === "home" && <div className="text-xs text-orange-500 font-bold">WINNER</div>}
         </div>
 
-        <div className="text-[#ffb800] font-bold text-xl">
-          {game.homeScore} - {game.awayScore}
+        <div className="flex flex-col items-center gap-2 px-4">
+          <div className="text-orange-500 font-bold text-2xl">
+            {game.homeScore} - {game.awayScore}
+          </div>
+          <div className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">
+            {new Date(game.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="font-semibold text-white text-lg">{game.team2}</span>
-          {game.awayLogo && (
-            <img src={game.awayLogo} alt={game.team2} className="w-10 h-10" />
+        <div className={`flex flex-col items-center gap-2 flex-1 ${winner === "away" ? "opacity-100" : "opacity-60"}`}>
+          {game.awayLogo ? (
+            <img
+              src={game.awayLogo}
+              alt={game.team2}
+              className="w-12 h-12 rounded-full border-2 border-orange-500/30"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <span className="text-orange-500 font-bold text-lg">{game.team2.charAt(0)}</span>
+            </div>
           )}
+          <span className="font-bold text-white text-center text-sm">{game.team2}</span>
+          {winner === "away" && <div className="text-xs text-orange-500 font-bold">WINNER</div>}
         </div>
       </div>
-      <p className="text-base text-gray-400 text-center font-medium">
-        {game.date} @ {game.time}
-      </p>
-    </div>
+
+      <div className="text-center">
+        <div className="text-gray-400 text-sm">{game.time}</div>
+      </div>
+    </motion.div>
   );
 }
-
