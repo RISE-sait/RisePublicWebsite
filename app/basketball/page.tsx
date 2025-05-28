@@ -349,13 +349,15 @@ export default function BasketballPage() {
           <UpcomingGamesSection columns={5} limit={10} />
 
           <div className="text-center mt-8">
+          <Link href="/games">
             <Button
               variant="link"
               className="text-[#ffb800] hover:text-[#e0a300] hover:scale-105 transition-all"
             >
               VIEW ALL GAMES
             </Button>
-          </div>
+          </Link>
+        </div>
         </SectionContainer>
       </ParallaxSection>
 
