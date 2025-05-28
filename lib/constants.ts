@@ -11,8 +11,7 @@ export const NAVIGATION_ITEMS = [
 export const SECONDARY_NAV_ITEMS = [
   { label: "COFFEE", href: "/coffee" },
   { label: "SUPPLEMENTS", href: "/supplements" },
-  { label: "CONTACT", href: "/contact" },
-  { label: "REVIEWS", href: "/reviews" },
+  { label: "ABOUT US", href: "/contact" },
 ];
 
 export const FOOTER_LINKS = {
