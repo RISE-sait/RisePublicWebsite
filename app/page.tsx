@@ -57,11 +57,12 @@ export default function Home() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      <ParallaxSection
-        bgImage="/placeholder.svg?height=1080&width=1920"
-        overlayOpacity={0.8}
-        className="py-20"
-      >
+      <ParallaxSection overlayOpacity={0.8} className="py-20">
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={200}
+          connectParticles={true}
+        />
         <SectionContainer>
           <div className="text-center mb-12">
             <AnimatedText
@@ -77,7 +78,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={5000} label="ATHLETES TRAINED" delay={0} />
-            <StatsCounter value={25} label="PROFESSIONAL COACHES" delay={0.2} />
+            <StatsCounter value={61} label="PROFESSIONAL COACHES" delay={0.2} />
             <StatsCounter
               value={98}
               label="SUCCESS RATE"
@@ -105,7 +106,7 @@ export default function Home() {
                   <img
                     src="/home-page-images/performancehome.jpg"
                     alt="Performance Gym Home"
-                    className="object-cover h-full w-full"
+                    className="object-fill h-full w-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
@@ -259,31 +260,31 @@ export default function Home() {
                 title: "RISE Academy of Sport & Education",
                 description:
                   "Unlock your full potential with in-depth classes taught by elite coaches, exclusive to full-time members.",
-                image: "/placeholder.svg?height=300&width=400",
+                image: "/home-page-images/academy.jpg",
               },
               {
                 title: "RISE Playground - Rise and PlayStation Lounge",
                 description:
                   "Play the latest PS5 games, compete in tournaments, and play both on the court and console.",
-                image: "/placeholder.svg?height=300&width=400",
+                image: "/home-page-images/playground.png",
               },
               {
                 title: "Group Basketball",
                 description:
                   "Mixed levels group basketball for all members, with affordable rates for non-members.",
-                image: "/placeholder.svg?height=300&width=400",
+                image: "/home-page-images/group.jpg",
               },
               {
                 title: "Seasonal Training",
                 description:
                   "Specialized programs for focused coaching during Spring, Summer, Fall or Winter.",
-                image: "/placeholder.svg?height=300&width=400",
+                image: "/home-page-images/season.jpg",
               },
               {
                 title: "Skills Training",
                 description:
                   "Improve your game with specialized training on agility, fundamentals, and jumping.",
-                image: "/placeholder.svg?height=300&width=400",
+                image: "/home-page-images/skill.jpg",
               },
             ]}
             columns={5}
