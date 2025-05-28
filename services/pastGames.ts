@@ -21,8 +21,8 @@ export interface PastGame {
   id: string;
   team1: string;
   team2: string;
-  date: string; // e.g. “Apr 16, 2025”
-  time: string; // e.g. “9:00 PM”
+  date: string; // e.g. “Apr16,2025”
+  time: string; // e.g. “9:00PM”
   homeLogo?: string;
   awayLogo?: string;
   homeScore: number;
