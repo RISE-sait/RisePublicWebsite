@@ -247,14 +247,11 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-6"
             >
-              At RISE Academy of Sport and Education, we're bringing athletes
-              into the fold to create the future of supplements. Join our
-              ProRise Innovation Group and be part of the journey as we combine
-              professional expertise and scientific knowledge to create products
-              that work for real athletes. Whether it's creating the next great
-              protein powder or perfecting hydration formulas, your voice
-              matters as we build the future of performance
-              supplements—together.
+              At RISE Academy of Sport and Education, we support athletes by providing expert guidance on nutrition,
+              supplementation, and performance health. Through the ProRise Innovation Group, you'll gain access to 
+              cutting-edge insights and practical knowledge designed to help you fuel your body effectively. 
+              Whether you're learning how to optimize your hydration, choose the right supplements, or build sustainable eating habits,
+              we're here to empower you with the tools and science-backed information to perform at your best on and off the field.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -263,10 +260,17 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <Button
+                asChild
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                JOIN THE PRORISE INNOVATION CLASS
+                <a
+                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  JOIN THE PRORISE INNOVATION CLASS
+                </a>
               </Button>
             </motion.div>
           </div>
