@@ -319,7 +319,7 @@ export default function SupplementsPage() {
           className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto"
         >
           <SectionHeading title="JOIN THE SUPPLEMENTS WAITLIST" centered />
-          <NewsletterSection tag="supplements-interest" />
+          <NewsletterSection tag="supplement-announcments" />
         </ParallaxSection>
       </SectionContainer>
     </div>
