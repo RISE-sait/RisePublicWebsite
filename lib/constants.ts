@@ -111,7 +111,7 @@ export const MEMBERSHIP_PLANS = [
     price: 125,
     period: "month",
     description:
-      "Perfect for young athletes ages 5-12 looking to develop their skills.",
+      "Perfect for young athletes ages 5-9 looking to develop their skills.",
     features: [
       "Junior skill classes",
       "Age-appropriate training",
@@ -387,71 +387,65 @@ export const TOP_PLAYERS = [
 
 export const PLAN_COMPARISON = [
   {
-    feature: "Practice T-shirt & shorts",
+    feature: "Official RISE Practice T-Shirt for On-Court Training",
     fullYear: true,
     seasonal: true,
     jrRise: false,
   },
   {
-    feature: "Reversible",
-    fullYear: true,
-    seasonal: false,
-    jrRise: true,
-  },
-  {
-    feature: "25% Off Gym memberships",
-    fullYear: true,
-    seasonal: false,
-    jrRise: true,
-  },
-  {
-    feature: "10% Discount",
+    feature: "RISE Game-Day Jersey & Shorts (Included in Jr. Rise Package)",
     fullYear: true,
     seasonal: true,
-    jrRise: false,
+    jrRise: true,
   },
   {
-    feature: "4 Weekly Practices",
+    feature: "Exclusive RISE Gear Package – Backpack, Water Bottle & Keychain",
+    fullYear: true,
+    seasonal: false,
+    jrRise: true,
+  },
+  {
+    feature: "Member Discounts on Additional Camps & Skill Programs",
+    fullYear: true,
+    seasonal: false,
+    jrRise: true,
+  },
+  {
+    feature: "10% Off RISE Basketball Merchandise & Apparel",
+    fullYear: true,
+    seasonal: false,
+    jrRise: true,
+  },
+  {
+    feature: "Unlimited Drop-In Access & Additional Classes",
     fullYear: true,
     seasonal: false,
     jrRise: false,
   },
   {
-    feature: "Free admission and merchandise discounts",
+    feature: "Personalized Meal Planning & Nutritional Coaching",
     fullYear: true,
     seasonal: false,
     jrRise: false,
   },
   {
-    feature: "Meal planning and nutrition guidance",
+    feature: "Tryout Fees Waived for All Internal RISE Programs",
     fullYear: true,
     seasonal: false,
     jrRise: false,
   },
   {
-    feature: "All Team fees waived",
+    feature: "Access to Film Room & Strategy Classroom Sessions",
     fullYear: true,
     seasonal: false,
     jrRise: false,
   },
   {
-    feature: "Free access to meditation and recovery sessions",
+    feature: "Full Access to Our State-of-the-Art Basketball Weight Room",
     fullYear: true,
     seasonal: false,
     jrRise: false,
-  },
-  {
-    feature: "Access to basketball camps during holidays",
-    fullYear: true,
-    seasonal: false,
-    jrRise: false,
-  },
-  {
-    feature: "Full year and access to RISE tournaments and other leagues",
-    fullYear: true,
-    seasonal: false,
-    jrRise: false,
-  },
+  }
 ];
 
 export const REVIEWS = Array.from({ length: 16 }).map((_, index) => ({

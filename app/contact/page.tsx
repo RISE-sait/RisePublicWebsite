@@ -48,7 +48,7 @@ export default function ContactPage() {
               city="Calgary, AB"
               postalCode="T2E 7K1"
               contactTitle="President"
-              contactName="Kelvin Del Pena"
+              contactName="Kelvin Dela Pena"
               phone="587-999-7473"
               email="info@risesportscomplex.com"
               hours={[
