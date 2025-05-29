@@ -37,7 +37,7 @@ export function PlanComparisonTable({
   const plans = [
     {
       name: "RISE FULL YEAR",
-      ages: "Ages 5-18",
+      ages: "Ages 9-18",
       type: "Member",
       index: 0,
       color: "#FFB800",
@@ -51,7 +51,7 @@ export function PlanComparisonTable({
     },
     {
       name: "JR. RISE FULL YEAR",
-      ages: "Ages 5-12",
+      ages: "Ages 5-9",
       type: "Member",
       index: 2,
       color: "#FFB800",
@@ -247,6 +247,9 @@ export function PlanComparisonTable({
             ))}
           </div>
         </motion.div>
+      </div>
+      <div className="mt-6 text-center text-sm text-gray-500 italic">
+        * Benefits and features listed above are subject to change based on program availability, updates, and seasonal adjustments.
       </div>
     </div>
   );
