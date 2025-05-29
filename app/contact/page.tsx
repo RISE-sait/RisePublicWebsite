@@ -4,12 +4,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { ContactForm } from "@/components/ui/contact-form";
 import { ContactInfo } from "@/components/ui/contact-info";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { ThreeDCard } from "@/components/ui/3d-card";
 import { GoogleMap } from "@/components/google-map";
+import RecaptchaContactForm from "@/components/contactForm";
 
 export default function ContactPage() {
   return (
@@ -57,7 +57,7 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <ContactForm />
+            <RecaptchaContactForm /> {/* ✅ Drop-in replacement */}
           </div>
         </div>
       </SectionContainer>

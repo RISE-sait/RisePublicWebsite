@@ -1,9 +1,18 @@
-import type React from "react";
 
-export default function ContactLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <div>{children}</div>;
+"use client";
+
+import Script from "next/script";
+import type { ReactNode } from "react";
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      {/* reCAPTCHA Enterprise v2 library */}
+      <Script
+        src="https://www.google.com/recaptcha/enterprise.js"
+        strategy="afterInteractive"
+      />
+      {children}
+    </>
+  );
 }
