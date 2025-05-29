@@ -51,11 +51,11 @@ export default function Header() {
 
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
-      { href: "/allmemberships", label: "Memberships" },
+      { href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships", label: "Memberships" },
       { href: "/coaches", label: "Coaches" },
       { href: "/games", label: "Games" },
     ],
-    "/performance": [{ href: "/allmemberships", label: "Memberships" }],
+    "/performance": [{ href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships", label: "Memberships" }],
     "/contact": [
       { href: "/contact", label: "Contact Us" },
       { href: "/reviews", label: "Reviews" },
