@@ -15,5 +15,8 @@ export async function getHaircuts(): Promise<string[]> {
     throw new Error(`Failed to fetch haircuts: ${res.statusText}`);
   }
   // the API returns an array of strings
-  return res.json();
+
+  const urls: string[] = await res.json();
+
+  return urls.filter((url) => !url.match(/\/haircut\/?$/));
 }

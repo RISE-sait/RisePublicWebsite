@@ -56,13 +56,6 @@ export function HaircutGallerySection({
 
             {/* Gradient overlay fades in on hover to improve contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-            {/* Caption slides up on hover */}
-            <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-              <p className="text-xs text-white font-medium">
-                Style #{index + 1}
-              </p>
-            </div>
           </div>
         ))}
       </div>
