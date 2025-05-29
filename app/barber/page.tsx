@@ -110,7 +110,7 @@ export default function BarberPage() {
 
       {/* Haircut Gallery */}
       <SectionContainer id="gallery">
-        <SectionHeading title="Haircut Gallery" centered />
+        <SectionHeading title="Gallery" centered />
 
         <HaircutGallerySection limit={10} />
       </SectionContainer>
