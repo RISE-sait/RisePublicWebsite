@@ -3,6 +3,7 @@
 declare global {
   interface Window {
     grecaptcha?: any;
+    onEnterpriseCaptcha?: (token: string) => void;
   }
 }
 
@@ -25,133 +26,146 @@ export default function ContactFormEnterpriseV2() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 1) Expose the callback that grecaptcha will call
+  // ✅ Set global callback + render reCAPTCHA checkbox
   useEffect(() => {
-    // the name here must match data-callback below
-    (window as any).onEnterpriseCaptcha = (token: string) => {
+    window.onEnterpriseCaptcha = (token: string) => {
       setCaptchaToken(token);
       setError("");
     };
+
+    const interval = setInterval(() => {
+      const container = document.querySelector(".g-recaptcha");
+      if (window.grecaptcha?.enterprise && container && !container.hasChildNodes()) {
+        clearInterval(interval);
+        window.grecaptcha.enterprise.render(container, {
+          sitekey: SITE_KEY,
+          callback: "onEnterpriseCaptcha",
+        });
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
-  // 2) When the user submits, require that token and then reset the widget
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!captchaToken) {
       setError("Please check the “I’m not a robot” box.");
       return;
     }
+
     setLoading(true);
+    setError("");
+    setSuccess(false);
+
     try {
       await submitContactForm({ ...form, token: captchaToken });
       setSuccess(true);
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch (err: any) {
-      setError(err.message || "Submission failed; please try again.");
+      console.error("❌ Failed to submit:", err);
+      setError(err.message || "Submission failed. Please try again.");
     } finally {
       setLoading(false);
-      // reset the widget for potential re-submits
-      window.grecaptcha?.enterprise.reset();
+      window.grecaptcha?.enterprise?.reset();
       setCaptchaToken(null);
     }
   }
 
   return (
     <>
-      {/* Load Enterprise v2 library */}
+      {/* ✅ Load reCAPTCHA script */}
       <Script
         src="https://www.google.com/recaptcha/enterprise.js"
         strategy="afterInteractive"
       />
-    <div className="bg-[#111] p-6 rounded-lg border border-gray-800">
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
+
+      <div className="bg-[#111] p-6 rounded-lg border border-gray-800">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="name" className="block text-sm mb-1 text-white">
+                Name *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={form.name}
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                placeholder="Your Name"
+                required
+                className="w-full px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm mb-1 text-white">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={form.email}
+                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                placeholder="Your Email"
+                required
+                className="w-full px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
+              />
+            </div>
+          </div>
+
           <div>
-            <label htmlFor="name" className="block text-sm mb-1 text-white">
-              Name *
+            <label htmlFor="phone" className="block text-sm mb-1 text-white">
+              Phone
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={form.name}
-              onChange={e => setForm((f: any) => ({ ...f, name: e.target.value }))}
-              placeholder="Your Name"
-              required
+              type="tel"
+              id="phone"
+              name="phone"
+              value={form.phone}
+              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+              placeholder="Your Phone"
               className="w-full px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
             />
           </div>
+
           <div>
-            <label htmlFor="email" className="block text-sm mb-1 text-white">
-              Email *
+            <label htmlFor="message" className="block text-sm mb-1 text-white">
+              Message
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={form.email}
-              onChange={e => setForm((f: any) => ({ ...f, email: e.target.value }))}
-              placeholder="Your Email"
+            <textarea
+              id="message"
+              name="message"
+              rows={4}
+              value={form.message}
+              onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+              placeholder="Message"
               required
-              className="w-full px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
+              className="w-full h-20 px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
             />
           </div>
-        </div>
 
-        <div>
-          <label htmlFor="phone" className="block text-sm mb-1 text-white">
-            Phone
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={form.phone}
-            onChange={e => setForm((f: any) => ({ ...f, phone: e.target.value }))}
-            placeholder="Your Phone"
-            className="w-full px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="message" className="block text-sm mb-1 text-white">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            rows={4}
-            value={form.message}
-            onChange={e => setForm((f: any) => ({ ...f, message: e.target.value }))}
-            placeholder="Message"
-            required
-            className="w-full h-20 px-3 py-2 bg-[#222] text-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffb800]"
-          ></textarea>
-        </div>
-
-        <div>
-          <div
-            className="g-recaptcha"
-            data-sitekey={SITE_KEY}
-            data-callback="onEnterpriseCaptcha"
-          />
-        </div>
-
-        <div>
-          <Button
-            type="submit"
-            variant="default"
-            className="bg-[#ffb800] text-black hover:bg-[#e0a300] font-bold w-full"
-            disabled={loading}
-          >
-            {loading ? "Sending…" : "Submit"}
-          </Button>
-        </div>
-
-        {error && <p className="text-red-500 mt-2">❗ {error}</p>}
-        {success && <p className="text-green-500 mt-2">✅ We’ll be in touch.</p>}
-      </form>
+          <div>
+            {/* ✅ Widget will be rendered into this container */}
+            <div className="g-recaptcha" />
           </div>
+
+          <div>
+            <Button
+              type="submit"
+              variant="default"
+              className="bg-[#ffb800] text-black hover:bg-[#e0a300] font-bold w-full"
+              disabled={loading}
+            >
+              {loading ? "Sending…" : "Submit"}
+            </Button>
+          </div>
+
+          {error && <p className="text-red-500 mt-2">❗ {error}</p>}
+          {success && <p className="text-green-500 mt-2">✅ We’ll be in touch.</p>}
+        </form>
+      </div>
     </>
-      );
+  );
 }
