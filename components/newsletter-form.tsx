@@ -10,7 +10,7 @@ interface NewsletterSectionProps {
 }
 
 export default function NewsletterSection({
-  tag = "general-newsletter",
+  tag = "main-newsletter",
 }: NewsletterSectionProps) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading">("idle");

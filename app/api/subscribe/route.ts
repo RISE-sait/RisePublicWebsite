@@ -1,105 +1,99 @@
-import { NextResponse } from "next/server"
-import md5 from "blueimp-md5"
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { email, tag } = await req.json()
+  const allowedTags = ["main-newsletter", "coffee-updates", "supplement-announcments"];
+  const { email, tag } = await req.json();
+  const tagToUse = allowedTags.includes(tag) ? tag : "main-newsletter";
+
 
   if (!email || !email.includes("@")) {
-    return NextResponse.json({ error: "Invalid email" }, { status: 400 })
+    return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
 
-  const API_KEY = process.env.MAILCHIMP_API_KEY!
-  const LIST_ID = process.env.MAILCHIMP_LIST_ID!
-  const DATACENTER = API_KEY.split("-")[1]
-  const subscriberHash = md5(email.toLowerCase())
-  const BASE_URL = `https://${DATACENTER}.api.mailchimp.com/3.0/lists/${LIST_ID}/members`
+  const HUBSPOT_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN!;
+  const API_URL = "https://api.hubapi.com/crm/v3/objects/contacts";
 
-  const tagToApply = tag || "general-newsletter"
+  const contactPayload = {
+    properties: {
+      email,
+      newsletter_tag: tagToUse,
+    },
+  };
 
-  // Try to create subscriber first
-  const createResponse = await fetch(`${BASE_URL}`, {
+  // Try creating the contact
+  const createRes = await fetch(API_URL, {
     method: "POST",
     headers: {
-      Authorization: `apikey ${API_KEY}`,
+      Authorization: `Bearer ${HUBSPOT_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      email_address: email,
-      status: "subscribed",
-      tags: [tagToApply],
-    }),
-  })
+    body: JSON.stringify(contactPayload),
+  });
 
-  const createData = await createResponse.json()
+  const data = await createRes.json();
 
-  // Handle if already exists
-  if (createResponse.status === 400 && createData.title === "Member Exists") {
-    // Fetch current member status
-    const memberResponse = await fetch(`${BASE_URL}/${subscriberHash}`, {
-      method: "GET",
-      headers: {
-        Authorization: `apikey ${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-    })
-
-    const memberData = await memberResponse.json()
-
-    // If not already subscribed, re-subscribe them
-    if (memberData.status !== "subscribed") {
-      const resubscribe = await fetch(`${BASE_URL}/${subscriberHash}`, {
-        method: "PUT",
+  // If the contact already exists
+  if (createRes.status === 409 && data.category === "CONFLICT") {
+    // Find contact ID
+    const searchRes = await fetch(
+      `https://api.hubapi.com/crm/v3/objects/contacts/search`,
+      {
+        method: "POST",
         headers: {
-          Authorization: `apikey ${API_KEY}`,
+          Authorization: `Bearer ${HUBSPOT_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email_address: email,
-          status_if_new: "subscribed",
-          status: "subscribed",
+          filterGroups: [
+            {
+              filters: [{ propertyName: "email", operator: "EQ", value: email }],
+            },
+          ],
+          properties: ["email"],
         }),
-      })
-
-      if (!resubscribe.ok) {
-        const e = await resubscribe.json()
-        return NextResponse.json({ error: e.detail || "Resubscribe failed" }, { status: 400 })
       }
+    );
+
+    const searchData = await searchRes.json();
+    const id = searchData.results?.[0]?.id;
+
+    if (id) {
+      // Update the contact's tag
+      const updateRes = await fetch(`${API_URL}/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${HUBSPOT_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          properties: {
+            newsletter_tag: tag,
+          },
+        }),
+      });
+
+      if (!updateRes.ok) {
+        const error = await updateRes.json();
+        return NextResponse.json(
+          { error: error.message || "Failed to update contact" },
+          { status: updateRes.status }
+        );
+      }
+
+      return NextResponse.json(
+        { message: "You're already subscribed. Tag updated." },
+        { status: 200 }
+      );
     }
-
-    // Now apply the tag
-    const tagResponse = await fetch(`${BASE_URL}/${subscriberHash}/tags`, {
-      method: "POST",
-      headers: {
-        Authorization: `apikey ${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tags: [{ name: tagToApply, status: "active" }],
-      }),
-    })
-
-    if (!tagResponse.ok) {
-      const e = await tagResponse.json()
-      return NextResponse.json({ error: e.detail || "Tagging failed" }, { status: 400 })
-    }
-
-    return NextResponse.json(
-      { message: "You're already subscribed. We've updated your interest tag!" },
-      { status: 200 }
-    )
   }
 
-  // Handle any unexpected error
-  if (!createResponse.ok) {
+  if (!createRes.ok) {
     return NextResponse.json(
-      { error: createData.detail || "Unexpected subscription error" },
-      { status: createResponse.status }
-    )
+      { error: data.message || "Subscription failed" },
+      { status: createRes.status }
+    );
   }
 
-  // All good
-  return NextResponse.json(
-    { message: "Subscribed successfully!" },
-    { status: 201 }
-  )
+  return NextResponse.json({ message: "Subscribed successfully!" }, { status: 201 });
+  
 }

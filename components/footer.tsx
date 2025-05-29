@@ -6,7 +6,7 @@ import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
 import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import NewsletterSection from "./newsletter-form";
+import NewsletterSection from "@/components/newsletter-form";
 
 export default function Footer() {
   const socialIcons = {
@@ -24,7 +24,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center mb-12">
-          <NewsletterSection />
+          <NewsletterSection tag="main-newsletter"/>
 
           <motion.p
             initial={{ opacity: 0 }}
