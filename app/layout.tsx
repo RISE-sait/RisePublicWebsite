@@ -1,15 +1,12 @@
-import type React from "react";
+import React from "react";
 import type { Metadata } from "next/types";
+import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "@/styles/globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import ScrollToTop from "@/components/scroll-to-top";
-import PageTransition from "@/components/page-transition";
 import { SITE_NAME } from "@/lib/constants";
-import { ThemeProvider } from "@/components/theme-provider";
 import "react-phone-number-input/style.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +15,11 @@ export const metadata: Metadata = {
   description:
     "Year-round basketball membership for all ages, fitness training, and more.",
   metadataBase: new URL("https://risesportscomplex.com"),
-  icons:{
-        icon: "/favicon.ico",
-        apple: "/apple-touch-icon.png",
-        shortcut: "/favicon-32x32.png",
-      },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon-32x32.png",
+  },
   openGraph: {
     title: `${SITE_NAME} - Basketball, Performance, Academy & More`,
     description:
@@ -33,27 +30,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  // Read the theme cookie on the server:
+  const theme =
+    ((await cookies()).get("theme")?.value as "light" | "dark") || "dark";
+
   return (
-    <html lang="en" className="scroll-smooth">
+    <html
+      lang="en"
+      className={`scroll-smooth ${theme === "dark" ? "dark" : ""}`}
+      style={{ colorScheme: theme }}
+    >
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <ScrollToTop />
-          <Header />
-          <main className="flex-grow pt-16 md:pt-20">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-        </ThemeProvider>
-        <Toaster />
+        {/* Everything inside Providers is client‑only */}
+        <Providers theme={theme}>{children}</Providers>
       </body>
     </html>
   );
 }
-
-import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
