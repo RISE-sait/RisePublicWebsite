@@ -1,5 +1,4 @@
-const apiBaseUrl = "http://localhost";
-
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
 interface ContactPayload {
   name: string;
@@ -10,9 +9,7 @@ interface ContactPayload {
 }
 
 export async function submitContactForm(payload: ContactPayload): Promise<void> {
-
-  const url = `${apiBaseUrl}/contact`;
-
+  const url = `${apiBaseUrl}/contact`; 
 
   try {
     const res = await fetch(url, {
@@ -36,4 +33,3 @@ export async function submitContactForm(payload: ContactPayload): Promise<void> 
     throw new Error("An unknown error occurred.");
   }
 }
-
