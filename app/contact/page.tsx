@@ -1,13 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ContactInfo } from "@/components/ui/contact-info";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
-import { ThreeDCard } from "@/components/ui/3d-card";
 import { GoogleMap } from "@/components/google-map";
 import RecaptchaContactForm from "@/components/contactForm";
 
@@ -50,10 +48,19 @@ export default function ContactPage() {
               city="Calgary, AB"
               postalCode="T2E 7K1"
               contactTitle="President"
-              contactName="James Smith"
+              contactName="Kelvin Del Pena"
               phone="587-999-7473"
               email="info@risesportscomplex.com"
-              hours={["Everyday 9:00 am - 11:00pm", ``]}
+              hours={[
+                "Monday 9:00 am - 11:00 pm",
+                "Tuesday 9:00 am - 11:00 pm",
+                "Wednesday 9:00 am - 11:00 pm",
+                "Thursday 9:00 am - 11:00 pm",
+                "Friday 9:00 am - 11:00 pm",
+                "Saturday 9:00 am - 11:00 pm",
+                "Sunday 9:00 am - 11:00 pm",
+              ]}
+
             />
           </div>
           <div>

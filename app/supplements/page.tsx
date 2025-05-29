@@ -16,6 +16,7 @@ import CountdownTimer from "@/components/countdown-timer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { ChevronDown } from "lucide-react";
 import NewsletterSection from "@/components/newsletter-form";
+import RecaptchaContactForm from "@/components/contactForm";
 
 
 export default function SupplementsPage() {
@@ -281,17 +282,27 @@ export default function SupplementsPage() {
       <SectionContainer>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ContactInfo
+            className="h-full"
             address="RISE SPORTS COMPLEX, #01, 33 St NE"
             city="Calgary, AB"
             postalCode="T2E 7K1"
             contactTitle="President"
-            contactName="James Smith"
+            contactName="Kelvin Del Pena"
             phone="587-999-7473"
             email="info@risesportscomplex.com"
-            hours={["Mon-Fri 8am-5:30pm", "Saturday Closed", "Sunday Closed"]}
+            hours={[
+            "Monday 9:00 am - 11:00 pm",
+             "Tuesday 9:00 am - 11:00 pm",
+             "Wednesday 9:00 am - 11:00 pm",
+             "Thursday 9:00 am - 11:00 pm",
+             "Friday 9:00 am - 11:00 pm",
+             "Saturday 9:00 am - 11:00 pm",
+             "Sunday 9:00 am - 11:00 pm",
+            ]}
+          
           />
 
-          <ContactForm />
+        <RecaptchaContactForm /> {/* ✅ Drop-in replacement */}
         </div>
       </SectionContainer>
 
