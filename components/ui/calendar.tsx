@@ -20,6 +20,8 @@ import { getUpcomingGames } from "@/services/gamesCalendar";
 import { getOtherEvents, getCourseEvents } from "@/services/eventsCalendar";
 import { Game } from "@/types/game";
 import { Event } from "@/types/event";
+import { EventModal } from "@/components/event-modal"; 
+
 
 export default function SimpleCalendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -27,6 +29,19 @@ export default function SimpleCalendar() {
   const [games, setGames] = useState<Game[]>([]);
   const [courses, setCourses] = useState<Event[]>([]);
   const [others, setOthers] = useState<Event[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Game | Event | null>(null);
+
+  const openModal = (event: Game | Event) => {
+    setSelectedEvent(event);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedEvent(null);
+  };
+
 
   useEffect(() => {
     getUpcomingGames().then(setGames).catch(console.error);
@@ -181,7 +196,8 @@ export default function SimpleCalendar() {
           {items.map((item) => (
             <li
               key={item.id}
-              className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200"
+              onClick={() => openModal(item)}
+              className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200 cursor-pointer"
             >
               <div className="font-medium mb-1">
                 {"home_team_name" in item
@@ -224,6 +240,7 @@ export default function SimpleCalendar() {
         {renderEvents("Games", filteredGames, "bg-yellow-500")}
         {renderEvents("Courses", filteredCourses, "bg-blue-500")}
         {renderEvents("Other", filteredOthers, "bg-green-500")}
+        <EventModal isOpen={modalOpen} onClose={closeModal} event={selectedEvent} />
       </div>
     </div>
   );
