@@ -22,6 +22,6 @@ export async function getCoaches(): Promise<Coach[]> {
     first_name: c.first_name ?? "",
     last_name: c.last_name ?? "",
     role_name: c.role_name ?? "",
-    photo_url: c.photo_url ?? "",
+    photo_url: c.photo_url ?? "apple-touch-icon.png", // Default fallback
   }));
 }
