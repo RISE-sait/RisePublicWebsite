@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SectionContainer } from "@/components/ui/section-container";
@@ -8,8 +7,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ReviewGrid } from "@/components/ui/review-grid";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
-import { ThreeDCard } from "@/components/ui/3d-card";
 import { REVIEWS } from "@/lib/constants";
+import Link from "next/link";
 
 export default function ReviewsPage() {
   return (
@@ -40,34 +39,21 @@ export default function ReviewsPage() {
       </ParallaxSection>
 
       <SectionContainer animate={false} className="py-16">
-        {/* Google Reviews Header */}
-        <ThreeDCard className="mb-12">
-          <div className="bg-white text-black p-6 rounded-lg flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <Image
-                src="/placeholder.svg?height=50&width=50"
-                alt="Google logo"
-                width={32}
-                height={32}
-                className="object-contain"
-              />
-              <div>
-                <span className="font-semibold block">Google Reviews</span>
-                <span className="text-sm text-gray-500">5.0 ★★★★★ (125)</span>
-              </div>
-            </div>
-            <Button
-              variant="default"
-              className="bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Review us on Google
-            </Button>
-          </div>
-        </ThreeDCard>
-
         {/* Reviews Grid */}
         <SectionHeading title="What People Are Saying" centered />
         <ReviewGrid reviews={REVIEWS} />
+
+        {/* Centered Button */}
+        <div className="flex justify-center mt-8">
+          <Button
+            variant="default"
+            className="bg-[#ffb800] hover:bg-[#ffb800]/70 text-black"
+          >
+            <Link href="https://www.google.com/search?sca_esv=d8cc6752d7fc5bba&rlz=1C1GEWG_enCA982CA983&biw=1920&bih=945&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E1nOldwLgUDi9DThnhNwcxu9zaruL0YQoEWhsSDCMnOqMbsqLxL5y68xGATWhOaDs4wWn6-5gZuRiy8LV_Y3x03N0Ps0PMiFm2jMABZvSOZdRNsOmg%3D%3D&q=RISE+Sports+Complex+Reviews&sa=X&ved=2ahUKEwjQqqCJocqNAxUiBjQIHQSxK-gQ0bkNegQIIxAE">
+              View More / Review us on Google
+            </Link>
+          </Button>
+        </div>
       </SectionContainer>
     </div>
   );

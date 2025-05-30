@@ -445,17 +445,71 @@ export const PLAN_COMPARISON = [
     fullYear: true,
     seasonal: false,
     jrRise: false,
-  }
+  },
 ];
 
-export const REVIEWS = Array.from({ length: 16 }).map((_, index) => ({
-  id: index + 1,
-  rating: 5,
-  text: "Amazing facility and great coaches. The basketball program is top-notch and my kids love it!",
-  author: "John Smith",
-  date: "2 days ago",
-  avatar: "/placeholder.svg?height=50&width=50",
-}));
+export const REVIEWS = [
+  {
+    id: 1,
+    rating: 5,
+    text: `Rise is not just a facility… Rise is our family ‘s home since 2018. 
+    We appreciate how they make a big impact to our son’s development as an athlete and as a human being. 
+    From basketball fundamentals, in-house league, strength conditioning and basketball IQ development. 
+    Rise helps us parent our son with sense of community that uplift and support one another. 
+    Shout out to all the Coaches that make a big impact since the beginning Coach K, Ale, Coach Ricky, Coach Lashiya, Coach Norman, Coach Lloyd, Coach Steven. 
+    With the Rise facility we know that there will be lots of family like ours that will find this their HOME. Thank you RISE FAM.`,
+    author: "PeFam Adventure",
+    date: "May 2025",
+  },
+  {
+    id: 2,
+    rating: 5,
+    text: `Our two boys, Tyler and Tristan, have been with Rise Basketball since they were 5 and 7 years old! 
+    From the very beginning, the sense of community has been so welcoming, and the coaches are both knowledgeable and inspiring. 
+    Now that they have a state-of-the-art facility, it truly is the full package. We especially love the strength training, which helps a lot their basketball development. 
+    Rise Basketball is a place where players not only improve their skills but also build lasting friendships with fellow athletes. 
+    We’re incredibly grateful to have been part of the Rise family since day one. 
+    Our kids absolutely love it here, and we couldn’t imagine a better program for them. 
+    Highly recommend Rise Basketball to anyone looking for a top-notch basketball experience!`,
+    author: "Alex Briones",
+    date: "January 2025",
+  },
+  {
+    id: 3,
+    rating: 5,
+    text: `Rise Basketball is an incredible organization that truly cares about the development of young athletes both on and off the court. 
+    The coaches are knowledgeable, supportive, and passionate about helping players grow in skill, confidence, and character. 
+    The facility is top-notch, with everything you need to excel. 
+    Whether you're just starting out or looking to take your game to the next level, 
+    Rise Basketball is the place to be. Highly recommended!`,
+    author: "Sunny Sarpal",
+    date: "December 2024",
+  },
+  {
+    id: 4,
+    rating: 5,
+    text: `Amazing customer service. Everyone is so friendly, love the environment. Lovely man named Jakub helped me out and I feel comfortable here. 
+    Helped me with my skills and confidence. Amazing price for food and drinks. I really recommend all year you get a lot of benefits`,
+    author: "Ezana Teka",
+    date: "May 2025",
+  },
+  {
+    id: 5,
+    rating: 5,
+    text: `Rise is one of the best clubs in Calgary and there program for newcomers in basketball is amazing. 
+    Coach josh is a tremendous coach who pushes us hard and doesn’t just treat us like his job, but like family. 
+    I highly recommend rise basketball for a club team and coach josh for mentoring.`,
+    author: "Jahan Dhanjal",
+    date: "April 2025",
+  },
+  {
+    id: 6,
+    rating: 5,
+    text: `This is definitely one of the best facilities in Alberta. It’s so clean and an amazing vibe`,
+    author: "Declan Maguire",
+    date: "January 2025",
+  },
+];
 
 export const BASKETBALL_PAGE_IMAGES = [
   { alt: "RISEgirls1", src: "/basketball-page-images/bballpage1.jpg" },
