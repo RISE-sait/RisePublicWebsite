@@ -21,17 +21,40 @@ export default function PerformancePage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
-
   const galleryImages = [
-  { src: "/performance-page-images/gymphoto1.jpg", alt: "Modern weight training room at Rise Performance gym in Calgary" },
-  { src: "/performance-page-images/gymphoto2.jpg", alt: "High-end gym equipment for strength training in Calgary" },
-  { src: "/performance-page-images/gymphoto3.jpg", alt: "Full dumbbell rack in Calgary strength training facility" },
-  { src: "/performance-page-images/gymphoto4.jpg", alt: "Calgary-based strength zone with squat racks and barbells" },
-  { src: "/performance-page-images/gymphoto5.jpg", alt: "Cardio and resistance machines at Rise Performance in Calgary" },
-  { src: "/performance-page-images/gymphoto6.jpg", alt: "Functional fitness training area at Calgary gym facility" },
-  { src: "/performance-page-images/gymphoto7.jpg", alt: "Free weight section at Calgary’s Rise Performance gym" },
-  { src: "/performance-page-images/gymphoto8.jpg", alt: "Open gym layout for athletes at Rise Performance Calgary" },
-];
+    {
+      src: "/performance-page-images/gymphoto1.jpg",
+      alt: "Modern weight training room at Rise Performance gym in Calgary",
+    },
+    {
+      src: "/performance-page-images/gymphoto2.jpg",
+      alt: "High-end gym equipment for strength training in Calgary",
+    },
+    {
+      src: "/performance-page-images/gymphoto3.jpg",
+      alt: "Full dumbbell rack in Calgary strength training facility",
+    },
+    {
+      src: "/performance-page-images/gymphoto4.jpg",
+      alt: "Calgary-based strength zone with squat racks and barbells",
+    },
+    {
+      src: "/performance-page-images/gymphoto5.jpg",
+      alt: "Cardio and resistance machines at Rise Performance in Calgary",
+    },
+    {
+      src: "/performance-page-images/gymphoto6.jpg",
+      alt: "Functional fitness training area at Calgary gym facility",
+    },
+    {
+      src: "/performance-page-images/gymphoto7.jpg",
+      alt: "Free weight section at Calgary’s Rise Performance gym",
+    },
+    {
+      src: "/performance-page-images/gymphoto8.jpg",
+      alt: "Open gym layout for athletes at Rise Performance Calgary",
+    },
+  ];
 
   return (
     <div className="flex flex-col">
@@ -41,7 +64,7 @@ export default function PerformancePage() {
         subtitle="Get Fit & Strong with Comprehensive Training"
         description="Whether you're a young athlete or an adult, our group classes are designed to help you get fit, strong, and ready for the day ahead."
         videoSrc="/headervideos/performancehead.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
         // primaryButtonHref="/allmemberships"
         primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
@@ -237,25 +260,23 @@ export default function PerformancePage() {
         <SectionHeading title="Facility Gallery" centered />
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {galleryImages.map((img, index) => (
-          <div
-            key={index}
-            className="relative h-[150px] overflow-hidden rounded-lg border border-gray-800 group hover:border-[#ffb800]/50 transition-all duration-300 shadow-md"
-          >
-            <img
-              src={img.src}
-              alt={img.alt}
-              className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-              <p className="text-xs text-white font-medium">
-                {img.alt}
-              </p>
+          {galleryImages.map((img, index) => (
+            <div
+              key={index}
+              className="relative h-[150px] overflow-hidden rounded-lg border border-gray-800 group hover:border-[#ffb800]/50 transition-all duration-300 shadow-md"
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <p className="text-xs text-white font-medium">{img.alt}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </SectionContainer>
     </div>
   );

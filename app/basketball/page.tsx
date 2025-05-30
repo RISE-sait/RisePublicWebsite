@@ -42,7 +42,7 @@ export default function BasketballPage() {
         subtitle="Join Calgary's premier basketball community"
         description="Year-round training, leagues, and development for players of all ages and skill levels."
         videoSrc="/headervideos/basketballhead.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
         // primaryButtonHref="/allmemberships"
         primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
@@ -355,15 +355,15 @@ export default function BasketballPage() {
           <UpcomingGamesSection columns={5} limit={10} />
 
           <div className="text-center mt-8">
-          <Link href="/games">
-            <Button
-              variant="link"
-              className="text-[#ffb800] hover:text-[#e0a300] hover:scale-105 transition-all"
-            >
-              VIEW ALL GAMES
-            </Button>
-          </Link>
-        </div>
+            <Link href="/games">
+              <Button
+                variant="link"
+                className="text-[#ffb800] hover:text-[#e0a300] hover:scale-105 transition-all"
+              >
+                VIEW ALL GAMES
+              </Button>
+            </Link>
+          </div>
         </SectionContainer>
       </ParallaxSection>
 

@@ -25,7 +25,7 @@ export default function BarberPage() {
         subtitle="Experience the Game, Style, and Culture"
         description="Get Fresh Fades While Watching Live Basketball. Courtside Cuts is where style meets the game."
         videoSrc="/headervideos/barberhead.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="BOOK NOW"
         primaryButtonHref="#book"
         secondaryButtonText="VIEW GALLERY"
