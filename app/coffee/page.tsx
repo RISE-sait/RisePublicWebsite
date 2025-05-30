@@ -27,7 +27,7 @@ export default function CoffeePage() {
         subtitle="Protein Shakes & Healthy Snacks"
         description="Whether you're gearing up for a workout, grabbing a quick treat, or enjoying some downtime, BOOM Coffee has something for everyone"
         videoSrc="/particlebackground.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="COMING SOON"
         primaryButtonHref="#coming-soon"
         secondaryButtonText="Learn More"

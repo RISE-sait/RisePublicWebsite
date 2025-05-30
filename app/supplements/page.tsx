@@ -18,7 +18,6 @@ import { ChevronDown } from "lucide-react";
 import NewsletterSection from "@/components/newsletter-form";
 import RecaptchaContactForm from "@/components/contactForm";
 
-
 export default function SupplementsPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
@@ -30,7 +29,7 @@ export default function SupplementsPage() {
         subtitle="Elevate Your Game with Clean, Customized, Canadian-Approved Supplements"
         description="From protein powders to magnesium and beyond, we're creating clean, high-quality supplements that meet Canadian standards."
         videoSrc="/particlebackground.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN THE WAITLIST"
         primaryButtonHref="#waitlist"
         secondaryButtonText="COMING SOON"
@@ -248,11 +247,15 @@ export default function SupplementsPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-6"
             >
-              At RISE Academy of Sport and Education, we support athletes by providing expert guidance on nutrition,
-              supplementation, and performance health. Through the ProRise Innovation Group, you'll gain access to 
-              cutting-edge insights and practical knowledge designed to help you fuel your body effectively. 
-              Whether you're learning how to optimize your hydration, choose the right supplements, or build sustainable eating habits,
-              we're here to empower you with the tools and science-backed information to perform at your best on and off the field.
+              At RISE Academy of Sport and Education, we support athletes by
+              providing expert guidance on nutrition, supplementation, and
+              performance health. Through the ProRise Innovation Group, you'll
+              gain access to cutting-edge insights and practical knowledge
+              designed to help you fuel your body effectively. Whether you're
+              learning how to optimize your hydration, choose the right
+              supplements, or build sustainable eating habits, we're here to
+              empower you with the tools and science-backed information to
+              perform at your best on and off the field.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -291,18 +294,16 @@ export default function SupplementsPage() {
             phone="587-999-7473"
             email="info@risesportscomplex.com"
             hours={[
-            "Monday 9:00 am - 11:00 pm",
-             "Tuesday 9:00 am - 11:00 pm",
-             "Wednesday 9:00 am - 11:00 pm",
-             "Thursday 9:00 am - 11:00 pm",
-             "Friday 9:00 am - 11:00 pm",
-             "Saturday 9:00 am - 11:00 pm",
-             "Sunday 9:00 am - 11:00 pm",
+              "Monday 9:00 am - 11:00 pm",
+              "Tuesday 9:00 am - 11:00 pm",
+              "Wednesday 9:00 am - 11:00 pm",
+              "Thursday 9:00 am - 11:00 pm",
+              "Friday 9:00 am - 11:00 pm",
+              "Saturday 9:00 am - 11:00 pm",
+              "Sunday 9:00 am - 11:00 pm",
             ]}
-          
           />
-
-        <RecaptchaContactForm /> {/* ✅ Drop-in replacement */}
+          <RecaptchaContactForm /> {/* ✅ Drop-in replacement */}
         </div>
       </SectionContainer>
 

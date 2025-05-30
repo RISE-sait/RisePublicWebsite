@@ -31,45 +31,67 @@ export default function Home() {
           content="Join RISE Basketball in Calgary for year-round youth and adult basketball programs, elite coaching, open gym access, and a state-of-the-art training facility."
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="RISE Basketball | Calgary’s Elite Basketball Facility" />
-        <meta property="og:description" content="Youth basketball programs, elite coaching, and gym access in Calgary. Join the RISE movement today." />
+        <meta
+          property="og:title"
+          content="RISE Basketball | Calgary’s Elite Basketball Facility"
+        />
+        <meta
+          property="og:description"
+          content="Youth basketball programs, elite coaching, and gym access in Calgary. Join the RISE movement today."
+        />
         <meta property="og:image" content="/og-image.jpg" />
         {/* need to update this url */}
-        <meta property="og:url" content="https://www.risesportscomplex.com" /> 
+        <meta property="og:url" content="https://www.risesportscomplex.com" />
         <meta name="twitter:card" content="summary_large_image" />
         {/* need to update this url */}
         <link rel="canonical" href="https://www.risesportscomplex.com" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SportsActivityLocation",
-          "name": "RISE Basketball",
-             /*need to update this url */
-          "image": "https://www.risesportscomplex.com/og-image.jpg",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "401 33 Street NE",
-            "addressLocality": "Calgary",
-            "addressRegion": "AB",
-            "postalCode": "T2A 7R3",
-            "addressCountry": "CA"
-          },
-          /*need to update this url */
-          "url": "https://www.risesportscomplex.com",
-          "telephone": "+1-587-999-7473",
-          "openingHours": "Mo-Su 09:00-23:00",
-        }) }} />
-           {/* Favicon */}
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SportsActivityLocation",
+              name: "RISE Basketball",
+              /*need to update this url */
+              image: "https://www.risesportscomplex.com/og-image.jpg",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "401 33 Street NE",
+                addressLocality: "Calgary",
+                addressRegion: "AB",
+                postalCode: "T2A 7R3",
+                addressCountry: "CA",
+              },
+              /*need to update this url */
+              url: "https://www.risesportscomplex.com",
+              telephone: "+1-587-999-7473",
+              openingHours: "Mo-Su 09:00-23:00",
+            }),
+          }}
+        />
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
 
-          {/* Apple Touch Icon */}
-          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        {/* Apple Touch Icon */}
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
 
-          {/* Site Manifest */}
-          <link rel="manifest" href="/site.webmanifest" />
-          <meta name="theme-color" content="#ffb800" />
+        {/* Site Manifest */}
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#ffb800" />
       </Head>
-      <h1 className="sr-only">RISE Basketball Calgary – Youth and Adult Basketball Programs</h1>
+      <h1 className="sr-only">
+        RISE Basketball Calgary – Youth and Adult Basketball Programs
+      </h1>
 
       {/* Hero Section */}
       <VideoHero
@@ -77,7 +99,7 @@ export default function Home() {
         subtitle="Year-Round Basketball Membership for All Ages"
         description="Join Calgary's premier basketball community for top-tier coaching, skill training, leagues, and exclusive programs for all ages."
         videoSrc="/headervideos/mainhead.mp4"
-        fallbackImageSrc="/placeholder.svg?height=1080&width=1920"
+        fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
         // primaryButtonHref="/allmemberships"
         primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
@@ -118,7 +140,8 @@ export default function Home() {
               animation="wave"
             />
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Join thousands of athletes who’ve transformed their game at Calgary’s leading basketball training facility – RISE.
+              Join thousands of athletes who’ve transformed their game at
+              Calgary’s leading basketball training facility – RISE.
             </p>
           </div>
 
