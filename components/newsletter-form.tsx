@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 interface NewsletterSectionProps {
   tag?: string; // optional tag prop
 }
@@ -16,41 +18,43 @@ export default function NewsletterSection({
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus("loading");
 
-    try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, tag }),
+  try {
+    const res = await fetch(`${apiBaseUrl}/contact/newsletter`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, tag }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      toast({
+        title: "Subscription successful",
+        description: data.message || "Thanks for subscribing!",
       });
-      const data = await res.json();
-
-      if (res.ok) {
-        toast({
-          title: "Subscription successful",
-          description: data.message || "Thanks for subscribing!",
-        });
-        setEmail("");
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Subscription failed",
-          description: data.error || "Something went wrong.",
-        });
-      }
-    } catch {
+      setEmail("");
+    } else {
       toast({
         variant: "destructive",
-        title: "Network error",
-        description: "Please check your connection and try again.",
+        title: "Subscription failed",
+        description: data.error || "Something went wrong.",
       });
-    } finally {
-      setStatus("idle");
     }
-  };
+  } catch {
+    toast({
+      variant: "destructive",
+      title: "Network error",
+      description: "Please check your connection and try again.",
+    });
+  } finally {
+    setStatus("idle");
+  }
+};
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 relative z-10">
