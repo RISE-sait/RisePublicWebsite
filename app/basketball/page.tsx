@@ -160,9 +160,9 @@ export default function BasketballPage() {
             {/* your 3‑coach grid */}
             <CoachesSection
               ids={[
-                "151453fe-b666-44f4-b4da-c8a216a7e5b3",
-                "f58fe0c7-b5ad-4433-9ec0-84d64863dbf8",
-                "bf62b2a5-71bb-46fe-91fe-a44e4e65848b",
+                "caaaa6ce-0f58-4531-8c09-c42965a90634",
+                "617b7a57-a677-42d6-9d41-f483aea0b702",
+                "46e0e72f-7141-4faa-bfa3-c2d8371b4dd1",
               ]}
               showHeadings={false}
             />
