@@ -1,50 +1,82 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function CookiesPage() {
   return (
-    <main className="relative flex flex-col items-center justify-center text-center min-h-screen px-6 py-20 bg-black text-white bg-cover bg-center">
-      <h1 className="text-4xl font-extrabold text-yellow-500 mb-6">
-        Cookie Policy
-      </h1>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header Section */}
+      <div className="relative bg-gradient-to-b from-[#ffb800]/20 to-black py-20 px-6 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+        >
+          Cookie Policy
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-xl text-gray-300 max-w-2xl mx-auto"
+        >
+          How we use cookies to enhance your experience, personalize content,
+          and analyze site traffic.
+        </motion.p>
+      </div>
 
-      <h2 className="text-xl font-semibold mb-4 text-white">
-        How We Use Cookies
-      </h2>
+      {/* Content Section */}
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-semibold mb-4 text-white">
+          How We Use Cookies
+        </h2>
 
-      <p className="max-w-2xl text-lg mb-6">
-        This policy outlines how Rise Sports Complex uses cookies and similar technologies to improve your experience, personalize content, and analyze traffic across our website.
-      </p>
+        <p className="text-lg mb-6">
+          This policy outlines how Rise Sports Complex uses cookies and similar
+          technologies to improve your experience, personalize content, and
+          analyze traffic across our website.
+        </p>
 
-      <ul className="list-disc list-inside text-left max-w-xl mb-6 space-y-3 text-base">
-        <li>
-          <strong>Essential Cookies:</strong> Required for core functionality such as page navigation and secure access.
-        </li>
-        <li>
-          <strong>Performance Cookies:</strong> Help us understand how visitors interact with our website, so we can improve functionality and speed.
-        </li>
-        <li>
-          <strong>Marketing Cookies:</strong> Used to deliver relevant advertisements and track engagement with promotional content.
-        </li>
-      </ul>
+        <ul className="list-disc list-inside text-base mb-6 space-y-3 text-gray-200">
+          <li>
+            <strong>Essential Cookies:</strong> Required for core functionality
+            such as page navigation and secure access.
+          </li>
+          <li>
+            <strong>Performance Cookies:</strong> Help us understand how
+            visitors interact with our website, so we can improve functionality
+            and speed.
+          </li>
+          <li>
+            <strong>Marketing Cookies:</strong> Used to deliver relevant
+            advertisements and track engagement with promotional content.
+          </li>
+        </ul>
 
-      <p className="max-w-2xl text-base text-gray-400 mb-6">
-        By using our site, you consent to our use of cookies. You can manage your cookie preferences at any time through your browser settings.
-      </p>
+        <p className="text-base text-gray-400 mb-6">
+          By using our site, you consent to our use of cookies. You can manage
+          your cookie preferences at any time through your browser settings.
+        </p>
 
-      <p className="text-sm text-gray-500 mb-10">
-        Last updated: {new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </p>
+        <p className="text-sm text-gray-500 mb-10">
+          Last updated:{" "}
+          {new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
 
-      <Link
-        href="/"
-        className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded transition"
-      >
-        Back to Home
-      </Link>
-    </main>
+        <div className="text-center">
+          <Link
+            href="/"
+            className="inline-block bg-[#ffb800] hover:bg-[#e0a300] text-black font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
