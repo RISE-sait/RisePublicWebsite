@@ -393,10 +393,10 @@ export const PLAN_COMPARISON = [
     jrRise: false,
   },
   {
-    feature: "RISE Game-Day Jersey & Shorts (Included in Jr. Rise Package)",
+    feature: "RISE Game-Day Jersey & Shorts",
     fullYear: true,
     seasonal: true,
-    jrRise: true,
+    jrRise: false,
   },
   {
     feature: "Exclusive RISE Gear Package – Backpack, Water Bottle & Keychain",
