@@ -30,7 +30,7 @@ export const FOOTER_LINKS = {
   company: [
     { label: "RISE Basketball", href: "/basketball" },
     { label: "RISE Performance", href: "/performance" },
-    { label: "Game Schedule", href: "/schedule" },
+    { label: "Game Schedule", href: "/basketball#programs" },
     { label: "BOOM Coffee", href: "/coffee" },
     { label: "ProRise Nutrition", href: "/supplements" },
     { label: "Contact Us", href: "/contact" },
