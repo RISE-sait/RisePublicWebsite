@@ -116,10 +116,12 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, event }
                 {event.description && (
                   <div className="p-4 bg-gray-800/50 rounded-lg">
                     <div className="flex items-start gap-3">
-                      <Info className="h-5 w-5 text-yellow-400 mt-0.5" />
+                      <Info className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-1" />
                       <div>
                         <p className="text-gray-400 text-sm mb-1">Details</p>
-                        <p className="text-gray-300">{event.description}</p>
+                        <p className="text-gray-300 whitespace-pre-line leading-relaxed">
+                        {event.description}
+                        </p>
                       </div>
                     </div>
                   </div>

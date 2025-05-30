@@ -7,11 +7,14 @@ import { Event } from "@/types/event"; // our front-end Event type
 interface EventApiDto {
   id: string;
 
+
   // Nested program object with its own id, name, and type
   program: {
     id: string;
     name: string;
     type: string;
+    description?: string; // <--- Add this line
+
   };
 
   // Nested location object with id, display name, and address
@@ -82,6 +85,8 @@ async function fetchEventsByType(type: string): Promise<Event[]> {
       end_time: end_time ?? "",
       created_by: `${e.created_by.first_name} ${e.created_by.last_name}`,
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
+      description: e.program.description ?? "",
+
     };
   });
 
