@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://risesportscomplex.com
+
+# Sitemaps
+Sitemap: https://risesportscomplex.com/sitemap.xml
