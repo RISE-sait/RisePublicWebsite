@@ -17,10 +17,60 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 import { ChevronDown } from "lucide-react";
 import NewsletterSection from "@/components/newsletter-form";
 import RecaptchaContactForm from "@/components/contactForm";
+import Head from "next/head";
+import Image from "next/image";
+
 
 export default function SupplementsPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
+
+  <Head>
+  <title>ProRise Supplements | Clean, Canadian-Approved Nutrition Products</title>
+  <meta name="description" content="Explore ProRise Supplements, including protein powders, magnesium, and Arctic Chilled Water — all designed to meet Canadian health standards and athletic performance needs." />
+  <link rel="canonical" href="https://risesportscomplex.com/supplements" />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="ProRise Supplements | Clean, Canadian-Approved Nutrition Products" />
+  <meta property="og:description" content="Protein powders, magnesium, and filtered water — made for athletes, approved for Canadians. Launching Fall 2026 at RISE Sports Complex." />
+  <meta property="og:image" content="https://risesportscomplex.com/supplements-page-images/arcticsoon.png" />
+  <meta property="og:url" content="https://risesportscomplex.com/supplements" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Store",
+      name: "ProRise Supplements",
+      image: "https://risesportscomplex.com/supplements-page-images/arcticsoon.png",
+      url: "https://risesportscomplex.com/supplements",
+      telephone: "+1-587-999-7473",
+      priceRange: "$$",
+      openingHours: "Mo-Su 09:00-23:00",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "401 33 Street NE",
+        addressLocality: "Calgary",
+        addressRegion: "AB",
+        postalCode: "T2A 7R3",
+        addressCountry: "CA"
+      },
+      sameAs: [
+        "https://instagram.com/risebasketball",
+        "https://facebook.com/risebasketball"
+      ],
+    }),
+  }}
+/>
+
+</Head>
+
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -64,9 +114,11 @@ export default function SupplementsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative">
             <div className="h-full">
-              <img
+              <Image
                 src="/supplements-page-images/arcticsoon.png"
                 alt="Arctic Chilled Water bottle"
+                width={600}
+                height={400}
                 className="object-cover rounded-lg h-full w-full"
               />
             </div>
