@@ -16,6 +16,9 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { PerformanceMembershipsSection } from "@/components/performanceMembershipSection";
 import { ParticleBackground } from "@/components/ui/particle-background";
+import Head from "next/head";
+import Image from "next/image";
+
 
 export default function PerformancePage() {
   const { scrollYProgress } = useScroll();
@@ -55,6 +58,56 @@ export default function PerformancePage() {
       alt: "Open gym layout for athletes at Rise Performance Calgary",
     },
   ];
+
+  <Head>
+  <title>RISE Performance Gym | Functional Fitness & Group Classes in Calgary</title>
+  <meta name="description" content="Train at RISE Performance, a 20,000 sqft Calgary fitness facility offering functional fitness, group classes, open gym access, and certified coaches for youth and adults." />
+  <link rel="canonical" href="https://risesportscomplex.com/performance" />
+
+  {/* Open Graph for social sharing */}
+  <meta property="og:title" content="RISE Performance Gym | Functional Fitness & Group Classes in Calgary" />
+  <meta property="og:description" content="Strength, conditioning, and open gym access at RISE Performance — Calgary’s elite fitness space for youth and adults." />
+  <meta property="og:image" content="https://risesportscomplex.com/performance-page-images/performancewhyrise.jpg" />
+  <meta property="og:url" content="https://risesportscomplex.com/performance" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HealthClub",
+      name: "RISE Performance",
+      image: "https://risesportscomplex.com/performance-page-images/performancewhyrise.jpg",
+      url: "https://risesportscomplex.com/performance",
+      telephone: "+1-587-999-7473",
+      priceRange: "$$",
+      openingHours: "Mo-Su 06:00-23:00",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "401 33 Street NE",
+        addressLocality: "Calgary",
+        addressRegion: "AB",
+        postalCode: "T2A 7R3",
+        addressCountry: "CA"
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 51.0574,
+        longitude: -113.9956
+      },
+      sameAs: [
+        "https://instagram.com/risebasketball",
+        "https://facebook.com/risebasketball"
+      ]
+    }),
+  }}
+/>
+
+</Head>
+
 
   return (
     <div className="flex flex-col">
@@ -112,7 +165,7 @@ export default function PerformancePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px]">
             <div className="h-full">
-              <img
+              <Image
                 src="/performance-page-images/performancewhyrise.jpg"
                 alt="Fitness training"
                 className="object-fill rounded-lg h-full w-full"
@@ -265,7 +318,7 @@ export default function PerformancePage() {
               key={index}
               className="relative h-[150px] overflow-hidden rounded-lg border border-gray-800 group hover:border-[#ffb800]/50 transition-all duration-300 shadow-md"
             >
-              <img
+              <Image
                 src={img.src}
                 alt={img.alt}
                 className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
