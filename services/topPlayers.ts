@@ -39,7 +39,7 @@ export async function getTopPlayers(limit?: number): Promise<TopPlayer[]> {
     points: p.points ?? 0,
     rebounds: p.rebounds ?? 0,
     assists: p.assists ?? 0,
-    photo_url: p.photo_url,
+    photo_url: p.photo_url ?? "apple-touch-icon.png",
     position: p.position ?? "",
   }));
 }
