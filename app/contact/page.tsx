@@ -8,8 +8,60 @@ import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { GoogleMap } from "@/components/google-map";
 import RecaptchaContactForm from "@/components/contactForm";
+import Head from "next/head";
+
 
 export default function ContactPage() {
+
+  <Head>
+  <title>Contact RISE Sports Complex | Calgary Training & Events Facility</title>
+  <meta name="description" content="Reach out to RISE Sports Complex for questions about memberships, programs, facility rentals, or events. Located in Calgary, AB." />
+  <link rel="canonical" href="https://risesportscomplex.com/contact" />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="Contact RISE Sports Complex | Calgary Training & Events Facility" />
+  <meta property="og:description" content="Need help with booking, training, or facility access? Contact RISE Sports Complex in Calgary. We’re here 7 days a week." />
+  <meta property="og:image" content="https://risesportscomplex.com/contact-page-images/contact.jpg" />
+  <meta property="og:url" content="https://risesportscomplex.com/contact" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SportsActivityLocation",
+      name: "RISE Sports Complex",
+      image: "https://risesportscomplex.com/contact-page-images/contact.jpg",
+      url: "https://risesportscomplex.com/contact",
+      telephone: "+1-587-999-7473",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "401 33 Street NE",
+        addressLocality: "Calgary",
+        addressRegion: "AB",
+        postalCode: "T2E 7K1",
+        addressCountry: "CA"
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 51.0574,
+        longitude: -113.9956
+      },
+      openingHours: [
+        "Mo-Su 09:00-23:00"
+      ],
+      sameAs: [
+        "https://instagram.com/risebasketball",
+        "https://facebook.com/risebasketball"
+      ]
+    }),
+  }}
+/>
+
+</Head>
+
   return (
     <div className="flex flex-col">
       {/* Contact Us Header */}
