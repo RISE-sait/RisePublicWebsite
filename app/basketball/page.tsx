@@ -1,5 +1,6 @@
 "use client";
-
+import Head from "next/head";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
@@ -23,6 +24,8 @@ import { BasketballMembershipsSection } from "@/components/basketballMembershipS
 import { PastGamesSection } from "@/components/pastGamesSection";
 import { ParticleBackground } from "@/components/ui/particle-background";
 
+
+
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
@@ -36,6 +39,40 @@ export default function BasketballPage() {
 
   return (
     <div className="flex flex-col">
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SportsActivityLocation",
+              name: "RISE Basketball",
+              image: "https://www.risesportscomplex.com/og-image.jpg",
+              url: "https://www.risesportscomplex.com",
+              telephone: "+1-587-999-7473",
+              priceRange: "$$",
+              openingHours: "Mo-Su 09:00-23:00",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "401 33 Street NE",
+                addressLocality: "Calgary",
+                addressRegion: "AB",
+                postalCode: "T2A 7R3",
+                addressCountry: "CA"
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 51.0574,
+                longitude: -113.9956
+              },
+              sameAs: [
+                "https://instagram.com/risebasketball",
+                "https://facebook.com/risebasketball"
+              ]
+            }),
+          }}
+        />
+      </Head>
       {/* Hero Section */}
       <VideoHero
         title="ELEVATE YOUR GAME WITH RISE BASKETBALL"
@@ -110,10 +147,12 @@ export default function BasketballPage() {
               <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Youth Development
               </h3>
-              <img
-                src="basketball-page-images/youth.jpg"
-                alt="Youth Development"
-                className="mx-auto mb-4 object-fit rounded-lg h-96"
+              <Image
+                src="/basketball-page-images/youth.jpg"
+                alt="RISE Basketball Youth Program Calgary"
+                className="mx-auto mb-4 object-cover rounded-lg h-96"
+                width={400}
+                height={400}
               />
               <p className="mb-4 text-center">
                 Comprehensive skill development for players ages 5-12, focusing
@@ -125,10 +164,12 @@ export default function BasketballPage() {
               <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Teen Elite
               </h3>
-              <img
+              <Image
                 src="basketball-page-images/teen.jpg"
-                alt="Teen Elite"
+                alt="RISE Teen Elite Basketball Training"
                 className="mx-auto mb-4 object-fit rounded-lg h-96"
+                width={400}
+                height={400}
               />
 
               <p className="mb-4 text-center">
@@ -141,10 +182,12 @@ export default function BasketballPage() {
               <h3 className="text-xl font-bold mb-4 text-[#ffb800] text-center">
                 Adult Leagues
               </h3>
-              <img
+              <Image
                 src="/basketball-page-images/adult.jpg"
-                alt="Adult Leagues"
+                alt="Adult Basketball League Game Calgary"
                 className="mx-auto mb-4 object-fit rounded-lg h-96"
+                width={400}
+                height={400}
               />
               <p className="mb-4 text-center">
                 Competitive and recreational leagues for adults of all skill
@@ -186,7 +229,7 @@ export default function BasketballPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px]">
             <div className="h-full">
-              <img
+              <Image
                 src="/basketball-page-images/bballwhyrise.jpg"
                 alt="Basketball training"
                 className="object-cover rounded-lg h-full w-full object-top"
@@ -329,7 +372,7 @@ export default function BasketballPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* single image, full width on mobile */}
           <div className="w-full h-auto md:h-[600px] relative">
-            <img
+            <Image
               src="/basketball-page-images/summerleague.jpg"
               alt="Summer League"
               className="h-full object-cover rounded-lg"
