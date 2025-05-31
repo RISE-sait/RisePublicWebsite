@@ -13,12 +13,56 @@ import { BARBER_SERVICES } from "@/lib/constants";
 import { HaircutGallerySection } from "@/components/haircutGallerySection";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
+
 
 export default function BarberPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   return (
     <div className="flex flex-col">
+      <Head>
+        <title>Courtside Cuts | Basketball Barbershop in Calgary – Rise Sports Complex</title>
+        <meta name="description" content="Get a fresh fade while watching live basketball. Courtside Cuts offers premium barber services inside Rise Sports Complex. Call to book your cut today." />
+        <meta property="og:title" content="Courtside Cuts | Basketball Barbershop in Calgary – Rise Sports Complex" />
+        <meta property="og:description" content="Courtside Cuts is Calgary's most unique barbershop – located inside Rise Sports Complex. Watch basketball, rent a chair, or get styled. Call now." />
+        <meta property="og:image" content="https://risesportscomplex.com/barber-page-images/barberchair.jpg" />
+        <meta property="og:url" content="https://risesportscomplex.com/barber" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href="https://risesportscomplex.com/barber" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Barbershop",
+              name: "Courtside Cuts",
+              image: "https://risesportscomplex.com/barber-page-images/barberchair.jpg",
+              url: "https://risesportscomplex.com/barber",
+              telephone: "+1-587-999-7473",
+              priceRange: "$$",
+              openingHours: "Mo-Su 09:00-23:00",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "401 33 Street NE",
+                addressLocality: "Calgary",
+                addressRegion: "AB",
+                postalCode: "T2A 7R3",
+                addressCountry: "CA",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 51.0574,
+                longitude: -113.9956,
+              },
+              sameAs: [
+                "https://instagram.com/risebasketball",
+                "https://facebook.com/risebasketball",
+              ],
+            }),
+          }}
+        />
+      </Head>
       {/* Hero Section */}
       <VideoHero
         title="COURTSIDE CUTS"
@@ -141,9 +185,8 @@ export default function BarberPage() {
               We're a premier Courtside Cut & Style studio designed to showcase
               your style in a setting that brings a professional feel to a cool
               and fun environment. Rent a chair for just $75 per day and have
-              access to all our premium services and products. Additional on
-              social media, including your work can even be booked. Bring your
-              style and join the Courtside culture—We can't wait to see you!
+              access to all our premium services and products. You’ll also be featured on our social media—clients can discover and book you directly
+              . Bring your style and join the Courtside culture—We can't wait to see you!
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
