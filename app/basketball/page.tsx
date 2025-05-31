@@ -24,8 +24,6 @@ import { BasketballMembershipsSection } from "@/components/basketballMembershipS
 import { PastGamesSection } from "@/components/pastGamesSection";
 import { ParticleBackground } from "@/components/ui/particle-background";
 
-
-
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
