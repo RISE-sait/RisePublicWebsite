@@ -25,7 +25,7 @@ export async function getAllMemberships(): Promise<Membership[]> {
         : [],
       learnMoreText: membership.learnMoreText || "Learn More",
       ctaText: membership.ctaText || "Join Now",
-      period: membership.period || "month",
+      period: membership.period || "Bi-Weekly",
       price: membership.price || 0,
       badge: membership.badge || "",
     }));
