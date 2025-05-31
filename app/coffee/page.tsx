@@ -1,4 +1,6 @@
 "use client";
+import Head from "next/head";
+
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
@@ -15,10 +17,56 @@ import { ChevronDown } from "lucide-react";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import NewsletterSection from "@/components/newsletter-form";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CoffeePage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+  <Head>
+  <title>BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2025</title>
+  <meta name="description" content="BOOM Coffee is opening at Rise Sports Complex. Enjoy fresh coffee, protein shakes powered by ProRise Supplements, and healthy snacks crafted for athletes and families." />
+  <link rel="canonical" href="https://risesportscomplex.com/coffee" />
+  
+  {/* Open Graph */}
+  <meta property="og:title" content="BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2025" />
+  <meta property="og:description" content="Fuel your workout and recovery with BOOM Coffee. Protein shakes, clean snacks, and coffee made for athletes, kids, and community." />
+  <meta property="og:image" content="https://risesportscomplex.com/coffee-page-images/boomsoon.png" />
+  <meta property="og:url" content="https://risesportscomplex.com/coffee" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CafeOrCoffeeShop",
+      name: "BOOM Coffee",
+      image: "https://risesportscomplex.com/coffee-page-images/boomsoon.png",
+      url: "https://risesportscomplex.com/coffee",
+      openingHours: "Mo-Su 09:00-21:00",
+      servesCuisine: ["Coffee", "Protein Shakes", "Healthy Snacks"],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "401 33 Street NE",
+        addressLocality: "Calgary",
+        addressRegion: "AB",
+        postalCode: "T2A 7R3",
+        addressCountry: "CA"
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 51.0574,
+        longitude: -113.9956
+      },
+      telephone: "+1-587-999-7473"
+    }),
+  }}
+/>
+
+</Head>
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -59,7 +107,7 @@ export default function CoffeePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[300px]">
             <div className="h-full">
-              <img
+              <Image
                 src="/coffee-page-images/boomsoon.png"
                 alt="Coffee brewing"
                 className="object-cover rounded-lg h-full w-full"
