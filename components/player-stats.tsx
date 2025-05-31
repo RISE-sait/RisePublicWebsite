@@ -23,9 +23,6 @@ export default function PlayerStats() {
         <p className="text-sm text-gray-400">POINT GUARD</p>
       </div>
 
-      <Button variant="default" className="bg-[#ffb800] text-black hover:bg-[#e0a300] w-full">
-        VIEW STATS
-      </Button>
     </div>
   )
 }

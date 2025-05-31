@@ -42,7 +42,7 @@ export function PlayerStatsCard({
       </div>
 
       <div className="mb-6">
-        <h3 className="text-xl font-bold text-white">
+        <h3 className="text-2xl font-bold text-white text-center">
           {name.split(" ").map((part, i) => (
             <span key={i}>
               {part}
@@ -53,12 +53,6 @@ export function PlayerStatsCard({
         <p className="text-sm text-[#ffb800]">{position}</p>
       </div>
 
-      <Button
-        variant="default"
-        className="bg-[#ffb800] text-black hover:bg-[#e0a300] w-full font-bold"
-      >
-        VIEW STATS
-      </Button>
     </div>
   );
 }
