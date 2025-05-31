@@ -110,6 +110,8 @@ export default function CoffeePage() {
               <Image
                 src="/coffee-page-images/boomsoon.png"
                 alt="Coffee brewing"
+                height={500}
+                width={500}
                 className="object-cover rounded-lg h-full w-full"
               />
             </div>

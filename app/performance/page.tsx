@@ -168,6 +168,8 @@ export default function PerformancePage() {
               <Image
                 src="/performance-page-images/performancewhyrise.jpg"
                 alt="Fitness training"
+                height={500}
+                width={500}
                 className="object-fill rounded-lg h-full w-full"
               />
             </div>
@@ -321,6 +323,8 @@ export default function PerformancePage() {
               <Image
                 src={img.src}
                 alt={img.alt}
+                height={500}
+                width={500}
                 className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

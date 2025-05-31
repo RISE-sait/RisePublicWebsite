@@ -230,6 +230,8 @@ export default function BasketballPage() {
               <Image
                 src="/basketball-page-images/bballwhyrise.jpg"
                 alt="Basketball training"
+                width={500}
+                height={500}
                 className="object-cover rounded-lg h-full w-full object-top"
               />
             </div>
@@ -373,6 +375,8 @@ export default function BasketballPage() {
             <Image
               src="/basketball-page-images/summerleague.jpg"
               alt="Summer League"
+              width={500}
+              height={500}
               className="h-full object-cover rounded-lg"
             />
           </div>
