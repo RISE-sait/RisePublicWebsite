@@ -17,7 +17,7 @@ export function useMembershipPlans() {
           badge: m.badge ?? "",
           title: m.name,
           price: STARTING_PRICE[m.id as keyof typeof STARTING_PRICE] ?? m.price,
-          period: m.period ?? "month",
+          period: m.period ?? "Bi-Weekly",
           description: m.description ?? "",
           features: m.benefits ?? [],
           ctaText: m.ctaText ?? "JOIN NOW",
