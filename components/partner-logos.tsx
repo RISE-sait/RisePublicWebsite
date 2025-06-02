@@ -40,12 +40,17 @@ export default function PartnerLogos({ className }: PartnerLogosProps) {
               className="flex items-center mx-8"
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <div className="h-20 w-40 flex items-center justify-center p-2  rounded-lg shadow-lg">
+              <div
+                className={cn(
+                  "flex items-center justify-center p-2 rounded-lg shadow-lg",
+                  logo.name === "Havenz Corporation" ? "h-32 w-64" : "h-20 w-40"
+                )}
+              >
                 <Image
                   src={logo.image}
                   alt={logo.name}
-                  width={160}
-                  height={80}
+                  width={logo.name === "Havenz Corporation" ? 280 : 160}
+                  height={logo.name === "Havenz Corporation" ? 140 : 80}
                   className="object-contain"
                 />
               </div>
