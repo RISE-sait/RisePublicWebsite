@@ -155,7 +155,7 @@ export default function PerformancePage() {
             <StatsCounter value={25} label="CLASSES PER MONTH" delay={0} />
             <StatsCounter value={20000} label="SQ FT FACILITY" delay={0.2} />
             <StatsCounter value={12} label="CERTIFIED TRAINERS" delay={0.4} />
-            <StatsCounter value={500} label="ACTIVE MEMBERS" delay={0.6} />
+            <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0.6} />
           </div>
         </SectionContainer>
       </ParallaxSection>

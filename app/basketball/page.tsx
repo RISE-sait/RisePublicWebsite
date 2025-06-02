@@ -112,10 +112,10 @@ export default function BasketballPage() {
         />
         <SectionContainer>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatsCounter value={250} label="ACTIVE MEMBERS" delay={0} />
-            <StatsCounter value={15} label="PROFESSIONAL COACHES" delay={0.2} />
+            <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0} />
+            <StatsCounter value={71} label="PROFESSIONAL COACHES" delay={0.2} />
             <StatsCounter
-              value={95}
+              value={99}
               label="PLAYER SATISFACTION"
               suffix="%"
               delay={0.4}
