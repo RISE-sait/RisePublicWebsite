@@ -94,7 +94,7 @@ export function MembershipCard({
                   featured ? "text-black/80" : "text-white"
                 )}
               >
-                /Monthly 
+                /Bi-Weekly 
               </span>
             </div>
           </div>
