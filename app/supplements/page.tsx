@@ -341,8 +341,8 @@ export default function SupplementsPage() {
             address="RISE SPORTS COMPLEX, #01, 33 St NE"
             city="Calgary, AB"
             postalCode="T2E 7K1"
-            contactTitle="President"
-            contactName="Kelvin Dela Pena"
+            contactTitle="HQ Contact"
+            contactName="RISE Headquarters"
             phone="587-999-7473"
             email="info@risesportscomplex.com"
             hours={[
