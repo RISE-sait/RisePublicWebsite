@@ -62,7 +62,7 @@ export default function CoachesSection({
               <img
                 src={coach.photo_url}
                 alt={`${coach.first_name} ${coach.last_name}`}
-                className="w-full h-full object-contain rounded-full bg-black"
+                className="w-full h-full object-cover rounded-full bg-black"
               />
             </div>
             <h3 className="text-xl font-bold mb-1">
