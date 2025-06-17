@@ -147,9 +147,9 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCounter value={7734} label="ATHLETES TRAINED" delay={0} />
-            <StatsCounter value={71} label="PROFESSIONAL COACHES" delay={0.2} />
+            <StatsCounter value={51} label="CERTIFIED COACHES" delay={0.2} />
             <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0.2} />
-            <StatsCounter value={15} label="YEARS OF EXCELLENCE" delay={0.6} />
+            <StatsCounter value={10} label="YEARS OF EXCELLENCE" delay={0.6} />
           </div>
         </SectionContainer>
       </ParallaxSection>
