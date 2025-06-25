@@ -96,8 +96,8 @@ export default function Home() {
       {/* Hero Section */}
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
-        subtitle="Year-Round Basketball Membership for All Ages"
-        description="Join Calgary's premier basketball community for top-tier coaching, skill training, leagues, and exclusive programs for all ages."
+        subtitle="Now’s the Best Time to Join RISE"
+        description="Get access to Summer Rise League, Pro Club Training, and more — plus limited-time membership discounts."
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
@@ -322,34 +322,39 @@ export default function Home() {
           <FeatureGrid
             features={[
               {
-                title: "RISE Academy of Sport & Education",
-                description:
-                  "Unlock your full potential with in-depth classes taught by elite coaches, exclusive to full-time members.",
-                image: "/home-page-images/academy.jpg",
+                title: "All Girls Camp",
+                description: "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
+                image: "/home-page-images/all-girls-camp.jpg",
+                buttonText: "Learn More",
+                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "RISE Playground - Rise and PlayStation Lounge",
-                description:
-                  "Play the latest PS5 games, compete in tournaments, and play both on the court and console.",
-                image: "/home-page-images/playground.png",
+                title: "Summer League",
+                description: "Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.",
+                image: "/home-page-images/summer-league.jpg",
+                buttonText: "Join Now",
+                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Group Basketball",
-                description:
-                  "Mixed levels group basketball for all members, with affordable rates for non-members.",
-                image: "/home-page-images/group.jpg",
+                title: "Summer Camps",
+                description: "Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.",
+                image: "/home-page-images/summer-camps.jpg",
+                buttonText: "Register",
+                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Seasonal Training",
-                description:
-                  "Specialized programs for focused coaching during Spring, Summer, Fall or Winter.",
-                image: "/home-page-images/season.jpg",
+                title: "Pro Club",
+                description: "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
+                image: "/home-page-images/pro-club.jpg",
+                buttonText: "Apply Now",
+                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Skills Training",
-                description:
-                  "Improve your game with specialized training on agility, fundamentals, and jumping.",
-                image: "/home-page-images/skill.jpg",
+                title: "JR Rise",
+                description: "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
+                image: "/home-page-images/jr-rise.jpg",
+                buttonText: "Sign Up",
+                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
             ]}
             columns={5}

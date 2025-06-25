@@ -5,6 +5,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+
 
 interface VideoHeroProps {
   title: string;
@@ -45,6 +47,9 @@ export function VideoHero({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -163,11 +168,25 @@ export function VideoHero({
               </motion.p>
             )}
 
+            {/* Summer Promo Block */}
+            {isHomePage && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="bg-white/10 text-white backdrop-blur-md px-4 sm:px-6 py-4 rounded-xl mt-4 mx-auto max-w-xl shadow-lg border border-white/20"
+              >
+                <p className="text-sm sm:text-base text-white text-center">
+                  <span className="font-semibold">Summer Special:</span> Save <span className="font-semibold">$100</span> on Full-Year Memberships with code <span className="font-semibold text-yellow-300">SUMMER100</span>, or take <span className="font-semibold">10% off</span> Seasonal Memberships with code <span className="font-semibold text-yellow-300">SUMMER10</span>.
+                </p>
+              </motion.div>
+            )}
+
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-wrap justify-center gap-4"
+              className="flex flex-wrap justify-center gap-4 mt-5"
             >
               {primaryButtonText && (
                 <Button
