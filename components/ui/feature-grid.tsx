@@ -5,7 +5,10 @@ interface Feature {
   title: string;
   description: string;
   image: string;
+  buttonText?: string;
+  buttonLink?: string;
 }
+
 
 interface FeatureGridProps {
   features: Feature[];
@@ -33,6 +36,8 @@ export function FeatureGrid({
           title={feature.title}
           description={feature.description}
           image={feature.image}
+          buttonText={feature.buttonText}
+          buttonLink={feature.buttonLink}
           index={index}
         />
       ))}
