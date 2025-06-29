@@ -35,11 +35,10 @@ export default function Header() {
     "/",
     "/basketball",
     "/performance",
-    "/barber",
-    "/coffee",
-    "/supplements",
+    "/amenities",
     "/contact",
     "/reviews",
+    "/schedule"
   ];
   const filteredNav = NAVIGATION_ITEMS.filter((i) =>
     availablePages.includes(i.href)
@@ -60,6 +59,11 @@ export default function Header() {
       { href: "/contact", label: "Contact Us" },
       { href: "/reviews", label: "Reviews" },
       { href: "/faq", label: "FAQ" },
+    ],
+    "/amenities": [
+      { href: "/barber", label: "Barber" },
+      { href: "/coffee", label: "Coffee" },
+      { href: "/supplements", label: "Supplements" }, 
     ],
   };
 

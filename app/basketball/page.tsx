@@ -30,7 +30,6 @@ export default function BasketballPage() {
   const [activeTab, setActiveTab] = useState("schedules");
 
   const programTabs = [
-    { id: "schedules", label: "Schedules" },
     { id: "programs", label: "Programs" },
     { id: "coaches", label: "Coaches" },
   ];
@@ -132,12 +131,10 @@ export default function BasketballPage() {
         <div className="mb-8 max-w-3xl mx-auto">
           <TabNavigation
             tabs={programTabs}
-            defaultTab="schedules"
+            defaultTab="coaches"
             onChange={setActiveTab}
           />
         </div>
-
-        {activeTab === "schedules" && <ScheduleCalendar />}
 
         {activeTab === "programs" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -201,7 +198,7 @@ export default function BasketballPage() {
             {/* your 3‑coach grid */}
             <CoachesSection
               ids={[
-                "caaaa6ce-0f58-4531-8c09-c42965a90634",
+                "c5c08016-2437-4e8f-b8fb-b3bf350aa6c4",
                 "617b7a57-a677-42d6-9d41-f483aea0b702",
                 "46e0e72f-7141-4faa-bfa3-c2d8371b4dd1",
               ]}
