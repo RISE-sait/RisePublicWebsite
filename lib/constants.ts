@@ -4,8 +4,10 @@ export const PRIMARY_COLOR = "#ffb800";
 // Update navigation items to match available pages
 export const NAVIGATION_ITEMS = [
   { label: "BASKETBALL", href: "/basketball" },
+  { label: "SCHEDULE", href: "/schedule" },
   { label: "PERFORMANCE", href: "/performance" },
   { label: "BARBER", href: "/barber" },
+  { label: "AMENITIES", href: "/amenities" }, // Uncomment if amenities page is available
 ];
 
 export const SECONDARY_NAV_ITEMS = [

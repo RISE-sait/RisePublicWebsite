@@ -23,7 +23,8 @@ import { Event } from "@/types/event";
 import { EventModal } from "@/components/event-modal"; 
 
 
-export default function SimpleCalendar() {
+
+export default function SimpleCalendar({ selectedFilter }: { selectedFilter: string }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [games, setGames] = useState<Game[]>([]);
@@ -41,6 +42,7 @@ export default function SimpleCalendar() {
     setModalOpen(false);
     setSelectedEvent(null);
   };
+  
 
 
   useEffect(() => {
@@ -48,6 +50,25 @@ export default function SimpleCalendar() {
     getCourseEvents().then(setCourses).catch(console.error);
     getOtherEvents().then(setOthers).catch(console.error);
   }, []);
+
+  useEffect(() => {
+  if (selectedFilter !== "assessments") return;
+
+  const matchingEvent = others.find((o) => {
+    const name = o.program_name?.toLowerCase() || "";
+    return (
+      (name.includes("assessment") || name.includes("tryout")) &&
+      new Date(o.start_time) >= new Date()
+    );
+  });
+
+  if (matchingEvent) {
+    const eventDate = parseISO(matchingEvent.start_time);
+    setCurrentMonth(eventDate);
+    setSelectedDate(eventDate);
+  }
+}, [selectedFilter, others]);
+
 
   const getDayKey = (date: Date) => format(date, "yyyy-MM-dd");
 
@@ -62,6 +83,15 @@ export default function SimpleCalendar() {
 
   const selectedDayKey = getDayKey(selectedDate);
 
+  const filteredAssessments = useMemo(() => {
+  return others.filter((o) => {
+    const name = o.program_name?.toLowerCase() || "";
+    const isMatch = name.includes("assessment") || name.includes("tryout");
+    return isMatch && isEventOnDate(o, selectedDate);
+  });
+}, [others, selectedDate]);
+
+
   const filteredGames = useMemo(
     () =>
       games.filter((g) => getDayKey(parseISO(g.start_time)) === selectedDayKey),
@@ -74,10 +104,17 @@ export default function SimpleCalendar() {
       ),
     [courses, selectedDayKey]
   );
-  const filteredOthers = useMemo(
-    () => others.filter((o) => isEventOnDate(o, selectedDate)),
-    [others, selectedDate]
-  );
+  const filteredOthers = useMemo(() => {
+  return others.filter((o) => {
+    const name = o.program_name?.toLowerCase() || "";
+    const isAssessment = name.includes("assessment") || name.includes("tryout");
+    const isOnDate = isEventOnDate(o, selectedDate);
+
+    return isOnDate && !isAssessment;
+  });
+}, [others, selectedDate]);
+
+
 
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -130,7 +167,23 @@ export default function SimpleCalendar() {
         const hasCourses = courses.some(
           (c) => getDayKey(parseISO(c.start_time)) === key
         );
-        const hasOthers = others.some((o) => isEventOnDate(o, day));
+        const hasAssessments = others.some((o) => {
+          const name = o.program_name?.toLowerCase() || "";
+          return (
+            isEventOnDate(o, day) &&
+            (name.includes("assessment") || name.includes("tryout"))
+          );
+        });
+        const hasOthers = others.some((o) => {
+          if (!isEventOnDate(o, day)) return false;
+
+          const name = o.program_name?.toLowerCase() || "";
+          const isAssessment = name.includes("assessment") || name.includes("tryout");
+
+          return !isAssessment; // only show green dot for non-assessment events
+        });
+
+
 
         const dayCopy = new Date(day);
         days.push(
@@ -153,15 +206,10 @@ export default function SimpleCalendar() {
               {format(day, "d")}
             </span>
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-1">
-              {hasGames && (
-                <span className="w-2 h-2 bg-yellow-500 rounded-full" />
-              )}
-              {hasCourses && (
-                <span className="w-2 h-2 bg-blue-500 rounded-full" />
-              )}
-              {hasOthers && (
-                <span className="w-2 h-2 bg-green-500 rounded-full" />
-              )}
+              {hasGames && <span className="w-2 h-2 bg-yellow-500 rounded-full" />}
+              {hasCourses && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+              {hasAssessments && <span className="w-2 h-2 bg-pink-500 rounded-full" />}
+              {hasOthers && <span className="w-2 h-2 bg-green-500 rounded-full" />}
             </div>
           </div>
         );
@@ -239,6 +287,7 @@ export default function SimpleCalendar() {
         </h2>
         {renderEvents("Games", filteredGames, "bg-yellow-500")}
         {renderEvents("Courses", filteredCourses, "bg-blue-500")}
+        {renderEvents("Assessments", filteredAssessments, "bg-pink-500")}
         {renderEvents("Other", filteredOthers, "bg-green-500")}
         <EventModal isOpen={modalOpen} onClose={closeModal} event={selectedEvent} />
       </div>
