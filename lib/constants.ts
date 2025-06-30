@@ -22,7 +22,7 @@ export const FOOTER_LINKS = {
       label: "info@risesportscomplex.com",
       href: "mailto:info@risesportscomplex.com",
     },
-    { label: "Direct Phone Line: 1-587-999-7473", href: "tel:+15879997473" },
+    { label: "Direct Phone Line: 1-587-899-7473", href: "tel:+15878997473" },
     {
       label:
         "Physical Address: RISE SPORTS COMPLEX, #01 33 St NE Calgary, AB T2E 7K1",
