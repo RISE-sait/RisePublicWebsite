@@ -46,7 +46,7 @@ export default function BasketballPage() {
               name: "RISE Basketball",
               image: "https://www.risesportscomplex.com/og-image.jpg",
               url: "https://www.risesportscomplex.com",
-              telephone: "+1-587-999-7473",
+              telephone: "+1-587-899-7473",
               priceRange: "$$",
               openingHours: "Mo-Su 09:00-23:00",
               address: {

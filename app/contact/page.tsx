@@ -35,7 +35,7 @@ export default function ContactPage() {
       name: "RISE Sports Complex",
       image: "https://risesportscomplex.com/contact-page-images/contact.jpg",
       url: "https://risesportscomplex.com/contact",
-      telephone: "+1-587-999-7473",
+      telephone: "+1-587-899-7473",
       address: {
         "@type": "PostalAddress",
         streetAddress: "401 33 Street NE",
@@ -101,7 +101,7 @@ export default function ContactPage() {
               postalCode="T2E 7K1"
               contactTitle="HQ Contact"
               contactName="RISE Headquarters"
-              phone="587-999-7473"
+              phone="587-899-7473"
               email="info@risesportscomplex.com"
               hours={[
                 "Monday 9:00 am - 11:00 pm",

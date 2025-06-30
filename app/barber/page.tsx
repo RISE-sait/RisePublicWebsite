@@ -39,7 +39,7 @@ export default function BarberPage() {
               name: "Courtside Cuts",
               image: "https://risesportscomplex.com/barber-page-images/barberchair.jpg",
               url: "https://risesportscomplex.com/barber",
-              telephone: "+1-587-999-7473",
+              telephone: "+1-587-899-7473",
               priceRange: "$$",
               openingHours: "Mo-Su 09:00-23:00",
               address: {
@@ -145,7 +145,7 @@ export default function BarberPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="tel:+15879997473">CALL FOR AVAILABILITY</Link>
+                <Link href="tel:+15878997473">CALL FOR AVAILABILITY</Link>
               </Button>
             </motion.div>
           </div>
@@ -199,7 +199,7 @@ export default function BarberPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="tel:+15879997473">CLICK AND CALL TO RENT</Link>
+                <Link href="tel:+15878997473">CLICK AND CALL TO RENT</Link>
               </Button>
             </motion.div>
           </div>
