@@ -38,7 +38,7 @@ export default function Header() {
     "/amenities",
     "/contact",
     "/reviews",
-    "/schedule"
+    "/schedule",
   ];
   const filteredNav = NAVIGATION_ITEMS.filter((i) =>
     availablePages.includes(i.href)
@@ -48,22 +48,36 @@ export default function Header() {
   );
   const allNavItems = [...filteredNav, ...filteredSecondary];
 
+  const navItems = allNavItems.map((item) =>
+    item.href === "/amenities"
+      ? { ...item, href: "/barber", label: "AMENITIES" }
+      : item
+  );
+
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
-      { href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships", label: "Memberships" },
+      {
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        label: "Memberships",
+      },
       { href: "/coaches", label: "Coaches" },
       { href: "/games", label: "Games" },
     ],
-    "/performance": [{ href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships", label: "Memberships" }],
+    "/performance": [
+      {
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        label: "Memberships",
+      },
+    ],
     "/contact": [
       { href: "/contact", label: "Contact Us" },
       { href: "/reviews", label: "Reviews" },
       { href: "/faq", label: "FAQ" },
     ],
-    "/amenities": [
+    "/barber": [
       { href: "/barber", label: "Barber" },
       { href: "/coffee", label: "Coffee" },
-      { href: "/supplements", label: "Supplements" }, 
+      { href: "/supplements", label: "Supplements" },
     ],
   };
 
@@ -90,7 +104,7 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex">
           <ul className="flex items-center space-x-1">
-            {allNavItems.map((item, i) => {
+            {navItems.map((item, i) => {
               const submenu = dropdowns[item.href];
               return (
                 <li key={i} className="relative group">
@@ -158,7 +172,7 @@ export default function Header() {
             className="md:hidden bg-black/95 backdrop-blur-md border-t border-[#222] overflow-hidden"
           >
             <nav className="flex flex-col p-4">
-              {allNavItems.map((item, idx) => {
+              {navItems.map((item, idx) => {
                 const submenu = dropdowns[item.href];
                 const isOpen = openSubmenu === item.href;
 
