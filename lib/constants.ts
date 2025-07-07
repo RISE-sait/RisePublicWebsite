@@ -36,7 +36,7 @@ export const FOOTER_LINKS = {
     { label: "BOOM Coffee", href: "/coffee" },
     { label: "ProRise Nutrition", href: "/supplements" },
     { label: "Contact Us", href: "/contact" },
-    { label: "Reviews", href: "/reviews" },
+    { label: "FAQ", href: "/faq" },
   ],
   policies: [
     { label: "Privacy Policy", href: "/privacy" },
