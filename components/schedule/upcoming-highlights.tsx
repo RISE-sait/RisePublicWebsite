@@ -2,12 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Calendar, Clock, Users, ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { useMemo, useRef } from "react";
+import { Event } from "@/types/event";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Button } from "@/components/ui/button";
-import { Event } from "@/types/event";
-import { useMemo, useRef } from "react";
 
 interface Props {
   events: Event[];
@@ -32,17 +30,38 @@ export default function UpcomingHighlights({
       .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   }, [events]);
 
+  const uniqueRecurringHighlights = useMemo(() => {
+    const seen = new Set<string>();
+    return upcomingHighlights.filter((event) => {
+      const key = `${event.program_name}-${event.description || ""}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [upcomingHighlights]);
+
   const filteredEvents = useMemo(() => {
-    if (selectedFilter === "all") return upcomingHighlights;
+    if (selectedFilter === "all") return uniqueRecurringHighlights;
+
+    const nameMatch = (event: Event, keywords: string[]) =>
+      keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
+
     if (selectedFilter === "assessments") {
-      return upcomingHighlights.filter((event) =>
-        event.program_name.toLowerCase().includes("assessment")
+      return uniqueRecurringHighlights.filter((event) =>
+        nameMatch(event, ["assessment", "tryout"])
       );
     }
-    return upcomingHighlights.filter(
+
+    if (selectedFilter === "tournament") {
+      return uniqueRecurringHighlights.filter((event) =>
+        nameMatch(event, ["tournament", "cup"])
+      );
+    }
+
+    return uniqueRecurringHighlights.filter(
       (event) => event.program_type?.toLowerCase() === selectedFilter
     );
-  }, [selectedFilter, upcomingHighlights]);
+  }, [selectedFilter, uniqueRecurringHighlights]);
 
   const start = highlightPage * EVENTS_PER_PAGE;
   const end = start + EVENTS_PER_PAGE;

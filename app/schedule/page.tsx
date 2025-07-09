@@ -12,8 +12,6 @@ import Link from "next/link"
 import { useEffect } from "react"
 import { getOtherEvents } from "@/services/eventsCalendar"
 import { Event } from "@/types/event"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useRef } from "react"
 import UpcomingHighlights from "@/components/schedule/upcoming-highlights"
 
 
@@ -38,7 +36,7 @@ const programTypes = [
   { id: "pro-club", label: "Pro Club" },
   { id: "summer-league", label: "Summer League" },
   { id: "jr-rise", label: "Jr. Rise" },
-  { id: "summer-camps", label: "Summer Camps" },
+  { id: "tournament", label: "Tournaments/Cups" },
   { id: "assessments", label: "Tryouts / Assessments" },
 ];
 
@@ -53,15 +51,28 @@ const upcomingHighlights = useMemo(() => {
 
 const filteredEvents = useMemo(() => {
   if (selectedFilter === "all") return upcomingHighlights;
+
+  const nameMatch = (event: Event, keywords: string[]) =>
+    keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
+
   if (selectedFilter === "assessments") {
     return upcomingHighlights.filter((event) =>
-      event.program_name.toLowerCase().includes("assessment")
+      nameMatch(event, ["assessment", "tryout"])
     );
   }
+
+  if (selectedFilter === "tournament") {
+    return upcomingHighlights.filter((event) =>
+      nameMatch(event, ["tournament", "cup"])
+    );
+  }
+
   return upcomingHighlights.filter(
     (event) => event.program_type?.toLowerCase() === selectedFilter
   );
 }, [selectedFilter, upcomingHighlights]);
+
+
 
 const EVENTS_PER_PAGE = 3;
 const [highlightPage, setHighlightPage] = useState(0);
