@@ -39,6 +39,8 @@ export default function Header() {
     "/contact",
     "/reviews",
     "/schedule",
+    "/faq",
+
   ];
   const filteredNav = NAVIGATION_ITEMS.filter((i) =>
     availablePages.includes(i.href)
@@ -72,7 +74,6 @@ export default function Header() {
     "/contact": [
       { href: "/contact", label: "Contact Us" },
       { href: "/reviews", label: "Reviews" },
-      { href: "/faq", label: "FAQ" },
     ],
     "/barber": [
       { href: "/barber", label: "Barber" },

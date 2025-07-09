@@ -7,7 +7,9 @@ export const NAVIGATION_ITEMS = [
   { label: "SCHEDULE", href: "/schedule" },
   { label: "PERFORMANCE", href: "/performance" },
   { label: "BARBER", href: "/barber" },
-  { label: "AMENITIES", href: "/amenities" }, // Uncomment if amenities page is available
+  { label: "AMENITIES", href: "/amenities" }, 
+  { label: "FAQ", href: "/faq" }, 
+
 ];
 
 export const SECONDARY_NAV_ITEMS = [
