@@ -51,10 +51,31 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
     getOtherEvents().then(setOthers).catch(console.error);
   }, []);
 
-  useEffect(() => {
+
+//use effect to get events that have tournaments in their name or cup in order to filter them on public website
+useEffect(() => {
+  if (selectedFilter !== "tournament") return;
+
+  const matchingTournament = others.find((o) => {
+    const name = o.program_name?.toLowerCase() || "";
+    return (
+      (name.includes("tournament") || name.includes("cup")) &&
+      new Date(o.start_time) >= new Date()
+    );
+  });
+
+  if (matchingTournament) {
+    const eventDate = parseISO(matchingTournament.start_time);
+    setCurrentMonth(eventDate);
+    setSelectedDate(eventDate); // ✅ This triggers right panel updates
+  }
+}, [selectedFilter, others]);
+
+//use effect to get events that have assesments in their name or tryouts in order to filter them on public website
+useEffect(() => {
   if (selectedFilter !== "assessments") return;
 
-  const matchingEvent = others.find((o) => {
+  const matchingAssessment = others.find((o) => {
     const name = o.program_name?.toLowerCase() || "";
     return (
       (name.includes("assessment") || name.includes("tryout")) &&
@@ -62,12 +83,13 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
     );
   });
 
-  if (matchingEvent) {
-    const eventDate = parseISO(matchingEvent.start_time);
+  if (matchingAssessment) {
+    const eventDate = parseISO(matchingAssessment.start_time);
     setCurrentMonth(eventDate);
     setSelectedDate(eventDate);
   }
 }, [selectedFilter, others]);
+
 
 
   const getDayKey = (date: Date) => format(date, "yyyy-MM-dd");
@@ -91,6 +113,15 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
   });
 }, [others, selectedDate]);
 
+const filteredTournaments = useMemo(() => {
+  return others.filter((o) => {
+    const name = o.program_name?.toLowerCase() || "";
+    const isMatch = name.includes("tournament") || name.includes("cup");
+    return isMatch && isEventOnDate(o, selectedDate);
+  });
+}, [others, selectedDate]);
+
+
 
   const filteredGames = useMemo(
     () =>
@@ -104,15 +135,17 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
       ),
     [courses, selectedDayKey]
   );
-  const filteredOthers = useMemo(() => {
+const filteredOthers = useMemo(() => {
   return others.filter((o) => {
     const name = o.program_name?.toLowerCase() || "";
     const isAssessment = name.includes("assessment") || name.includes("tryout");
+    const isTournament = name.includes("tournament") || name.includes("cup");
     const isOnDate = isEventOnDate(o, selectedDate);
 
-    return isOnDate && !isAssessment;
+    return isOnDate && !isAssessment && !isTournament;
   });
 }, [others, selectedDate]);
+
 
 
 
@@ -160,6 +193,10 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isSelected = isSameDay(day, selectedDate);
         const isToday = isSameDay(day, new Date());
+        const hasTournaments = others.some((o) => {
+            const name = o.program_name?.toLowerCase() || "";
+            return isEventOnDate(o, day) && (name.includes("tournament") || name.includes("cup"));
+          });
 
         const hasGames = games.some(
           (g) => getDayKey(parseISO(g.start_time)) === key
@@ -174,14 +211,17 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
             (name.includes("assessment") || name.includes("tryout"))
           );
         });
+        //in order to only display that colour for that day 
         const hasOthers = others.some((o) => {
           if (!isEventOnDate(o, day)) return false;
 
           const name = o.program_name?.toLowerCase() || "";
           const isAssessment = name.includes("assessment") || name.includes("tryout");
+          const isTournament = name.includes("tournament") || name.includes("cup");
 
-          return !isAssessment; // only show green dot for non-assessment events
+          return !isAssessment && !isTournament;
         });
+
 
 
 
@@ -209,6 +249,7 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
               {hasGames && <span className="w-2 h-2 bg-yellow-500 rounded-full" />}
               {hasCourses && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
               {hasAssessments && <span className="w-2 h-2 bg-pink-500 rounded-full" />}
+              {hasTournaments && <span className="w-2 h-2 bg-purple-500 rounded-full" />}
               {hasOthers && <span className="w-2 h-2 bg-green-500 rounded-full" />}
             </div>
           </div>
@@ -288,6 +329,7 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
         {renderEvents("Games", filteredGames, "bg-yellow-500")}
         {renderEvents("Courses", filteredCourses, "bg-blue-500")}
         {renderEvents("Assessments", filteredAssessments, "bg-pink-500")}
+        {renderEvents("Tournaments", filteredTournaments, "bg-purple-500")}
         {renderEvents("Other", filteredOthers, "bg-green-500")}
         <EventModal isOpen={modalOpen} onClose={closeModal} event={selectedEvent} />
       </div>
