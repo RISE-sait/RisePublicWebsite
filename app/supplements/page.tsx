@@ -49,7 +49,7 @@ export default function SupplementsPage() {
       name: "ProRise Supplements",
       image: "https://risesportscomplex.com/supplements-page-images/arcticsoon.png",
       url: "https://risesportscomplex.com/supplements",
-      telephone: "+1-587-999-7473",
+      telephone: "+1-587-899-7473",
       priceRange: "$$",
       openingHours: "Mo-Su 09:00-23:00",
       address: {
@@ -343,7 +343,7 @@ export default function SupplementsPage() {
             postalCode="T2E 7K1"
             contactTitle="HQ Contact"
             contactName="RISE Headquarters"
-            phone="587-999-7473"
+            phone="587-899-7473"
             email="info@risesportscomplex.com"
             hours={[
               "Monday 9:00 am - 11:00 pm",
