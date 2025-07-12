@@ -259,7 +259,7 @@ const hasPrev = highlightPage > 0;
               </div>
               <h3 className="font-semibold text-white mb-2">Call Us</h3>
               <p className="text-sm text-gray-300">
-                587-999-7473
+                587-899-7473
                 <br />
                 Mon-Sun 9AM-11PM
               </p>
