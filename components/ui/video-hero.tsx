@@ -5,7 +5,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { event as gtagEvent } from "@/lib/gtag";
 import { usePathname } from "next/navigation";
+
 
 
 interface VideoHeroProps {
@@ -195,7 +197,21 @@ export function VideoHero({
                   className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg text-lg"
                   asChild
                 >
-                  <a href={primaryButtonHref}>{primaryButtonText}</a>
+                  <a
+                    href={primaryButtonHref}
+                    onClick={() =>
+                      gtagEvent({
+                        action: "click_join_now",
+                        category: "cta",
+                        label: isHomePage
+                          ? "Join Now - Hero (Home Page)"
+                          : "Join Now - Hero (Other)",
+                      })
+                    }
+                  >
+                    {primaryButtonText}
+                  </a>
+
                 </Button>
               )}
 
@@ -206,7 +222,20 @@ export function VideoHero({
                   className="border-white text-white hover:bg-white/10 hover:scale-105 transition-all shadow-lg text-lg"
                   asChild
                 >
-                  <a href={secondaryButtonHref}>{secondaryButtonText}</a>
+                  <a
+                    href={secondaryButtonHref}
+                    onClick={() =>
+                      gtagEvent({
+                        action: "click_explore",
+                        category: "cta",
+                        label: isHomePage
+                          ? "Explore Memberships - Hero (Home Page)"
+                          : "Explore - Hero (Other)",
+                      })
+                    }
+                  >
+                    {secondaryButtonText}
+                  </a>
                 </Button>
               )}
             </motion.div>
@@ -225,10 +254,6 @@ export function VideoHero({
           ) : (
             <Volume2 className="h-5 w-5 text-white" />
           )}
-        </button>
-
-        <button className="bg-[#ffb800] p-3 rounded-full hover:bg-[#e0a300] transition-all">
-          <Play className="h-5 w-5 text-black" />
         </button>
       </div>
 

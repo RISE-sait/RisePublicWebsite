@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { FeatureCard } from "@/components/ui/feature-card";
+import { event as gtagEvent } from "@/lib/gtag";
 
 interface Feature {
   title: string;
@@ -28,6 +29,14 @@ export function FeatureGrid({
     5: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
   };
 
+  const handleClick = (title: string) => {
+    gtagEvent({
+      action: "click_feature_cta",
+      category: "engagement",
+      label: title,
+    });
+  };
+
   return (
     <div className={cn(`grid ${gridCols[columns]} gap-6`, className)}>
       {features.map((feature, index) => (
@@ -39,8 +48,10 @@ export function FeatureGrid({
           buttonText={feature.buttonText}
           buttonLink={feature.buttonLink}
           index={index}
+          onClick={handleClick} // ✅ Pass handler
         />
       ))}
     </div>
   );
 }
+

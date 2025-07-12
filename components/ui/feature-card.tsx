@@ -12,6 +12,7 @@ interface FeatureCardProps {
   index?: number;
   buttonText?: string;
   buttonLink?: string;
+  onClick?: (title: string) => void;
 }
 
 export function FeatureCard({
@@ -22,7 +23,9 @@ export function FeatureCard({
   index = 0,
   buttonText,
   buttonLink,
-}: FeatureCardProps) {
+  onClick, 
+}: FeatureCardProps)
+ {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -55,15 +58,17 @@ export function FeatureCard({
         </div>
 
         {buttonText && buttonLink && (
-          <a
-            href={buttonLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-auto w-fit px-4 py-2 text-sm font-medium text-black bg-[#ffb800] rounded hover:bg-yellow-400 transition-colors"
-          >
-            {buttonText}
-          </a>
-        )}
+        <a
+          href={buttonLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => onClick?.(title)} 
+          className="mt-auto w-fit px-4 py-2 text-sm font-medium text-black bg-[#ffb800] rounded hover:bg-yellow-400 transition-colors"
+        >
+          {buttonText}
+        </a>
+      )}
+
       </div>
     </motion.div>
   );

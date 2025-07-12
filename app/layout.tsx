@@ -35,7 +35,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Read the theme cookie on the server:
   const theme =
     ((await cookies()).get("theme")?.value as "light" | "dark") || "dark";
 
@@ -45,10 +44,27 @@ export default async function RootLayout({
       className={`scroll-smooth ${theme === "dark" ? "dark" : ""}`}
       style={{ colorScheme: theme }}
     >
+      <head>
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-NSQ7GER1GK"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-NSQ7GER1GK');
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        {/* Everything inside Providers is client‑only */}
         <Providers theme={theme}>{children}</Providers>
       </body>
     </html>
   );
 }
+
