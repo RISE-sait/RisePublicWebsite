@@ -28,8 +28,8 @@ export default function JumpstartModal({ open, onClose }: Props) {
           </ul>
           <p>
             Need help? Give us a call at{" "}
-            <Link href="tel:403-555-1234" className="text-[#ffb800] underline">
-              403‑555‑1234
+            <Link href="tel:587-899-7473" className="text-[#ffb800] underline">
+              587‑899‑7473
             </Link>{" "}
             and we’ll walk you through the process.
           </p>
