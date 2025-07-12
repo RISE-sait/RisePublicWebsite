@@ -27,12 +27,13 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const [activeTab, setActiveTab] = useState("schedules");
+  const [activeTab, setActiveTab] = useState("coaches"); 
 
   const programTabs = [
     { id: "programs", label: "Programs" },
     { id: "coaches", label: "Coaches" },
   ];
+
 
   return (
     <div className="flex flex-col">
