@@ -17,6 +17,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
+import { event as gtagEvent } from "@/lib/gtag";
+
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -293,8 +295,13 @@ export default function Home() {
               >
                 {/* <Link href="/allmemberships">JOIN NOW</Link> */}
                 <Link
-                  href={
-                    "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  onClick={() =>
+                    gtagEvent({
+                      action: "click_join_now",
+                      category: "cta",
+                      label: "Join Now - Performance Section",
+                    })
                   }
                 >
                   JOIN NOW
