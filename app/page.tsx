@@ -482,7 +482,14 @@ export default function Home() {
             >
               <Button
                 variant="default"
-                className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
+                className="bg-[#ffb800] text-black ..."
+                onClick={() =>
+                  gtagEvent({
+                    action: "click_coming_soon",
+                    category: "app",
+                    label: "RISE App Coming Soon",
+                  })
+                }
               >
                 COMING SOON
               </Button>

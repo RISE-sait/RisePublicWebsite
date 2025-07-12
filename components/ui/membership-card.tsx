@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { event as gtagEvent } from "@/lib/gtag";
+
 
 interface MembershipCardProps {
   id: string;
@@ -144,15 +146,20 @@ export function MembershipCard({
                 : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
           >
-            {/* <Link href="/allmemberships">VIEW MORE</Link> */}
             <Link
-              href={
-                "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              onClick={() =>
+                gtagEvent({
+                  action: "click_view_membership",
+                  category: "membership",
+                  label: `View Membership - ${title}`,
+                })
               }
             >
               VIEW MORE
             </Link>
           </Button>
+
           <Button
             asChild
             variant="default"
@@ -163,10 +170,14 @@ export function MembershipCard({
                 : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
             )}
           >
-            {/* <Link href={`/memberships/${id}`}>JOIN NOW</Link> */}
             <Link
-              href={
-                "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              onClick={() =>
+                gtagEvent({
+                  action: "click_join_membership",
+                  category: "membership",
+                  label: `Join Membership - ${title}`,
+                })
               }
             >
               JOIN NOW
