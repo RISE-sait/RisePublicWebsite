@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import { SITE_NAME } from "@/lib/constants";
 import "react-phone-number-input/style.css";
 import { Providers } from "./providers";
+import { ChatbotTrigger } from "@/components/ui/chatbot-trigger" 
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -63,6 +64,8 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Providers theme={theme}>{children}</Providers>
+        <ChatbotTrigger className="fixed bottom-4 right-4 z-50" />
+        {/* Ensure the chatbot trigger is always on top */}
       </body>
     </html>
   );
