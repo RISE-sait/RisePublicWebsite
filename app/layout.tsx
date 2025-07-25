@@ -64,8 +64,10 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Providers theme={theme}>{children}</Providers>
-        <ChatbotTrigger className="fixed bottom-4 right-4 z-50" />
-        {/* Ensure the chatbot trigger is always on top */}
+        {/* Ensure the chatbot trigger is always on top 
+          <ChatbotTrigger className="fixed bottom-4 right-4 z-50" />
+          commented out for now */}
+          
       </body>
     </html>
   );
