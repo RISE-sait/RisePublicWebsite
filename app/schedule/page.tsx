@@ -10,9 +10,10 @@ import { SectionHeading } from "@/components/ui/section-heading"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect } from "react"
-import { getOtherEvents } from "@/services/eventsCalendar"
+import { getAllEvents } from "@/services/eventsCalendar"
 import { Event } from "@/types/event"
 import UpcomingHighlights from "@/components/schedule/upcoming-highlights"
+import { ScheduleList } from "@/components/schedule/schedule-list"
 
 
 export default function SchedulePage() {
@@ -20,14 +21,25 @@ export default function SchedulePage() {
   const [selectedFilter, setSelectedFilter] = useState("all")
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
+  const [highlightPage, setHighlightPage] = useState(0);
+
 
 
 useEffect(() => {
-  getOtherEvents()
+  const now = new Date();
+  const end = new Date();
+  end.setMonth(now.getMonth() + 3); // fetch next 3 months
+
+  getAllEvents(now, end)
     .then(setEvents)
     .catch((err) => console.error("Error fetching events:", err))
-    .finally(() => setLoading(false))
-}, [])
+    .finally(() => setLoading(false));
+}, []);
+
+useEffect(() => {
+  setHighlightPage(0);
+}, [selectedFilter]);
+
 
 
 
@@ -73,24 +85,6 @@ const filteredEvents = useMemo(() => {
 }, [selectedFilter, upcomingHighlights]);
 
 
-
-const EVENTS_PER_PAGE = 3;
-const [highlightPage, setHighlightPage] = useState(0);
-
-useEffect(() => {
-  setHighlightPage(0);
-}, [selectedFilter]);
-
-// Slice upcoming highlights into pages of 3
-const paginatedHighlights = useMemo(() => {
-  const start = highlightPage * EVENTS_PER_PAGE;
-  const end = start + EVENTS_PER_PAGE;
-  return filteredEvents.slice(start, end);
-}, [highlightPage, filteredEvents]);
-
-// Controls to check if next/prev pages are available
-const hasNext = (highlightPage + 1) * EVENTS_PER_PAGE < filteredEvents.length;
-const hasPrev = highlightPage > 0;
 
 
 
@@ -200,44 +194,7 @@ const hasPrev = highlightPage > 0;
     <ScheduleCalendar selectedFilter={selectedFilter} />
   )
 ) : (
-            <div className="p-6 space-y-6">
-  {upcomingHighlights.length > 0 ? (
-    filteredEvents.map((event) => (
-
-      <div
-        key={event.id}
-        className="bg-black p-4 rounded-lg shadow-md border-l-4 border-[#ffb800]"
-      >
-        <h3 className="text-white text-lg font-semibold mb-2">
-          {event.program_name}
-        </h3>
-        <p className="text-gray-300 text-sm mb-1">
-          📍 {event.location_name}
-        </p>
-        <p className="text-gray-400 text-sm mb-1">
-          🗓️ {new Date(event.start_time).toLocaleDateString()} —{" "}
-          {new Date(event.start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
-          to{" "}
-          {event.end_time
-            ? new Date(event.end_time).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : "TBD"}
-        </p>
-        <p className="text-gray-400 text-sm">
-          {event.description || "Open registration"}
-        </p>
-      </div>
-    ))
-  ) : (
-    <p className="text-center text-gray-400">No upcoming events.</p>
-  )}
-</div>
-
+    <ScheduleList events={filteredEvents} />
           )}
         </motion.div>
       </SectionContainer>

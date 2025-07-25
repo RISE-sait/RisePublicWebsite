@@ -4,7 +4,7 @@ export const PRIMARY_COLOR = "#ffb800";
 // Update navigation items to match available pages
 export const NAVIGATION_ITEMS = [
   { label: "BASKETBALL", href: "/basketball" },
-  { label: "SCHEDULE", href: "/schedule" },
+  { label: "SCHEDULE/EVENTS", href: "/schedule" },
   { label: "PERFORMANCE", href: "/performance" },
   { label: "BARBER", href: "/barber" },
   { label: "AMENITIES", href: "/amenities" }, 

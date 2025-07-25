@@ -18,6 +18,8 @@ import { ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
+import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
+
 
 
 export default function Home() {
@@ -128,33 +130,14 @@ export default function Home() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      <ParallaxSection overlayOpacity={0.8} className="py-20">
-        <ParticleBackground
-          particleColor="#ffb800"
-          particleCount={200}
-          connectParticles={true}
+      
+        <UpcomingEventsParallax
+          bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
+          bgColor="#000"
+          overlayOpacity={0.8}
+          maxEvents={6}
         />
-        <SectionContainer>
-          <div className="text-center mb-12">
-            <AnimatedText
-              text="THE NUMBERS SPEAK FOR THEMSELVES"
-              className="text-3xl md:text-4xl font-bold text-white mb-4"
-              animation="wave"
-            />
-            <p className="text-gray-300 max-w-2xl mx-auto">
-              Join thousands of athletes who’ve transformed their game at
-              Calgary’s leading basketball training facility – RISE.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatsCounter value={7734} label="ATHLETES TRAINED" delay={0} />
-            <StatsCounter value={51} label="CERTIFIED COACHES" delay={0.2} />
-            <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0.2} />
-            <StatsCounter value={10} label="YEARS OF EXCELLENCE" delay={0.6} />
-          </div>
-        </SectionContainer>
-      </ParallaxSection>
 
       {/* RISE Performance Membership */}
       <SectionContainer>

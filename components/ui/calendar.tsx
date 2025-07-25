@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useRef } from "react";
 import {
   addMonths,
   subMonths,
@@ -17,10 +17,14 @@ import {
   endOfDay,
 } from "date-fns";
 import { getUpcomingGames } from "@/services/gamesCalendar";
-import { getOtherEvents, getCourseEvents } from "@/services/eventsCalendar";
+import { getAllEvents } from "@/services/eventsCalendar";
 import { Game } from "@/types/game";
 import { Event } from "@/types/event";
 import { EventModal } from "@/components/event-modal"; 
+import { useFilteredEvents } from "@/hooks/useFilteredEvents";
+import { EmptyFeedback } from "@/components/ui/feedback"; // Adjust path if needed
+
+
 
 
 
@@ -28,10 +32,11 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [games, setGames] = useState<Game[]>([]);
-  const [courses, setCourses] = useState<Event[]>([]);
-  const [others, setOthers] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Game | Event | null>(null);
+  const [scrollTargetDate, setScrollTargetDate] = useState<Date | null>(null);
+
 
   const openModal = (event: Game | Event) => {
     setSelectedEvent(event);
@@ -42,112 +47,92 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
     setModalOpen(false);
     setSelectedEvent(null);
   };
+
+useEffect(() => {
+  if (!events || events.length === 0) return;
+
+  const normalized = selectedFilter.toLowerCase();
+
+  if (normalized === "all" || normalized === "games") return;
+
+  const today = new Date();
+
+  const nextEvent = events
+    .filter(
+      (e) =>
+        e.program_type?.toLowerCase() === normalized &&
+        parseISO(e.start_time) >= today
+    )
+    .sort((a, b) => parseISO(a.start_time).getTime() - parseISO(b.start_time).getTime())[0];
+
+  if (!nextEvent) return;
+
+  const nextDate = parseISO(nextEvent.start_time);
+  const nextMonth = startOfMonth(nextDate);
+  const thisMonth = startOfMonth(currentMonth);
+
+  setSelectedDate(nextDate);
+
+  if (!isSameMonth(nextMonth, thisMonth)) {
+    // ✅ Change calendar month and queue scroll
+    setCurrentMonth(nextMonth);
+    setScrollTargetDate(nextDate);
+  } else {
+    // ✅ Same month — scroll immediately
+    const key = format(nextDate, "yyyy-MM-dd");
+    setTimeout(() => {
+      const el = dayRefs.current[key];
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 300);
+  }
+}, [selectedFilter, events]);
+
+useEffect(() => {
+  if (!scrollTargetDate) return;
+
+  const key = format(scrollTargetDate, "yyyy-MM-dd");
+
+  const timeout = setTimeout(() => {
+    const el = dayRefs.current[key];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    setScrollTargetDate(null); // Clear it after scrolling
+  }, 300); // Give the new DOM time to render
+
+  return () => clearTimeout(timeout);
+}, [scrollTargetDate, currentMonth]);
+
   
-
-
-  useEffect(() => {
-    getUpcomingGames().then(setGames).catch(console.error);
-    getCourseEvents().then(setCourses).catch(console.error);
-    getOtherEvents().then(setOthers).catch(console.error);
-  }, []);
-
-
-//use effect to get events that have tournaments in their name or cup in order to filter them on public website
 useEffect(() => {
-  if (selectedFilter !== "tournament") return;
+  const start = startOfMonth(subMonths(currentMonth, 1)); // load previous month too
+  const end = endOfMonth(addMonths(currentMonth, 2)); // and 2 months ahead
 
-  const matchingTournament = others.find((o) => {
-    const name = o.program_name?.toLowerCase() || "";
-    return (
-      (name.includes("tournament") || name.includes("cup")) &&
-      new Date(o.start_time) >= new Date()
-    );
-  });
-
-  if (matchingTournament) {
-    const eventDate = parseISO(matchingTournament.start_time);
-    setCurrentMonth(eventDate);
-    setSelectedDate(eventDate); // ✅ This triggers right panel updates
-  }
-}, [selectedFilter, others]);
-
-//use effect to get events that have assesments in their name or tryouts in order to filter them on public website
-useEffect(() => {
-  if (selectedFilter !== "assessments") return;
-
-  const matchingAssessment = others.find((o) => {
-    const name = o.program_name?.toLowerCase() || "";
-    return (
-      (name.includes("assessment") || name.includes("tryout")) &&
-      new Date(o.start_time) >= new Date()
-    );
-  });
-
-  if (matchingAssessment) {
-    const eventDate = parseISO(matchingAssessment.start_time);
-    setCurrentMonth(eventDate);
-    setSelectedDate(eventDate);
-  }
-}, [selectedFilter, others]);
-
+  getUpcomingGames().then(setGames).catch(console.error);
+  getAllEvents(start, end).then(setEvents).catch(console.error);
+}, [currentMonth]);
 
 
   const getDayKey = (date: Date) => format(date, "yyyy-MM-dd");
 
-  function isEventOnDate(
-    evt: { start_time: string; end_time?: string | null },
-    day: Date
-  ) {
+
+  const selectedDayKey = format(selectedDate, "yyyy-MM-dd");
+
+  const isEventOnDate = (evt: Event, day: Date) => {
     const start = startOfDay(parseISO(evt.start_time));
     const end = endOfDay(parseISO(evt.end_time ?? evt.start_time));
     return day >= start && day <= end;
-  }
+  };
 
-  const selectedDayKey = getDayKey(selectedDate);
-
-  const filteredAssessments = useMemo(() => {
-  return others.filter((o) => {
-    const name = o.program_name?.toLowerCase() || "";
-    const isMatch = name.includes("assessment") || name.includes("tryout");
-    return isMatch && isEventOnDate(o, selectedDate);
-  });
-}, [others, selectedDate]);
-
-const filteredTournaments = useMemo(() => {
-  return others.filter((o) => {
-    const name = o.program_name?.toLowerCase() || "";
-    const isMatch = name.includes("tournament") || name.includes("cup");
-    return isMatch && isEventOnDate(o, selectedDate);
-  });
-}, [others, selectedDate]);
-
-
-
-  const filteredGames = useMemo(
-    () =>
-      games.filter((g) => getDayKey(parseISO(g.start_time)) === selectedDayKey),
+  const filteredGames = useMemo(() =>
+    games.filter((g) => format(parseISO(g.start_time), "yyyy-MM-dd") === selectedDayKey),
     [games, selectedDayKey]
   );
-  const filteredCourses = useMemo(
-    () =>
-      courses.filter(
-        (c) => getDayKey(parseISO(c.start_time)) === selectedDayKey
-      ),
-    [courses, selectedDayKey]
-  );
-const filteredOthers = useMemo(() => {
-  return others.filter((o) => {
-    const name = o.program_name?.toLowerCase() || "";
-    const isAssessment = name.includes("assessment") || name.includes("tryout");
-    const isTournament = name.includes("tournament") || name.includes("cup");
-    const isOnDate = isEventOnDate(o, selectedDate);
 
-    return isOnDate && !isAssessment && !isTournament;
-  });
-}, [others, selectedDate]);
-
-
-
+  const programTypes = ["course", "tryouts", "tournament", "event", "other"];
+  const filteredByType = useFilteredEvents(events, selectedDate, programTypes);
 
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -177,6 +162,9 @@ const filteredOthers = useMemo(() => {
     );
   };
 
+  const dayRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -193,42 +181,35 @@ const filteredOthers = useMemo(() => {
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isSelected = isSameDay(day, selectedDate);
         const isToday = isSameDay(day, new Date());
-        const hasTournaments = others.some((o) => {
-            const name = o.program_name?.toLowerCase() || "";
-            return isEventOnDate(o, day) && (name.includes("tournament") || name.includes("cup"));
-          });
+        const hasGames = games.some((g) => getDayKey(parseISO(g.start_time)) === key);
 
-        const hasGames = games.some(
-          (g) => getDayKey(parseISO(g.start_time)) === key
-        );
-        const hasCourses = courses.some(
-          (c) => getDayKey(parseISO(c.start_time)) === key
-        );
-        const hasAssessments = others.some((o) => {
-          const name = o.program_name?.toLowerCase() || "";
-          return (
-            isEventOnDate(o, day) &&
-            (name.includes("assessment") || name.includes("tryout"))
+          const hasCourses = events.some((e) =>
+            e.program_type === "course" && getDayKey(parseISO(e.start_time)) === key
           );
-        });
-        //in order to only display that colour for that day 
-        const hasOthers = others.some((o) => {
-          if (!isEventOnDate(o, day)) return false;
 
-          const name = o.program_name?.toLowerCase() || "";
-          const isAssessment = name.includes("assessment") || name.includes("tryout");
-          const isTournament = name.includes("tournament") || name.includes("cup");
+          const hasTryouts = events.some((e) =>
+            e.program_type === "tryouts" && isEventOnDate(e, day)
+          );
 
-          return !isAssessment && !isTournament;
-        });
+          const hasTournaments = events.some((e) =>
+            e.program_type === "tournament" && isEventOnDate(e, day)
+          );
 
+          const hasOthers = events.some((e) =>
+            e.program_type === "other" && isEventOnDate(e, day)
+          );
 
-
+          const hasGeneralEvents = events.some((e) =>
+            e.program_type === "event" && isEventOnDate(e, day)
+          );
 
         const dayCopy = new Date(day);
         days.push(
           <div
             key={key}
+            ref={(el) => {
+              dayRefs.current[key] = el;
+            }} // ✅ valid: performs side effect only, no return value
             onClick={() => setSelectedDate(dayCopy)}
             className={`relative p-2 rounded cursor-pointer border-2 border-[#111] text-center
               min-h-[4rem] sm:min-h-[5rem] lg:min-h-[6rem] transition-all duration-150
@@ -248,9 +229,10 @@ const filteredOthers = useMemo(() => {
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-1">
               {hasGames && <span className="w-2 h-2 bg-yellow-500 rounded-full" />}
               {hasCourses && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
-              {hasAssessments && <span className="w-2 h-2 bg-pink-500 rounded-full" />}
+              {hasTryouts && <span className="w-2 h-2 bg-pink-500 rounded-full" />}
               {hasTournaments && <span className="w-2 h-2 bg-purple-500 rounded-full" />}
-              {hasOthers && <span className="w-2 h-2 bg-green-500 rounded-full" />}
+              {hasGeneralEvents && <span className="w-2 h-2 bg-green-500 rounded-full" />}
+              {hasOthers && <span className="w-2 h-2 bg-orange-400 rounded-full" />}
             </div>
           </div>
         );
@@ -327,10 +309,12 @@ const filteredOthers = useMemo(() => {
           Events on {selectedDate.toDateString()}
         </h2>
         {renderEvents("Games", filteredGames, "bg-yellow-500")}
-        {renderEvents("Courses", filteredCourses, "bg-blue-500")}
-        {renderEvents("Assessments", filteredAssessments, "bg-pink-500")}
-        {renderEvents("Tournaments", filteredTournaments, "bg-purple-500")}
-        {renderEvents("Other", filteredOthers, "bg-green-500")}
+        {renderEvents("Courses", filteredByType["course"], "bg-blue-500")}
+        {renderEvents("Assessments/Tryouts", filteredByType["tryouts"], "bg-pink-500")}
+        {renderEvents("Tournaments", filteredByType["tournament"], "bg-purple-500")}
+        {renderEvents("Events", filteredByType["event"], "bg-green-500")}
+        {renderEvents("Others", filteredByType["other"], "bg-orange-400")}
+
         <EventModal isOpen={modalOpen} onClose={closeModal} event={selectedEvent} />
       </div>
     </div>

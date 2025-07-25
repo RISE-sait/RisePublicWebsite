@@ -1,5 +1,4 @@
-import getValue from "@/configs/constants"; // helper to retrieve API base URL from config
-import { Event } from "@/types/event"; // our front-end Event type
+import { Event } from "@/types/event";
 
 /**
  * Mirrors the JSON structure returned by the Go backend for each event
@@ -7,57 +6,97 @@ import { Event } from "@/types/event"; // our front-end Event type
 interface EventApiDto {
   id: string;
 
-
-  // Nested program object with its own id, name, and type
   program: {
     id: string;
     name: string;
     type: string;
-    description?: string; // <--- Add this line
-
+    description?: string;
   };
 
-  // Nested location object with id, display name, and address
   location: {
     id: string;
     name: string;
     address: string;
   };
 
-  // Creator/updater info comes as first & last name
   created_by: { first_name: string; last_name: string };
   updated_by: { first_name: string; last_name: string };
 
-  // Timestamps in Go’s “YYYY-MM-DD HH:mm:ss +0000 UTC” format
   start_at: string;
   end_at: string;
 }
 
 /**
- * Generic fetcher that hits `/events?program_type=...`,
- * parses the backend shape, and returns our flattened Event[]
+ * Converts a Date to a YYYY-MM-DD string required by the backend.
+ * @param date JS Date object
  */
-async function fetchEventsByType(type: string): Promise<Event[]> {
-  // Build URL like `${API_BASE}events?program_type=other`
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/events?program_type=${type}`);
+function formatToYYYYMMDD(date: Date): string {
+  return date.toISOString().split("T")[0];
+}
 
-  // If server responds with error status, reject promise
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch "${type}" events: ${res.status} ${res.statusText}`
-    );
+// ✅ In-memory cache to avoid refetching the same date ranges
+const eventCache = new Map<string, Event[]>();
+
+function getCacheKey(start?: string | Date, end?: string | Date): string {
+  const after = start instanceof Date ? formatToYYYYMMDD(start) : start || "";
+  const before = end instanceof Date ? formatToYYYYMMDD(end) : end || "";
+  return `${after}_${before}`;
+}
+
+/**
+ * Fetches all events from the backend using optional start and end date filters.
+ *
+ * This hits the `/events` endpoint and transforms each object returned from the Go backend
+ * into the front-end `Event` type used in our app. Results are cached locally by date range.
+ *
+ * - The backend requires at least one filter (e.g. `after`, `before`, or other identifiers).
+ * - This function applies `after` (start date) and `before` (end date) query params.
+ * - The backend returns dates in Go format (e.g. "2025-07-01 13:00:00 +0000 UTC"), which are
+ *   converted to ISO 8601 format for frontend compatibility (especially in Safari).
+ * - Events are cached in-memory per unique date range to prevent duplicate fetches.
+ *
+ * @param start Optional ISO 8601 start datetime string or Date object
+ * @param end Optional ISO 8601 end datetime string or Date object
+ * @returns Promise resolving to an array of normalized Event objects
+ * @throws Error if the request fails or returns a non-200 response
+ */
+export async function getAllEvents(
+  start?: string | Date,
+  end?: string | Date
+): Promise<Event[]> {
+  const key = getCacheKey(start, end);
+  if (eventCache.has(key)) {
+    return eventCache.get(key)!;
   }
 
-  // Parse the raw JSON into our DTO type
+  const params = new URLSearchParams();
+
+  if (start) {
+    const after = start instanceof Date ? formatToYYYYMMDD(start) : start;
+    params.append("after", after);
+  }
+
+  if (end) {
+    const before = end instanceof Date ? formatToYYYYMMDD(end) : end;
+    params.append("before", before);
+  }
+
+  // Construct the full API URL
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?${params.toString()}`;
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch events: ${res.status} ${res.statusText}`);
+  }
+
   const raw: EventApiDto[] = await res.json();
 
-  // Map each DTO into our front-end Event interface
-  return raw.map((e) => {
+  const transformed = raw.map((e) => {
     let start_time: string | null = null;
     let end_time: string | null = null;
 
     try {
-      // Reformat Go's timestamp to ISO if needed (Safari fix)
       const startISO = e.start_at.replace(" +0000 UTC", "Z").replace(" ", "T");
       const endISO = e.end_at?.replace(" +0000 UTC", "Z").replace(" ", "T");
 
@@ -67,6 +106,7 @@ async function fetchEventsByType(type: string): Promise<Event[]> {
       if (!isNaN(startDate.getTime())) {
         start_time = startDate.toISOString();
       }
+
       if (endDate && !isNaN(endDate.getTime())) {
         end_time = endDate.toISOString();
       }
@@ -86,19 +126,9 @@ async function fetchEventsByType(type: string): Promise<Event[]> {
       created_by: `${e.created_by.first_name} ${e.created_by.last_name}`,
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
       description: e.program.description ?? "",
-
     };
   });
 
-
-}
-
-/** Fetch all events with program_type="other" */
-export function getOtherEvents(): Promise<Event[]> {
-  return fetchEventsByType("other");
-}
-
-/** Fetch all events with program_type="course" */
-export function getCourseEvents(): Promise<Event[]> {
-  return fetchEventsByType("course");
+  eventCache.set(key, transformed);
+  return transformed;
 }
