@@ -114,14 +114,32 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, event }
 
                 {/* Description */}
                 {event.description && (
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <div className="flex items-start gap-3">
-                      <Info className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-1" />
-                      <div>
-                        <p className="text-gray-400 text-sm mb-1">Details</p>
-                        <p className="text-gray-300 whitespace-pre-line leading-relaxed">
-                        {event.description}
-                        </p>
+                  <div className="p-5 bg-gray-800/50 rounded-lg">
+                    <div className="flex items-start gap-4">
+                      <Info className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-400 text-sm mb-3 font-medium">Details</p>
+                        <div className="max-h-48 overflow-y-auto overflow-x-hidden pr-2 text-gray-200 text-sm leading-relaxed space-y-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-gray-500">
+                          {event.description.split('\n').map((paragraph: string, index: number) => (
+                            <p key={index} className="text-gray-200 break-words">
+                              {paragraph.split(/(https?:\/\/[^\s]+)/).map((part: string, i: number) => 
+                                part.match(/https?:\/\//) ? (
+                                  <a 
+                                    key={i} 
+                                    href={part} 
+                                    className="text-yellow-400 underline decoration-yellow-400/50 hover:text-yellow-300 hover:decoration-yellow-300 transition-all duration-200 break-all" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                  >
+                                    {part}
+                                  </a>
+                                ) : (
+                                  part
+                                )
+                              )}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
