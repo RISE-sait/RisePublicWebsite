@@ -385,6 +385,20 @@ export function UpcomingEventsParallax({
                         Contact Us
                       </Link>
                     </Button>
+                    <Button
+                      asChild
+                      className="bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold px-8 py-3"
+                    >
+                      <a
+                        href="https://forms.gle/jMLWYHAkBdkHKu5EA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <Calendar className="h-5 w-5" />
+                        Book An Event!
+                      </a>
+                    </Button>
                   </div>
                 </div>
               </motion.div>
