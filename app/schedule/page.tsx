@@ -15,7 +15,6 @@ import { Event } from "@/types/event"
 import UpcomingHighlights from "@/components/schedule/upcoming-highlights"
 import { ScheduleList } from "@/components/schedule/schedule-list"
 
-
 export default function SchedulePage() {
   const [viewMode, setViewMode] = useState<"calendar" | "list">("calendar")
   const [selectedFilter, setSelectedFilter] = useState("all")
@@ -23,71 +22,126 @@ export default function SchedulePage() {
   const [loading, setLoading] = useState(true)
   const [highlightPage, setHighlightPage] = useState(0);
 
+  useEffect(() => {
+    const now = new Date();
+    const end = new Date();
+    end.setMonth(now.getMonth() + 3); // fetch next 3 months
 
+    console.log("🚀 Fetching events from:", now.toISOString(), "to:", end.toISOString());
 
-useEffect(() => {
-  const now = new Date();
-  const end = new Date();
-  end.setMonth(now.getMonth() + 3); // fetch next 3 months
+    getAllEvents(now, end)
+      .then((fetchedEvents) => {
+        console.log("✅ Events fetched successfully:", {
+          count: fetchedEvents.length,
+          events: fetchedEvents
+        });
+        
+        // Log event details for debugging
+        fetchedEvents.forEach((event, index) => {
+          console.log(`Event ${index + 1}:`, {
+            id: event.id,
+            name: event.program_name,
+            type: event.program_type,
+            startTime: event.start_time,
+            endTime: event.end_time,
+            location: event.location_id
+          });
+        });
 
-  getAllEvents(now, end)
-    .then(setEvents)
-    .catch((err) => console.error("Error fetching events:", err))
-    .finally(() => setLoading(false));
-}, []);
+        setEvents(fetchedEvents);
+      })
+      .catch((err) => {
+        console.error("❌ Error fetching events:", err);
+      })
+      .finally(() => {
+        console.log("📅 Event fetching completed");
+        setLoading(false);
+      });
+  }, []);
 
-useEffect(() => {
-  setHighlightPage(0);
-}, [selectedFilter]);
+  useEffect(() => {
+    setHighlightPage(0);
+  }, [selectedFilter]);
 
+  const programTypes = [
+    { id: "all", label: "All Programs" },
+    { id: "pro-club", label: "Pro Club" },
+    { id: "summer-league", label: "Summer League" },
+    { id: "jr-rise", label: "Jr. Rise" },
+    { id: "tournament", label: "Tournaments/Cups" },
+    { id: "assessments", label: "Tryouts / Assessments" },
+  ];
 
+  const upcomingHighlights = useMemo(() => {
+    const now = new Date();
+    const highlights = [...events]
+      .filter((event) => new Date(event.start_time) > now)
+      .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
 
+    console.log("🔍 Upcoming highlights calculated:", {
+      totalEvents: events.length,
+      upcomingCount: highlights.length,
+      highlights: highlights.map(event => ({
+        name: event.program_name,
+        startTime: event.start_time,
+        type: event.program_type
+      }))
+    });
 
-const programTypes = [
-  { id: "all", label: "All Programs" },
-  { id: "pro-club", label: "Pro Club" },
-  { id: "summer-league", label: "Summer League" },
-  { id: "jr-rise", label: "Jr. Rise" },
-  { id: "tournament", label: "Tournaments/Cups" },
-  { id: "assessments", label: "Tryouts / Assessments" },
-];
+    return highlights;
+  }, [events]);
 
+  const filteredEvents = useMemo(() => {
+    console.log("🔽 Filtering events with filter:", selectedFilter);
+    
+    let filtered;
+    
+    if (selectedFilter === "all") {
+      filtered = upcomingHighlights;
+    } else {
+      const nameMatch = (event: Event, keywords: string[]) =>
+        keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
 
-const upcomingHighlights = useMemo(() => {
-  return [...events]
-    .filter((event) => new Date(event.start_time) > new Date())
-    .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
-}, [events]);
+      if (selectedFilter === "assessments") {
+        filtered = upcomingHighlights.filter((event) =>
+          nameMatch(event, ["assessment", "tryout"])
+        );
+      } else if (selectedFilter === "tournament") {
+        filtered = upcomingHighlights.filter((event) =>
+          nameMatch(event, ["tournament", "cup"])
+        );
+      } else {
+        filtered = upcomingHighlights.filter(
+          (event) => event.program_type?.toLowerCase() === selectedFilter
+        );
+      }
+    }
 
+    console.log("✨ Events after filtering:", {
+      filter: selectedFilter,
+      originalCount: upcomingHighlights.length,
+      filteredCount: filtered.length,
+      filteredEvents: filtered.map(event => ({
+        name: event.program_name,
+        type: event.program_type,
+        startTime: event.start_time
+      }))
+    });
 
+    return filtered;
+  }, [selectedFilter, upcomingHighlights]);
 
-const filteredEvents = useMemo(() => {
-  if (selectedFilter === "all") return upcomingHighlights;
+  // Log when view mode changes
+  const handleViewModeChange = (mode: "calendar" | "list") => {
+    console.log("👀 View mode changed from", viewMode, "to", mode);
+    setViewMode(mode);
+  };
 
-  const nameMatch = (event: Event, keywords: string[]) =>
-    keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
-
-  if (selectedFilter === "assessments") {
-    return upcomingHighlights.filter((event) =>
-      nameMatch(event, ["assessment", "tryout"])
-    );
-  }
-
-  if (selectedFilter === "tournament") {
-    return upcomingHighlights.filter((event) =>
-      nameMatch(event, ["tournament", "cup"])
-    );
-  }
-
-  return upcomingHighlights.filter(
-    (event) => event.program_type?.toLowerCase() === selectedFilter
-  );
-}, [selectedFilter, upcomingHighlights]);
-
-
-
-
-
+  // Log when filter changes
+  const handleFilterChange = (filter: string) => {
+    console.log("🎯 Filter changed from", selectedFilter, "to", filter);
+    setSelectedFilter(filter);
+  };
 
   return (
     <div className="flex flex-col">
@@ -101,7 +155,6 @@ const filteredEvents = useMemo(() => {
         <link rel="canonical" href="https://www.risesportscomplex.com/schedule" />
       </Head>
 
-
       {/* Upcoming Highlights */}
       {loading ? (
         <div className="text-white text-center py-12">Loading schedule...</div>
@@ -114,8 +167,6 @@ const filteredEvents = useMemo(() => {
         />
       )}
 
-
-
       {/* Main Schedule Section */}
       <SectionContainer className="py-20">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
@@ -127,7 +178,7 @@ const filteredEvents = useMemo(() => {
             <div className="relative">
               <select
                 value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.target.value)}
+                onChange={(e) => handleFilterChange(e.target.value)}
                 className="appearance-none bg-black text-white border border-gray-700 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-[#ffb800]"
               >
                 {programTypes.map((type) => (
@@ -142,7 +193,7 @@ const filteredEvents = useMemo(() => {
             {/* View Mode Toggle */}
             <div className="flex bg-black rounded-lg p-1">
               <button
-                onClick={() => setViewMode("calendar")}
+                onClick={() => handleViewModeChange("calendar")}
                 className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   viewMode === "calendar" ? "bg-[#ffb800] text-black" : "text-gray-300 hover:text-white"
                 }`}
@@ -151,7 +202,7 @@ const filteredEvents = useMemo(() => {
                 Calendar
               </button>
               <button
-                onClick={() => setViewMode("list")}
+                onClick={() => handleViewModeChange("list")}
                 className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   viewMode === "list" ? "bg-[#ffb800] text-black" : "text-gray-300 hover:text-white"
                 }`}
@@ -168,7 +219,7 @@ const filteredEvents = useMemo(() => {
           {programTypes.map((type) => (
             <button
               key={type.id}
-              onClick={() => setSelectedFilter(type.id)}
+              onClick={() => handleFilterChange(type.id)}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                 selectedFilter === type.id
                   ? "bg-[#ffb800] text-black"
@@ -188,13 +239,19 @@ const filteredEvents = useMemo(() => {
           className="bg-black rounded-lg shadow-lg overflow-hidden"
         >
           {viewMode === "calendar" ? (
-  loading ? (
-    <div className="text-white text-center py-12">Loading calendar...</div>
-  ) : (
-    <ScheduleCalendar selectedFilter={selectedFilter} />
-  )
-) : (
-    <ScheduleList events={filteredEvents} />
+            loading ? (
+              <div className="text-white text-center py-12">Loading calendar...</div>
+            ) : (
+              <>
+                {console.log("📅 Rendering ScheduleCalendar with filter:", selectedFilter)}
+                <ScheduleCalendar selectedFilter={selectedFilter} />
+              </>
+            )
+          ) : (
+            <>
+              {console.log("📋 Rendering ScheduleList with events:", filteredEvents.length, "events")}
+              <ScheduleList events={filteredEvents} />
+            </>
           )}
         </motion.div>
       </SectionContainer>
