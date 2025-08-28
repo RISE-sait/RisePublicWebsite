@@ -18,9 +18,7 @@ import { ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
-import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
-
-
+import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -101,7 +99,7 @@ export default function Home() {
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
         subtitle="Now’s the Best Time to Join RISE"
-        description="Get access to Summer Rise League, Pro Club Training, and more — plus limited-time membership discounts."
+        description="Get access to Fall Rise League, Pro Club Training, and more - take your game to the next level this fall season."
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
@@ -130,14 +128,13 @@ export default function Home() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      
-        <UpcomingEventsParallax
-          bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
-          bgColor="#000"
-          overlayOpacity={0.8}
-          maxEvents={6}
-        />
 
+      <UpcomingEventsParallax
+        bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
+        bgColor="#000"
+        overlayOpacity={0.8}
+        maxEvents={6}
+      />
 
       {/* RISE Performance Membership */}
       <SectionContainer>
@@ -313,38 +310,48 @@ export default function Home() {
             features={[
               {
                 title: "All Girls Camp",
-                description: "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
+                description:
+                  "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
                 image: "/home-page-images/all-girls-camp.jpg",
                 buttonText: "Learn More",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "Summer League",
-                description: "Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.",
+                description:
+                  "Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.",
                 image: "/home-page-images/summer-league.jpg",
                 buttonText: "Join Now",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "Summer Camps",
-                description: "Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.",
+                description:
+                  "Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.",
                 image: "/home-page-images/summer-camps.jpg",
                 buttonText: "Register",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "Pro Club",
-                description: "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
+                description:
+                  "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
                 image: "/home-page-images/pro-club.jpg",
                 buttonText: "Apply Now",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "JR Rise",
-                description: "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
+                description:
+                  "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
                 image: "/home-page-images/jr-rise.jpg",
                 buttonText: "Sign Up",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
             ]}
             columns={5}
