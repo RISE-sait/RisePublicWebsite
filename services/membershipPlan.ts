@@ -23,7 +23,14 @@ export async function getPlansForMembership(
       id: plan.id!,
       membership_id: plan.membership_id!,
       name: plan.name || "Unnamed Plan",
-      price: plan.price ?? 0,
+      price: parseFloat(plan.price?.replace(/[$,]/g, '') || "0") || (plan.unit_amount || 0) / 100,
+      unit_amount: plan.unit_amount || 0,
+      interval: plan.interval || "month",
+      stripe_price_id: plan.stripe_price_id,
+      stripe_joining_fees_id: plan.stripe_joining_fees_id,
+      amt_periods: plan.amt_periods,
+      created_at: plan.created_at,
+      updated_at: plan.updated_at,
     }));
   } catch (err) {
     console.error("🔥 Error loading membership plans:", err);

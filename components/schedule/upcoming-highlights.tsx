@@ -117,7 +117,8 @@ export default function UpcomingHighlights({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: index * 0.1 }}
-          className="min-w-[300px] snap-start bg-black rounded-lg shadow-lg p-6 border-l-4 border-[#ffb800] hover:shadow-xl transition-shadow"
+          onClick={() => navigateToEvent(event)}
+          className="min-w-[300px] snap-start bg-black rounded-lg shadow-lg p-6 border-l-4 border-[#ffb800] hover:shadow-xl transition-shadow cursor-pointer"
         >
           <h3 className="text-lg font-bold text-white mb-3">{event.program_name}</h3>
           <div className="space-y-2 text-sm text-gray-300 mb-4">

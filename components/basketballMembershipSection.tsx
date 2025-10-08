@@ -2,30 +2,77 @@
 import { useMembershipPlans } from "@/hooks/useMembershipPlans";
 import { MembershipGrid } from "@/components/ui/membership-grid";
 
+// Define patterns to identify basketball membership types without hardcoded IDs
+const BASKETBALL_MEMBERSHIP_PATTERNS = [
+  {
+    keywords: ["full", "year", "basketball"],
+    badge: "BEST VALUE", 
+    featured: true,
+    priority: 1
+  },
+  {
+    keywords: ["jr", "junior", "elite", "hooper"],
+    badge: "GOOD VALUE",
+    featured: false, 
+    priority: 2
+  },
+  {
+    keywords: ["adult", "basketball"],
+    badge: "GREAT VALUE",
+    featured: false,
+    priority: 3
+  }
+];
+
 export function BasketballMembershipsSection() {
   const { plans, loading, error } = useMembershipPlans();
   if (loading) return <p>Loading…</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const selectedIds = [
-    "b540343f-b311-46fb-9c50-ce71acad79f5", // Rise Basketball Full Year
-    "4353fe3b-6e14-4dbe-a140-65911d4819e0", // Jr. Rise Elite Hooper
-    "95696a7a-3727-4cd1-ad66-b15112dbec33"// Adult Basketball
-  ];
+  const matchPlanToPattern = (plan: any) => {
+    const planName = plan.title?.toLowerCase() || "";
 
-  const badgeMap: Record<string, string> = {
-    "b540343f-b311-46fb-9c50-ce71acad79f5": "BEST VALUE",
-    "4353fe3b-6e14-4dbe-a140-65911d4819e0": "GOOD VALUE",
-    "95696a7a-3727-4cd1-ad66-b15112dbec33": "GREAT VALUE",
+    // Check patterns in order - more specific patterns first
+    return BASKETBALL_MEMBERSHIP_PATTERNS.find(pattern =>
+      pattern.keywords.some(keyword => planName.includes(keyword))
+    );
   };
 
-  const displayPlans = plans
-    .filter((plan) => selectedIds.includes(plan.id))
-    .map((plan, i) => ({
+  // Get one plan of each type to avoid duplicates
+  const getUniquePlansByType = () => {
+    const plansByType = new Map();
+
+    plans.forEach(plan => {
+      console.log(`🏀 Processing basketball plan: ${plan.title}, price: ${plan.price}`);
+      if (plan.title && plan.title.trim() !== "") {
+        const pattern = matchPlanToPattern(plan);
+        if (pattern) {
+          const typeKey = pattern.priority; // Use priority as the unique type identifier
+
+          // Only keep the first plan of each type, or prefer one without "No.2" in the name
+          if (!plansByType.has(typeKey) ||
+              (plansByType.get(typeKey).title.includes("No.2") && !plan.title.includes("No.2"))) {
+            plansByType.set(typeKey, {
+              ...plan,
+              badge: pattern.badge,
+              featured: pattern.featured,
+              priority: pattern.priority
+            });
+          }
+        }
+      }
+    });
+
+    return Array.from(plansByType.values());
+  };
+
+  const displayPlans = getUniquePlansByType()
+    // Sort by priority (lower number = higher priority)
+    .sort((a, b) => a.priority - b.priority)
+    // Add display index
+    .map((plan, index) => ({
       ...plan,
-      badge: badgeMap[plan.id] ?? plan.badge,
-      featured: plan.id === "b540343f-b311-46fb-9c50-ce71acad79f5",
-      index: i,
+      index
     }));
 
   return <MembershipGrid plans={displayPlans} columns={3} />;
