@@ -391,6 +391,7 @@ export interface MembershipPlanResponse {
   currency?: string;
   id?: string;
   interval?: string;
+  is_visible?: boolean;
   joining_fee_price?: string;
   membership_id?: string;
   name?: string;

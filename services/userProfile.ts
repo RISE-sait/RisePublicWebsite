@@ -10,7 +10,14 @@ export interface UserProfile {
   email?: string;
   phone?: string;
   profile_picture?: string;
+  photo_url?: string;
   date_of_birth?: string;
+  role?: string;
+  membership_info?: {
+    membership_name?: string;
+    plan_name?: string;
+    renewal_date?: string;
+  };
   created_at?: string;
   updated_at?: string;
 }
@@ -95,6 +102,30 @@ export interface UserScheduleResponse {
   events: ScheduleEvent[];
   games: ScheduleGame[];
   practices: SchedulePractice[];
+}
+
+export interface UserCreditBalance {
+  total_credits?: number;
+  used_credits?: number;
+  remaining_credits?: number;
+  weekly_limit?: number;
+}
+
+export interface CreditTransaction {
+  id?: string;
+  amount?: number;
+  type?: string;
+  description?: string;
+  created_at?: string;
+  event_id?: string;
+  credit_package_id?: string;
+}
+
+export interface WeeklyUsage {
+  week_start?: string;
+  week_end?: string;
+  credits_used?: number;
+  weekly_limit?: number;
 }
 
 // Helper function to decode JWT and extract user info
@@ -419,6 +450,199 @@ export async function updateUserProfile(userId: string, profileData: Partial<Use
     return data;
   } catch (err) {
     console.error("🔥 Error updating user profile:", err);
+    throw err;
+  }
+}
+
+export async function getUserCreditBalance(): Promise<UserCreditBalance | null> {
+  try {
+    // Get JWT token from localStorage
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting user credit balance with JWT:", jwt.substring(0, 20) + "...");
+
+    const res = await fetch(`${apiBaseUrl}/secure/credits`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /secure/credits response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("❌ JWT is not valid or expired");
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ Credits endpoint not found - user may not have credits");
+        return null;
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get user credits:`, res.status, errorText);
+      throw new Error(`Could not load credit data: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 User credit balance response:", data);
+    console.log("🔍 Credit balance fields:", {
+      credits: data.credits,
+      customer_id: data.customer_id,
+      all_fields: Object.keys(data)
+    });
+
+    // Handle the actual API response structure
+    // API returns: { credits: number, customer_id: string }
+    // We need to map this to our UserCreditBalance interface
+    // Note: The weekly-usage endpoint provides more detailed info including used credits
+    const normalizedData: UserCreditBalance = {
+      total_credits: data.credits ?? 0,
+      used_credits: 0, // Not provided by this endpoint - use weekly-usage endpoint instead
+      remaining_credits: data.credits ?? 0, // This is the actual remaining credits
+      weekly_limit: undefined, // Not provided by this endpoint - use weekly-usage endpoint instead
+    };
+
+    console.log("✅ Normalized credit balance:", normalizedData);
+
+    return normalizedData;
+  } catch (err) {
+    console.error("🔥 Error loading user credit balance:", err);
+    throw err;
+  }
+}
+
+export async function getCreditTransactions(): Promise<CreditTransaction[]> {
+  try {
+    // Get JWT token from localStorage
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting credit transactions with JWT:", jwt.substring(0, 20) + "...");
+
+    const res = await fetch(`${apiBaseUrl}/secure/credits/transactions`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /secure/credits/transactions response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("❌ JWT is not valid or expired");
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ Transactions endpoint not found");
+        return [];
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get credit transactions:`, res.status, errorText);
+      throw new Error(`Could not load transactions: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 Credit transactions response:", data);
+    console.log("🔍 Transaction fields:", {
+      customer_id: data.customer_id,
+      limit: data.limit,
+      offset: data.offset,
+      transactions_count: data.transactions?.length || 0,
+      all_fields: Object.keys(data)
+    });
+
+    // Handle the actual API response structure
+    // API returns: { customer_id: string, limit: number, offset: number, transactions: [...] }
+    // Transactions have nested objects with { String: value, Valid: boolean } format
+    const transactions = data.transactions || [];
+
+    const normalizedTransactions: CreditTransaction[] = transactions.map((tx: any) => ({
+      id: tx.id,
+      amount: tx.amount,
+      type: tx.transaction_type,
+      description: tx.description?.Valid ? tx.description.String : undefined,
+      created_at: tx.created_at?.Valid ? tx.created_at.Time : undefined,
+      event_id: tx.event_id,
+      credit_package_id: tx.credit_package_id,
+    }));
+
+    console.log("✅ Normalized transactions:", normalizedTransactions);
+
+    return normalizedTransactions;
+  } catch (err) {
+    console.error("🔥 Error loading credit transactions:", err);
+    throw err;
+  }
+}
+
+export async function getWeeklyUsage(): Promise<WeeklyUsage | null> {
+  try {
+    // Get JWT token from localStorage
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting weekly credit usage with JWT:", jwt.substring(0, 20) + "...");
+
+    const res = await fetch(`${apiBaseUrl}/secure/credits/weekly-usage`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /secure/credits/weekly-usage response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("❌ JWT is not valid or expired");
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ Weekly usage endpoint not found");
+        return null;
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get weekly usage:`, res.status, errorText);
+      throw new Error(`Could not load weekly usage: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 Weekly usage response:", data);
+    console.log("🔍 Weekly usage fields:", {
+      current_week_usage: data.current_week_usage,
+      customer_id: data.customer_id,
+      remaining_credits: data.remaining_credits,
+      weekly_limit: data.weekly_limit,
+      all_fields: Object.keys(data)
+    });
+
+    // Handle the actual API response structure
+    // API returns: { current_week_usage: number, customer_id: string, remaining_credits: number, weekly_limit: number }
+    // We need to map this to our WeeklyUsage interface
+    const normalizedData: WeeklyUsage = {
+      credits_used: data.current_week_usage ?? 0,
+      weekly_limit: data.weekly_limit ?? undefined,
+      week_start: undefined, // Not provided by API
+      week_end: undefined, // Not provided by API
+    };
+
+    console.log("✅ Normalized weekly usage:", normalizedData);
+
+    return normalizedData;
+  } catch (err) {
+    console.error("🔥 Error loading weekly usage:", err);
     throw err;
   }
 }

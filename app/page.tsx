@@ -26,6 +26,52 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
+  // Get current season based on date
+  const getCurrentSeason = () => {
+    const month = new Date().getMonth() + 1; // 1-12
+
+    // Winter: December, January, February (12, 1, 2)
+    if (month === 12 || month === 1 || month === 2) {
+      return {
+        name: 'Winter',
+        leagueName: 'Winter League',
+        campName: 'Winter Camps',
+        leagueDescription: 'Join our competitive winter league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
+      };
+    }
+    // Spring: March, April, May (3, 4, 5)
+    if (month >= 3 && month <= 5) {
+      return {
+        name: 'Spring',
+        leagueName: 'Spring League',
+        campName: 'Spring Camps',
+        leagueDescription: 'Join our competitive spring league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this spring.',
+      };
+    }
+    // Summer: June, July, August (6, 7, 8)
+    if (month >= 6 && month <= 8) {
+      return {
+        name: 'Summer',
+        leagueName: 'Summer League',
+        campName: 'Summer Camps',
+        leagueDescription: 'Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.',
+      };
+    }
+    // Fall: September, October, November (9, 10, 11)
+    return {
+      name: 'Fall',
+      leagueName: 'Fall League',
+      campName: 'Fall Camps',
+      leagueDescription: 'Join our competitive fall league with weekly games, team practices, and playoff action for all skill levels.',
+      campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this fall.',
+    };
+  };
+
+  const currentSeason = getCurrentSeason();
+
   return (
     <div className="flex flex-col">
       <Head>
@@ -100,13 +146,12 @@ export default function Home() {
       {/* Hero Section */}
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
-        subtitle="Now’s the Best Time to Join RISE"
+        subtitle="Now's the Best Time to Join RISE"
         description="Get access to Summer Rise League, Pro Club Training, and more — plus limited-time membership discounts."
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        // primaryButtonHref="/allmemberships"
-        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="EXPLORE"
         secondaryButtonHref="#memberships"
         height="100vh"
@@ -276,9 +321,8 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                {/* <Link href="/allmemberships">JOIN NOW</Link> */}
                 <Link
-                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  href="/allmemberships"
                   onClick={() =>
                     gtagEvent({
                       action: "click_join_now",
@@ -319,15 +363,15 @@ export default function Home() {
                 buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Summer League",
-                description: "Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.",
+                title: currentSeason.leagueName,
+                description: currentSeason.leagueDescription,
                 image: "/home-page-images/summer-league.jpg",
                 buttonText: "Join Now",
                 buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Summer Camps",
-                description: "Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.",
+                title: currentSeason.campName,
+                description: currentSeason.campDescription,
                 image: "/home-page-images/summer-camps.jpg",
                 buttonText: "Register",
                 buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { getUserMembership, getUserSchedule, updateUserProfile, UserProfile, UserMembership, UserScheduleResponse } from "@/services/userProfile";
+import { getUserMembership, getUserSchedule, updateUserProfile, getUserCreditBalance, getWeeklyUsage, UserProfile, UserMembership, UserScheduleResponse, UserCreditBalance, WeeklyUsage } from "@/services/userProfile";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -36,10 +36,14 @@ export default function ProfilePage() {
   const [scheduleTab, setScheduleTab] = useState("upcoming");
   const [membership, setMembership] = useState<UserMembership | null>(null);
   const [schedule, setSchedule] = useState<UserScheduleResponse>({ events: [], games: [], practices: [] });
+  const [creditBalance, setCreditBalance] = useState<UserCreditBalance | null>(null);
+  const [weeklyUsage, setWeeklyUsage] = useState<WeeklyUsage | null>(null);
   const [membershipLoading, setMembershipLoading] = useState(true);
   const [scheduleLoading, setScheduleLoading] = useState(true);
+  const [creditsLoading, setCreditsLoading] = useState(true);
   const [membershipError, setMembershipError] = useState("");
   const [scheduleError, setScheduleError] = useState("");
+  const [creditsError, setCreditsError] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState<Partial<UserProfile>>({});
@@ -56,6 +60,10 @@ export default function ProfilePage() {
   // Fetch user data
   useEffect(() => {
     if (!isAuthenticated) return;
+
+    // Log JWT token for debugging
+    const jwtToken = localStorage.getItem('jwt');
+    console.log("🔑 JWT Token:", jwtToken);
 
     const fetchUserData = async () => {
       // Fetch membership data
@@ -80,6 +88,31 @@ export default function ProfilePage() {
         setScheduleError(error.message || "Failed to load schedule data");
       } finally {
         setScheduleLoading(false);
+      }
+
+      // Fetch credit data
+      try {
+        setCreditsLoading(true);
+
+        // Fetch credit balance
+        try {
+          const credits = await getUserCreditBalance();
+          setCreditBalance(credits);
+        } catch (error: any) {
+          console.error("Error fetching credit balance:", error);
+          setCreditsError(error.message || "Failed to load credit balance");
+        }
+
+        // Fetch weekly usage separately (don't fail if this fails)
+        try {
+          const usage = await getWeeklyUsage();
+          setWeeklyUsage(usage);
+        } catch (error: any) {
+          console.warn("Error fetching weekly usage (non-critical):", error);
+          // Don't set creditsError here - weekly usage is optional
+        }
+      } finally {
+        setCreditsLoading(false);
       }
     };
 
@@ -444,6 +477,54 @@ export default function ProfilePage() {
                   )}
                 </div>
 
+                {/* Credits Summary */}
+                <div className="bg-gray-900 rounded border border-gray-700 p-4">
+                  <h3 className="text-lg font-medium text-white mb-4">Credits</h3>
+                  {creditsLoading ? (
+                    <div className="animate-pulse space-y-2">
+                      <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                    </div>
+                  ) : creditsError ? (
+                    <p className="text-gray-400 text-sm">Unable to load credits</p>
+                  ) : creditBalance ? (
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400 text-sm">Total Credits</span>
+                        <span className="text-white font-medium">{creditBalance.total_credits || 0}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400 text-sm">Remaining</span>
+                        <span className="text-[#ffb800] font-medium">{creditBalance.remaining_credits || 0}</span>
+                      </div>
+                      {weeklyUsage && (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400 text-sm">Used This Week</span>
+                            <span className="text-white">{weeklyUsage.credits_used || 0}</span>
+                          </div>
+                          {weeklyUsage.weekly_limit && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400 text-sm">Weekly Limit</span>
+                              <span className="text-white">{weeklyUsage.weekly_limit}</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-gray-400 text-sm mb-3">No credits available</p>
+                      <button
+                        onClick={() => router.push('/allmemberships')}
+                        className="px-3 py-1 bg-gray-800 text-white text-sm rounded hover:bg-gray-700 transition-colors border border-gray-600"
+                      >
+                        Buy Credits
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {/* Activity Summary */}
                 <div className="bg-gray-900 rounded border border-gray-700 p-4">
                   <h3 className="text-lg font-medium text-white mb-4">Activity</h3>
@@ -462,11 +543,12 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Mini Calendar */}
-                <div className="bg-gray-900 rounded border border-gray-700 p-4">
-                  <h3 className="text-lg font-medium text-white mb-4">Calendar</h3>
-                  <div className="space-y-3">
+              {/* Mini Calendar - Full Width Below */}
+              <div className="bg-gray-900 rounded border border-gray-700 p-4">
+                <h3 className="text-lg font-medium text-white mb-4">Calendar</h3>
+                <div className="space-y-3">
                     {/* Current Month Header */}
                     <div className="flex items-center justify-between">
                       <button
@@ -576,7 +658,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
-            </div>
           )}
 
           {activeTab === "membership" && (

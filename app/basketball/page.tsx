@@ -438,7 +438,7 @@ export default function BasketballPage() {
       </ParallaxSection>
 
       {/* Player Statistics */}
-      <ParallaxSection
+      {/* <ParallaxSection
         bgImage="/basketball-page-images/topplayers.jpg"
         overlayOpacity={0.8}
         className="py-36"
@@ -463,7 +463,7 @@ export default function BasketballPage() {
             </div>
           </div>
         </SectionContainer>
-      </ParallaxSection>
+      </ParallaxSection> */}
 
       {/* Memberships */}
       <SectionContainer>

@@ -20,6 +20,7 @@ export interface MembershipPlan {
   price: number;
   unit_amount?: number;
   interval?: string;
+  is_visible?: boolean;
   created_at?: string;
   updated_at?: string;
 }

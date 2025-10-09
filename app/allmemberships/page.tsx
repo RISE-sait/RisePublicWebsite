@@ -10,9 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { Membership } from "@/types/membership";
-import { getAllMemberships } from "@/services/membership";
-import { getPlansForMembership } from "@/services/membershipPlan";
-import { getMembershipPlanCheckoutUrl } from "@/services/checkout";
+import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
+import { getMembershipPlanCheckoutUrl, getCreditPackageCheckoutUrl } from "@/services/checkout";
 import Link from "next/link";
 import TabNavigation from "@/components/tab-navigation";
 
@@ -36,6 +35,7 @@ export default function MembershipsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [genderFilter, setGenderFilter] = useState("all"); // all, boys, girls
   const [checkoutLoading, setCheckoutLoading] = useState<Record<string, boolean>>({});
 
   // Next.js router and search params
@@ -66,6 +66,11 @@ export default function MembershipsPage() {
     const name = (membership.membershipTypeName || membership.name).toLowerCase();
     const desc = membership.description?.toLowerCase() || '';
 
+    // Credit packages go to General Access
+    if ((membership as any).isCreditPackage || name.includes('credit')) {
+      return 'general';
+    }
+
     // Basketball Programs
     if (name.includes('jr') || name.includes('junior') || name.includes('hooper') ||
         (name.includes('basketball') && name.includes('full year'))) {
@@ -92,10 +97,36 @@ export default function MembershipsPage() {
     return 'general';
   };
 
-  // Filter memberships based on active tab
-  const filteredMemberships = activeTab === 'all'
-    ? memberships
-    : memberships.filter(membership => categorizeMembership(membership) === activeTab);
+  // Helper function to check if membership is for boys or girls
+  const getGender = (membership: MembershipWithPlans) => {
+    const name = (membership.membershipTypeName || membership.name).toLowerCase();
+    const planName = membership.planName?.toLowerCase() || '';
+    const desc = membership.description?.toLowerCase() || '';
+
+    if (name.includes('boys') || planName.includes('boys') || desc.includes('boys')) {
+      return 'boys';
+    }
+    if (name.includes('girls') || planName.includes('girls') || desc.includes('girls')) {
+      return 'girls';
+    }
+    return 'all'; // Co-ed or not specified
+  };
+
+  // Filter memberships based on active tab and gender filter
+  const filteredMemberships = memberships
+    .filter(membership => {
+      // First filter by category
+      if (activeTab !== 'all' && categorizeMembership(membership) !== activeTab) {
+        return false;
+      }
+      // Then filter by gender
+      if (genderFilter !== 'all') {
+        const membershipGender = getGender(membership);
+        // Include 'all' gender memberships (co-ed) in both filters
+        return membershipGender === genderFilter || membershipGender === 'all';
+      }
+      return true;
+    });
 
 
   // Handle checkout for a specific plan
@@ -103,20 +134,40 @@ export default function MembershipsPage() {
     try {
       setCheckoutLoading(prev => ({ ...prev, [membership.id]: true }));
 
-      // Since each membership entry now represents a single plan, use planId directly
-      const planId = membership.planId || membership.plans?.[0]?.id;
+      // Check if this is a credit package
+      const isCreditPackage = (membership as any).isCreditPackage;
 
-      if (!planId) {
-        alert("No plans available for this membership");
-        return;
+      if (isCreditPackage) {
+        // For credit packages, use the credit package ID (not stripe_price_id)
+        const creditPackageId = membership.membershipTypeId;
+
+        if (!creditPackageId) {
+          alert("No credit package ID available");
+          return;
+        }
+
+        console.log(`🔄 Getting checkout URL for credit package: ${creditPackageId}`);
+        const checkoutUrl = await getCreditPackageCheckoutUrl(creditPackageId);
+        console.log(`✅ Got checkout URL: ${checkoutUrl}`);
+
+        // Redirect to Stripe checkout
+        window.open(checkoutUrl, '_blank');
+      } else {
+        // For membership plans, use planId
+        const planId = membership.planId || membership.plans?.[0]?.id;
+
+        if (!planId) {
+          alert("No plans available for this membership");
+          return;
+        }
+
+        console.log(`🔄 Getting checkout URL for plan: ${planId}`);
+        const checkoutUrl = await getMembershipPlanCheckoutUrl(planId);
+        console.log(`✅ Got checkout URL: ${checkoutUrl}`);
+
+        // Redirect to Stripe checkout
+        window.open(checkoutUrl, '_blank');
       }
-
-      console.log(`🔄 Getting checkout URL for plan: ${planId}`);
-      const checkoutUrl = await getMembershipPlanCheckoutUrl(planId);
-      console.log(`✅ Got checkout URL: ${checkoutUrl}`);
-
-      // Redirect to Stripe checkout
-      window.open(checkoutUrl, '_blank');
     } catch (error: any) {
       console.error("❌ Checkout error:", error);
 
@@ -153,65 +204,74 @@ export default function MembershipsPage() {
   useEffect(() => {
     async function fetchMembershipsWithPlans() {
       try {
-        console.log("🔍 Fetching memberships...");
-        const data = await getAllMemberships();
+        console.log("🔍 Fetching memberships from cache...");
+        const { memberships: data, membershipPlans, creditPackages } = await getCachedMembershipsWithPlans();
         console.log("✅ Got memberships:", data.length);
+        console.log("✅ Got credit packages:", creditPackages.length);
 
-        if (data.length === 0) {
-          console.warn("⚠️ No memberships returned from API");
+        if (data.length === 0 && creditPackages.length === 0) {
+          console.warn("⚠️ No memberships or credit packages returned from API");
           setMemberships([]);
           setLoading(false);
           return;
         }
 
-        // Fetch all plans for each membership and create individual plan entries
-        const allPlanEntries = await Promise.allSettled(
-          data.map(async (membership) => {
-            try {
-              console.log(`🔍 Fetching plans for membership: ${membership.name}`);
-              const plans = await getPlansForMembership(membership.id);
-              console.log(`✅ Got ${plans.length} plans for ${membership.name}`);
+        // Create individual plan entries from cached data
+        const allPlanEntries = data.flatMap((membership) => {
+          const plans = membershipPlans.get(membership.id) || [];
 
-              // Create an entry for each plan
-              return plans.map((plan, index) => ({
-                ...membership,
-                planId: plan.id,
-                planName: plan.name || `${membership.name} - Option ${index + 1}`,
-                plans: [plan], // Keep single plan for compatibility with checkout
-                displayPrice: plan.price,
-                period: plan.interval === "month" ? "Monthly" : membership.period,
-                // Add plan-specific identifier for grouping
-                membershipTypeId: membership.id,
-                membershipTypeName: membership.name,
-                // Create unique ID for this plan entry
-                id: `${membership.id}-${plan.id}`,
-              }));
-            } catch (planError) {
-              console.warn(`⚠️ Failed to fetch plans for ${membership.name}, using membership data:`, planError);
-              // Return single membership entry if plans can't be fetched
-              return [{
-                ...membership,
-                planId: membership.id,
-                planName: membership.name,
-                plans: [],
-                displayPrice: membership.price || 0,
-                membershipTypeId: membership.id,
-                membershipTypeName: membership.name,
-              }];
-            }
-          })
-        );
-
-        // Flatten all plan entries
-        const flattenedPlans = allPlanEntries.reduce((acc, result) => {
-          if (result.status === 'fulfilled') {
-            acc.push(...result.value);
+          // Skip memberships with no plans - only show actual membership plans
+          if (plans.length === 0) {
+            console.log(`⚠️ Skipping "${membership.name}" - no plans available`);
+            return [];
           }
-          return acc;
-        }, [] as MembershipWithPlans[]);
 
-        console.log("✅ Final individual plan entries:", flattenedPlans);
-        setMemberships(flattenedPlans);
+          // Create an entry for each plan
+          return plans.map((plan, index) => ({
+            ...membership,
+            planId: plan.id,
+            planName: plan.name || `${membership.name} - Option ${index + 1}`,
+            plans: [plan], // Keep single plan for compatibility with checkout
+            displayPrice: plan.price,
+            period: plan.interval === "month" ? "Monthly" : membership.period,
+            // Add plan-specific identifier for grouping
+            membershipTypeId: membership.id,
+            membershipTypeName: membership.name,
+            // Create unique ID for this plan entry
+            id: `${membership.id}-${plan.id}`,
+          }));
+        });
+
+        // Add credit packages as membership entries
+        const creditPackageEntries = creditPackages.map((pkg) => ({
+          id: `credit-${pkg.id}`,
+          name: pkg.name,
+          planId: pkg.id, // Use credit package ID for checkout
+          planName: pkg.name,
+          plans: [],
+          displayPrice: pkg.price || 0, // Use Stripe price
+          price: pkg.price || 0,
+          period: "One-Time",
+          creditAllocation: pkg.credit_allocation, // Store credit allocation separately
+          description: pkg.description || `Credit package with ${pkg.credit_allocation} credits`,
+          benefits: [
+            `${pkg.credit_allocation} total credits`,
+            pkg.weekly_credit_limit > 0 ? `Use up to ${pkg.weekly_credit_limit} credits per week` : "Unlimited weekly usage",
+            "Flexible access to events and programs",
+            "Credits never expire"
+          ],
+          badge: "PAY AS YOU GO",
+          ctaText: "JOIN NOW",
+          learnMoreText: "LEARN MORE",
+          membershipTypeId: pkg.id, // This will be used for checkout
+          membershipTypeName: pkg.name,
+          isCreditPackage: true, // Flag to identify credit packages
+          stripe_price_id: pkg.stripe_price_id,
+        }));
+
+        const allEntries = [...allPlanEntries, ...creditPackageEntries];
+        console.log("✅ Final entries (memberships + credit packages):", allEntries);
+        setMemberships(allEntries);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -332,13 +392,54 @@ export default function MembershipsPage() {
         />
 
         {/* Category tabs */}
-        <div className="mb-8 max-w-4xl mx-auto">
+        <div className="mb-8 flex justify-center">
           <TabNavigation
             tabs={categoryTabs}
             defaultTab={activeTab}
-            onChange={setActiveTab}
+            onChange={(tab) => {
+              setActiveTab(tab);
+              setGenderFilter("all"); // Reset gender filter when changing category
+            }}
           />
         </div>
+
+        {/* Secondary Gender Filter Tabs - Show only for categories that have boys/girls */}
+        {(activeTab === 'basketball' || activeTab === 'leagues') && (
+          <div className="mb-6 flex justify-center">
+            <div className="inline-flex rounded-lg border border-gray-800 bg-gray-900/50 p-1">
+              <button
+                onClick={() => setGenderFilter("all")}
+                className={`px-6 py-2 text-sm font-medium rounded-md transition-all ${
+                  genderFilter === "all"
+                    ? "bg-[#ffb800] text-black"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setGenderFilter("boys")}
+                className={`px-6 py-2 text-sm font-medium rounded-md transition-all ${
+                  genderFilter === "boys"
+                    ? "bg-[#ffb800] text-black"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Boys
+              </button>
+              <button
+                onClick={() => setGenderFilter("girls")}
+                className={`px-6 py-2 text-sm font-medium rounded-md transition-all ${
+                  genderFilter === "girls"
+                    ? "bg-[#ffb800] text-black"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Girls
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Show message if no memberships */}
         {filteredMemberships.length === 0 ? (
@@ -392,15 +493,31 @@ export default function MembershipsPage() {
                         </h3>
                         {/* Starting price and period */}
                         <div
-                          className={`mt-2 flex items-baseline ${
+                          className={`mt-2 ${
                             isFeatured ? "text-black" : "text-white"
                           }`}
                         >
-                          <span className="text-sm mr-2">Starting at</span>
-                          <span className="text-3xl font-bold">
-                            ${membership.displayPrice}
-                          </span>
-                          <span className="ml-1">/{membership.period}</span>
+                          {(membership as any).isCreditPackage ? (
+                            <>
+                              <div className="flex items-baseline mb-1">
+                                <span className="text-3xl font-bold">
+                                  ${membership.displayPrice}
+                                </span>
+                                <span className="ml-2 text-sm">{membership.period}</span>
+                              </div>
+                              <div className="text-sm opacity-80">
+                                {(membership as any).creditAllocation} Credits Included
+                              </div>
+                            </>
+                          ) : (
+                            <div className="flex items-baseline">
+                              <span className="text-sm mr-2">Starting at</span>
+                              <span className="text-3xl font-bold">
+                                ${membership.displayPrice}
+                              </span>
+                              <span className="ml-1">/{membership.period}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

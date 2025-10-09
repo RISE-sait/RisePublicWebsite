@@ -26,8 +26,28 @@ const MEMBERSHIP_PATTERNS = [
 
 export function MembershipsSection() {
   const { plans, loading, error } = useMembershipPlans();
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p>Error: {error}</p>;
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="animate-pulse bg-gray-900 rounded-lg p-6 border border-gray-800">
+            <div className="h-6 bg-gray-700 rounded w-3/4 mb-4"></div>
+            <div className="h-8 bg-gray-700 rounded w-1/2 mb-4"></div>
+            <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-700 rounded w-5/6 mb-4"></div>
+            <div className="space-y-2">
+              <div className="h-3 bg-gray-700 rounded w-full"></div>
+              <div className="h-3 bg-gray-700 rounded w-full"></div>
+              <div className="h-3 bg-gray-700 rounded w-4/5"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) return <p className="text-red-400">Error: {error}</p>;
 
   const matchPlanToPattern = (plan: any) => {
     const planName = plan.title?.toLowerCase() || "";

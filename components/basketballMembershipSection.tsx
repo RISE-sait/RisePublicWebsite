@@ -1,79 +1,99 @@
 "use client";
-import { useMembershipPlans } from "@/hooks/useMembershipPlans";
+import { useState, useEffect } from "react";
+import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
 import { MembershipGrid } from "@/components/ui/membership-grid";
-
-// Define patterns to identify basketball membership types without hardcoded IDs
-const BASKETBALL_MEMBERSHIP_PATTERNS = [
-  {
-    keywords: ["full", "year", "basketball"],
-    badge: "BEST VALUE", 
-    featured: true,
-    priority: 1
-  },
-  {
-    keywords: ["jr", "junior", "elite", "hooper"],
-    badge: "GOOD VALUE",
-    featured: false, 
-    priority: 2
-  },
-  {
-    keywords: ["adult", "basketball"],
-    badge: "GREAT VALUE",
-    featured: false,
-    priority: 3
-  }
-];
+import type { MembershipPlan as GridPlan } from "@/components/ui/membership-grid";
 
 export function BasketballMembershipsSection() {
-  const { plans, loading, error } = useMembershipPlans();
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p>Error: {error}</p>;
+  const [displayPlans, setDisplayPlans] = useState<GridPlan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>();
 
-  const matchPlanToPattern = (plan: any) => {
-    const planName = plan.title?.toLowerCase() || "";
+  useEffect(() => {
+    async function fetchMemberships() {
+      try {
+        // Use cached data
+        const { memberships, membershipPlans } = await getCachedMembershipsWithPlans();
 
-    // Check patterns in order - more specific patterns first
-    return BASKETBALL_MEMBERSHIP_PATTERNS.find(pattern =>
-      pattern.keywords.some(keyword => planName.includes(keyword))
-    );
-  };
+        // Filter for basketball-related memberships
+        const filteredMemberships = memberships.filter((membership) => {
+          const membershipName = membership.name.toLowerCase();
+          const description = (membership.description || "").toLowerCase();
 
-  // Get one plan of each type to avoid duplicates
-  const getUniquePlansByType = () => {
-    const plansByType = new Map();
+          // Include basketball memberships
+          return (
+            membershipName.includes('basketball') ||
+            membershipName.includes('jr') ||
+            membershipName.includes('junior') ||
+            membershipName.includes('hooper') ||
+            description.includes('basketball')
+          );
+        });
 
-    plans.forEach(plan => {
-      console.log(`🏀 Processing basketball plan: ${plan.title}, price: ${plan.price}`);
-      if (plan.title && plan.title.trim() !== "") {
-        const pattern = matchPlanToPattern(plan);
-        if (pattern) {
-          const typeKey = pattern.priority; // Use priority as the unique type identifier
+        // Get lowest price for each membership
+        const membershipsWithLowestPrice = filteredMemberships
+          .map((membership) => {
+            const plans = membershipPlans.get(membership.id) || [];
 
-          // Only keep the first plan of each type, or prefer one without "No.2" in the name
-          if (!plansByType.has(typeKey) ||
-              (plansByType.get(typeKey).title.includes("No.2") && !plan.title.includes("No.2"))) {
-            plansByType.set(typeKey, {
-              ...plan,
-              badge: pattern.badge,
-              featured: pattern.featured,
-              priority: pattern.priority
-            });
-          }
-        }
+            // Find the lowest price from all visible plans
+            const lowestPrice = plans.length > 0
+              ? Math.min(...plans.map(plan => plan.price))
+              : membership.price;
+
+            return {
+              ...membership,
+              price: lowestPrice,
+              planCount: plans.length,
+            };
+          });
+
+        // Map to display format
+        const formattedPlans: GridPlan[] = membershipsWithLowestPrice.map((membership, index) => ({
+          id: membership.id,
+          featured: index === 0,
+          badge: membership.badge || (index === 0 ? "BEST VALUE" : "GREAT VALUE"),
+          title: membership.name,
+          price: membership.price,
+          period: membership.period || "Bi-Weekly",
+          description: membership.description || "",
+          features: membership.benefits || [],
+          ctaText: "VIEW PLANS",
+          learnMoreText: "LEARN MORE",
+          index,
+        }));
+
+        setDisplayPlans(formattedPlans);
+      } catch (err: any) {
+        console.error("Error fetching memberships:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    });
+    }
 
-    return Array.from(plansByType.values());
-  };
+    fetchMemberships();
+  }, []);
 
-  const displayPlans = getUniquePlansByType()
-    // Sort by priority (lower number = higher priority)
-    .sort((a, b) => a.priority - b.priority)
-    // Add display index
-    .map((plan, index) => ({
-      ...plan,
-      index
-    }));
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="animate-pulse bg-gray-900 rounded-lg p-6 border border-gray-800">
+            <div className="h-6 bg-gray-700 rounded w-3/4 mb-4"></div>
+            <div className="h-8 bg-gray-700 rounded w-1/2 mb-4"></div>
+            <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-700 rounded w-5/6 mb-4"></div>
+            <div className="space-y-2">
+              <div className="h-3 bg-gray-700 rounded w-full"></div>
+              <div className="h-3 bg-gray-700 rounded w-full"></div>
+              <div className="h-3 bg-gray-700 rounded w-4/5"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (error) return <p className="text-red-400">Error: {error}</p>;
 
   return <MembershipGrid plans={displayPlans} columns={3} />;
 }
