@@ -18,11 +18,60 @@ import { ChevronDown } from "lucide-react";
 import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
-import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax";
+import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
+import { AppDownloadButtons } from "@/components/app-download-buttons"
+
+
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
+  // Get current season based on date
+  const getCurrentSeason = () => {
+    const month = new Date().getMonth() + 1; // 1-12
+
+    // Winter: December, January, February (12, 1, 2)
+    if (month === 12 || month === 1 || month === 2) {
+      return {
+        name: 'Winter',
+        leagueName: 'Winter League',
+        campName: 'Winter Camps',
+        leagueDescription: 'Join our competitive winter league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
+      };
+    }
+    // Spring: March, April, May (3, 4, 5)
+    if (month >= 3 && month <= 5) {
+      return {
+        name: 'Spring',
+        leagueName: 'Spring League',
+        campName: 'Spring Camps',
+        leagueDescription: 'Join our competitive spring league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this spring.',
+      };
+    }
+    // Summer: June, July, August (6, 7, 8)
+    if (month >= 6 && month <= 8) {
+      return {
+        name: 'Summer',
+        leagueName: 'Summer League',
+        campName: 'Summer Camps',
+        leagueDescription: 'Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.',
+        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.',
+      };
+    }
+    // Fall: September, October, November (9, 10, 11)
+    return {
+      name: 'Fall',
+      leagueName: 'Fall League',
+      campName: 'Fall Camps',
+      leagueDescription: 'Join our competitive fall league with weekly games, team practices, and playoff action for all skill levels.',
+      campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this fall.',
+    };
+  };
+
+  const currentSeason = getCurrentSeason();
 
   return (
     <div className="flex flex-col">
@@ -103,8 +152,7 @@ export default function Home() {
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        // primaryButtonHref="/allmemberships"
-        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="EXPLORE"
         secondaryButtonHref="#memberships"
         height="100vh"
@@ -273,9 +321,8 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                {/* <Link href="/allmemberships">JOIN NOW</Link> */}
                 <Link
-                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  href="/allmemberships"
                   onClick={() =>
                     gtagEvent({
                       action: "click_join_now",
@@ -318,18 +365,16 @@ export default function Home() {
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Summer League",
-                description:
-                  "Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.",
+                title: currentSeason.leagueName,
+                description: currentSeason.leagueDescription,
                 image: "/home-page-images/summer-league.jpg",
                 buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
-                title: "Summer Camps",
-                description:
-                  "Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.",
+                title: currentSeason.campName,
+                description: currentSeason.campDescription,
                 image: "/home-page-images/summer-camps.jpg",
                 buttonText: "Register",
                 buttonLink:
@@ -468,28 +513,12 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap gap-4"
             >
-              <Button
-                variant="default"
-                className="bg-[#ffb800] text-black ..."
-                onClick={() =>
-                  gtagEvent({
-                    action: "click_coming_soon",
-                    category: "app",
-                    label: "RISE App Coming Soon",
-                  })
-                }
-              >
-                COMING SOON
-              </Button>
-              <div className="relative w-24 h-24 shadow-lg rounded-lg overflow-hidden">
-                {/* <img
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="QR Code"
-                  className="object-contain w-full h-full"
-                /> */}
-              </div>
+              <AppDownloadButtons
+                showLabel={true}
+                labelText="Download the RISE App"
+                layout="horizontal"
+              />
             </motion.div>
           </div>
           <motion.div

@@ -27,14 +27,9 @@ export default function SchedulePage() {
     const end = new Date();
     end.setMonth(now.getMonth() + 3); // fetch next 3 months
 
-    console.log("🚀 Fetching events from:", now.toISOString(), "to:", end.toISOString());
 
     getAllEvents(now, end)
       .then((fetchedEvents) => {
-        console.log("✅ Events fetched successfully:", {
-          count: fetchedEvents.length,
-          events: fetchedEvents
-        });
         
         // Log event details for debugging
         fetchedEvents.forEach((event, index) => {
@@ -248,10 +243,14 @@ export default function SchedulePage() {
               </>
             )
           ) : (
-            <>
-              {console.log("📋 Rendering ScheduleList with events:", filteredEvents.length, "events")}
-              <ScheduleList events={filteredEvents} />
-            </>
+            loading ? (
+              <div className="text-white text-center py-12">Loading events...</div>
+            ) : (
+              <>
+                {console.log("📋 Rendering ScheduleList with events:", filteredEvents.length, "events")}
+                <ScheduleList events={filteredEvents} />
+              </>
+            )
           )}
         </motion.div>
       </SectionContainer>

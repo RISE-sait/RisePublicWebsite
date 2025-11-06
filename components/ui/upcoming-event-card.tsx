@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 import type { Event } from "@/types/event"
+import { useRouter } from "next/navigation"
 
 
 interface UpcomingEventCardProps {
@@ -20,7 +21,6 @@ interface UpcomingEventCardProps {
   endDate?: string | null
   copiedEventId: string | null
   onShare: (event: Event, method: "copy" | "native") => void
-  onViewDetails: (event: Event) => void
 }
 
 //helper function for links 
@@ -137,8 +137,14 @@ const formatEventTime = (dateString: string) => {
   })
 }
 
-const getEventImage = (programType: string, programName: string) => {
-  const name = programName.toLowerCase()
+const getEventImage = (event: Event) => {
+  // Use the photo_url from the API if available
+  if (event.program_photo_url) {
+    return event.program_photo_url
+  }
+
+  // Fallback to default images based on program name
+  const name = event.program_name.toLowerCase()
   if (name.includes("camp")) return "/home-page-images/summer-camps.jpg"
   if (name.includes("league")) return "/home-page-images/summer-league.jpg"
   if (name.includes("pro")) return "/home-page-images/pro-club.jpg"
@@ -152,8 +158,8 @@ export function UpcomingEventCard({
   endDate,
   copiedEventId,
   onShare,
-  onViewDetails,
 }: UpcomingEventCardProps) {
+  const router = useRouter()
 
   const typeInfo = getEventTypeInfo(event.program_type)
 
@@ -182,7 +188,7 @@ export function UpcomingEventCard({
       <Card className="bg-white/10 backdrop-blur-md border border-white/20 hover:border-[#ffb800]/40 transition-all duration-500 overflow-hidden h-full shadow-2xl hover:shadow-[#ffb800]/20">
         <div className="relative h-48 overflow-hidden">
           <Image
-            src={getEventImage(event.program_type, event.program_name)}
+            src={getEventImage(event)}
             alt={event.program_name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -225,7 +231,7 @@ export function UpcomingEventCard({
           )}
 
           {event.description && (
-            <p className="text-gray-300 text-sm mb-4 leading-relaxed break-words">
+            <p className="text-gray-300 text-sm mb-4 leading-relaxed break-words line-clamp-3">
             {parseTextWithLinks(event.description)}
             </p>
           )}
@@ -253,7 +259,7 @@ export function UpcomingEventCard({
 
           <div className="flex gap-3">
             <Button
-                onClick={() => onViewDetails(event)}
+                onClick={() => router.push(`/events/${event.id}`)}
                 className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30"
                 >
                 <span className="flex items-center justify-center gap-2">

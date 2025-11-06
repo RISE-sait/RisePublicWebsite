@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   NAVIGATION_ITEMS,
@@ -11,12 +11,15 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { user, userProfile, loading, logout, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -27,9 +30,57 @@ export default function Header() {
   useEffect(() => {
     setIsMenuOpen(false);
     setOpenSubmenu(null);
+    setUserMenuOpen(false);
   }, [pathname]);
 
   const toggleMenu = () => setIsMenuOpen((v) => !v);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUserMenuOpen(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  // Helper functions for user display
+  const getUserDisplayName = () => {
+    if (userProfile?.first_name) {
+      return userProfile.first_name;
+    }
+    if (user?.displayName) {
+      return user.displayName.split(' ')[0];
+    }
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return 'User';
+  };
+
+  const getUserInitials = () => {
+    if (userProfile?.first_name && userProfile?.last_name) {
+      return `${userProfile.first_name[0]}${userProfile.last_name[0]}`.toUpperCase();
+    }
+    if (userProfile?.first_name) {
+      return userProfile.first_name[0].toUpperCase();
+    }
+    if (user?.displayName) {
+      const nameParts = user.displayName.split(' ');
+      if (nameParts.length >= 2) {
+        return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+      }
+      return nameParts[0][0].toUpperCase();
+    }
+    if (user?.email) {
+      return user.email[0].toUpperCase();
+    }
+    return 'U';
+  };
+
+  const getProfilePicture = () => {
+    return userProfile?.photo_url || user?.photoURL || null;
+  };
 
   const availablePages = [
     "/",
@@ -59,7 +110,7 @@ export default function Header() {
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
       {
-        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        href: "/allmemberships",
         label: "Memberships",
       },
       { href: "/coaches", label: "Coaches" },
@@ -67,7 +118,7 @@ export default function Header() {
     ],
     "/performance": [
       {
-        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        href: "/allmemberships?category=fitness",
         label: "Memberships",
       },
     ],
@@ -103,50 +154,135 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex">
-          <ul className="flex items-center space-x-1">
-            {navItems.map((item, i) => {
-              const submenu = dropdowns[item.href];
-              return (
-                <li key={i} className="relative group">
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "px-4 py-2 text-sm font-medium inline-block transition-colors",
-                      pathname === item.href
-                        ? "text-[#ffb800]"
-                        : "text-white hover:text-[#ffb800]"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-
-                  {submenu && (
-                    <ul
+        <div className="hidden md:flex items-center space-x-4">
+          <nav>
+            <ul className="flex items-center space-x-1">
+              {navItems.map((item, i) => {
+                const submenu = dropdowns[item.href];
+                return (
+                  <li key={i} className="relative group">
+                    <Link
+                      href={item.href}
                       className={cn(
-                        "absolute left-0 mt-2 w-40 bg-black/95 backdrop-blur-md rounded shadow-lg",
-                        "opacity-0 invisible -translate-y-2",
-                        "group-hover:opacity-100 group-hover:visible group-hover:translate-y-0",
-                        "transition-all duration-300 ease-out"
+                        "px-4 py-2 text-sm font-medium inline-block transition-colors",
+                        pathname === item.href
+                          ? "text-[#ffb800]"
+                          : "text-white hover:text-[#ffb800]"
                       )}
                     >
-                      {submenu.map((sub, si) => (
-                        <li key={si}>
-                          <Link
-                            href={sub.href}
-                            className="block px-4 py-2 text-sm text-white hover:text-[#ffb800] hover:bg-black/80"
-                          >
-                            {sub.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                      {item.label}
+                    </Link>
+
+                    {submenu && (
+                      <ul
+                        className={cn(
+                          "absolute left-0 mt-2 w-40 bg-black/95 backdrop-blur-md rounded shadow-lg",
+                          "opacity-0 invisible -translate-y-2",
+                          "group-hover:opacity-100 group-hover:visible group-hover:translate-y-0",
+                          "transition-all duration-300 ease-out"
+                        )}
+                      >
+                        {submenu.map((sub, si) => (
+                          <li key={si}>
+                            <Link
+                              href={sub.href}
+                              className="block px-4 py-2 text-sm text-white hover:text-[#ffb800] hover:bg-black/80"
+                            >
+                              {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Auth Section */}
+          <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
+            {loading ? (
+              <div className="px-3 py-1.5 text-sm text-gray-400">Loading...</div>
+            ) : isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors"
+                >
+                  {/* Profile Picture */}
+                  <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-600">
+                    {getProfilePicture() ? (
+                      <img
+                        src={getProfilePicture()!}
+                        alt={getUserDisplayName()}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-[#ffb800] flex items-center justify-center">
+                        <span className="text-xs font-bold text-black">
+                          {getUserInitials()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <span>{getUserDisplayName()}</span>
+                  <ChevronDown className={cn(
+                    "h-4 w-4 transition-transform",
+                    userMenuOpen ? "rotate-180" : "rotate-0"
+                  )} />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-md rounded shadow-lg border border-gray-700">
+                    <div className="py-1">
+                      <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-700">
+                        {user?.email}
+                      </div>
+                      <Link
+                        href="/profile"
+                        className="flex items-center w-full px-4 py-2 text-sm text-white hover:text-[#ffb800] hover:bg-black/80"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        My Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-white hover:text-[#ffb800] hover:bg-black/80"
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className={cn(
+                    "px-3 py-1.5 text-sm font-medium rounded transition-colors",
+                    pathname === "/login"
+                      ? "text-[#ffb800]"
+                      : "text-white hover:text-[#ffb800]"
                   )}
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className={cn(
+                    "px-3 py-1.5 text-sm font-medium rounded transition-colors bg-[#ffb800] text-black hover:bg-[#e0a300]"
+                  )}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -245,6 +381,78 @@ export default function Header() {
                   </div>
                 );
               })}
+
+              {/* Mobile Auth Section */}
+              <div className="border-t border-gray-700 mt-4 pt-4">
+                {loading ? (
+                  <div className="py-3 px-4 text-sm text-gray-400">Loading...</div>
+                ) : isAuthenticated ? (
+                  <div>
+                    <div className="px-4 py-2 flex items-center space-x-3 border-b border-gray-700">
+                      {/* Mobile Profile Picture */}
+                      <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-600">
+                        {getProfilePicture() ? (
+                          <img
+                            src={getProfilePicture()!}
+                            alt={getUserDisplayName()}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-[#ffb800] flex items-center justify-center">
+                            <span className="text-xs font-bold text-black">
+                              {getUserInitials()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-sm text-white font-medium">{getUserDisplayName()}</div>
+                        <div className="text-xs text-gray-400">{user?.email}</div>
+                      </div>
+                    </div>
+                    <Link
+                      href="/profile"
+                      className="flex items-center w-full py-3 px-4 text-sm font-medium text-white hover:text-[#ffb800]"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      My Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center w-full py-3 px-4 text-sm font-medium text-white hover:text-[#ffb800]"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className={cn(
+                        "block py-3 px-4 text-sm font-medium",
+                        pathname === "/login"
+                          ? "text-[#ffb800]"
+                          : "text-white hover:text-[#ffb800]"
+                      )}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="block py-3 px-4 text-sm font-medium bg-[#ffb800] text-black hover:bg-[#e0a300] rounded mx-4 mt-2 text-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+              </div>
             </nav>
           </motion.div>
         )}

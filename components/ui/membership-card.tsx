@@ -147,7 +147,7 @@ export function MembershipCard({
             )}
           >
             <Link
-              href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              href="/allmemberships"
               onClick={() =>
                 gtagEvent({
                   action: "click_view_membership",
@@ -156,7 +156,7 @@ export function MembershipCard({
                 })
               }
             >
-              VIEW MORE
+              {learnMoreText || "VIEW MORE"}
             </Link>
           </Button>
 
@@ -171,16 +171,16 @@ export function MembershipCard({
             )}
           >
             <Link
-              href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              href="/allmemberships"
               onClick={() =>
                 gtagEvent({
-                  action: "click_join_membership",
+                  action: ctaText === "VIEW PLANS" ? "click_view_plans" : "click_join_membership",
                   category: "membership",
-                  label: `Join Membership - ${title}`,
+                  label: `${ctaText === "VIEW PLANS" ? "View Plans" : "Join Membership"} - ${title}`,
                 })
               }
             >
-              JOIN NOW
+              {ctaText || "JOIN NOW"}
             </Link>
           </Button>
         </div>

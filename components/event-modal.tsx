@@ -4,6 +4,7 @@ import type React from "react"
 import { Dialog } from "@headlessui/react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, MapPin, Calendar, Users, Trophy, Info } from "lucide-react"
+import Image from "next/image"
 
 interface EventModalProps {
   isOpen: boolean
@@ -33,6 +34,20 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, event }
     })
   }
 
+  const getEventImage = () => {
+    // Use the photo_url from the API if available
+    if (event.program_photo_url) {
+      return event.program_photo_url
+    }
+
+    // Fallback to default images based on program name
+    const name = event.program_name?.toLowerCase() || ""
+    if (name.includes("camp")) return "/home-page-images/summer-camps.jpg"
+    if (name.includes("league")) return "/home-page-images/summer-league.jpg"
+    if (name.includes("pro")) return "/home-page-images/pro-club.jpg"
+    return "/home-page-images/all-girls-camp.jpg"
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -55,6 +70,19 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, event }
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="w-full max-w-lg bg-gradient-to-br from-gray-900 to-black border border-yellow-500/20 rounded-2xl shadow-2xl overflow-hidden"
             >
+              {/* Event Image Header */}
+              {!isGame && event.program_photo_url && (
+                <div className="relative h-48 w-full overflow-hidden">
+                  <Image
+                    src={getEventImage()}
+                    alt={event.program_name || "Event"}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
+                </div>
+              )}
+
               {/* Header */}
               <div className="relative bg-gray-900 border-b border-yellow-500/20 p-6">
                 <button

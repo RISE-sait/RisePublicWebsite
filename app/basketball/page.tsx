@@ -11,7 +11,7 @@ import { AnimatedText } from "@/components/ui/animated-text";
 import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import TabNavigation from "@/components/tab-navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BASKETBALL_PAGE_IMAGES } from "@/lib/constants";
 import { ChevronDown } from "lucide-react";
 import { TopPlayersSection } from "@/components/topPlayersSection";
@@ -23,16 +23,49 @@ import CoachesSection from "@/components/coachesSection";
 import { BasketballMembershipsSection } from "@/components/basketballMembershipSection";
 import { PastGamesSection } from "@/components/pastGamesSection";
 import { ParticleBackground } from "@/components/ui/particle-background";
+import { getCoaches, Coach } from "@/services/coaches";
 
 export default function BasketballPage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const [activeTab, setActiveTab] = useState("coaches"); 
+  const [activeTab, setActiveTab] = useState("coaches");
+  const [randomCoachIds, setRandomCoachIds] = useState<string[]>([]);
+  const [coachesLoading, setCoachesLoading] = useState(true); 
 
   const programTabs = [
     { id: "programs", label: "Programs" },
     { id: "coaches", label: "Coaches" },
   ];
+
+  // Function to shuffle array and get first n elements, excluding those with placeholder images
+  const getRandomCoaches = (coaches: Coach[], count: number = 3): string[] => {
+    // Filter out coaches with placeholder images
+    const coachesWithImages = coaches.filter(coach =>
+      coach.photo_url &&
+      coach.photo_url !== "coach-placeholder.png" &&
+      !coach.photo_url.includes("placeholder")
+    );
+
+    const shuffled = [...coachesWithImages].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count).map(coach => coach.id);
+  };
+
+  // Fetch coaches and randomly select 3 on component mount
+  useEffect(() => {
+    const fetchAndSelectRandomCoaches = async () => {
+      try {
+        const coaches = await getCoaches();
+        const selectedIds = getRandomCoaches(coaches, 3);
+        setRandomCoachIds(selectedIds);
+      } catch (error) {
+        console.error('Error fetching coaches:', error);
+      } finally {
+        setCoachesLoading(false);
+      }
+    };
+
+    fetchAndSelectRandomCoaches();
+  }, []);
 
 
   return (
@@ -79,8 +112,7 @@ export default function BasketballPage() {
         videoSrc="/headervideos/basketballhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        // primaryButtonHref="/allmemberships"
-        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
@@ -196,15 +228,17 @@ export default function BasketballPage() {
         {activeTab === "coaches" && (
           // use vertical spacing between the grid and the button
           <div className="space-y-6">
-            {/* your 3‑coach grid */}
-            <CoachesSection
-              ids={[
-                "c5c08016-2437-4e8f-b8fb-b3bf350aa6c4",
-                "617b7a57-a677-42d6-9d41-f483aea0b702",
-                "46e0e72f-7141-4faa-bfa3-c2d8371b4dd1",
-              ]}
-              showHeadings={false}
-            />
+            {/* your 3‑coach grid with loading state */}
+            {coachesLoading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="text-lg text-gray-400">Loading coaches...</div>
+              </div>
+            ) : (
+              <CoachesSection
+                ids={randomCoachIds}
+                showHeadings={false}
+              />
+            )}
 
             {/* wrap the button in a flex container to center it */}
             <div className="flex justify-center">
@@ -345,14 +379,7 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                {/* <Link href="/allmemberships">JOIN NOW</Link> */}
-                <Link
-                  href={
-                    "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
-                  }
-                >
-                  JOIN NOW
-                </Link>
+                <Link href="/allmemberships">JOIN NOW</Link>
               </Button>
             </motion.div>
           </div>
@@ -411,7 +438,7 @@ export default function BasketballPage() {
       </ParallaxSection>
 
       {/* Player Statistics */}
-      <ParallaxSection
+      {/* <ParallaxSection
         bgImage="/basketball-page-images/topplayers.jpg"
         overlayOpacity={0.8}
         className="py-36"
@@ -436,7 +463,7 @@ export default function BasketballPage() {
             </div>
           </div>
         </SectionContainer>
-      </ParallaxSection>
+      </ParallaxSection> */}
 
       {/* Memberships */}
       <SectionContainer>
@@ -486,11 +513,7 @@ export default function BasketballPage() {
               variant="outline"
               className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
             >
-              <Link
-                href={
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
-                }
-              >
+              <Link href="/allmemberships">
                 JOIN THE PREMIER TEAM
               </Link>
             </Button>

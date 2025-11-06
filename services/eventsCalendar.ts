@@ -11,6 +11,7 @@ interface EventApiDto {
     name: string;
     type: string;
     description?: string;
+    photo_url?: string;
   };
 
   location: {
@@ -216,6 +217,7 @@ export async function getAllEvents(
       program_type: e.program.type,
       program_id: e.program.id,
       program_name: e.program.name,
+      program_photo_url: e.program.photo_url,
       location_id: e.location.id,
       location_name: e.location.name,
       start_time,

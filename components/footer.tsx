@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
 import { FOOTER_LINKS, PAYMENT_METHODS, SITE_NAME } from "@/lib/constants";
 import { motion } from "framer-motion";
@@ -181,9 +180,22 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6">
-          © {new Date().getFullYear()} {SITE_NAME} Sports Complex Inc. All
-          rights reserved.
+        <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6 space-y-2">
+          <div>
+            © {new Date().getFullYear()} {SITE_NAME} Sports Complex Inc. All
+            rights reserved.
+          </div>
+          <div>
+            Created by{" "}
+            <a
+              href="https://www.havenztech.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#ffb800] hover:text-[#e0a300] transition-colors underline"
+            >
+              Havenz Tech
+            </a>
+          </div>
         </div>
       </div>
     </footer>

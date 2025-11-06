@@ -23,12 +23,12 @@ export default function CoffeePage() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   <Head>
-  <title>BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2025</title>
+  <title>BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2026</title>
   <meta name="description" content="BOOM Coffee is opening at Rise Sports Complex. Enjoy fresh coffee, protein shakes powered by ProRise Supplements, and healthy snacks crafted for athletes and families." />
   <link rel="canonical" href="https://risesportscomplex.com/coffee" />
-  
+
   {/* Open Graph */}
-  <meta property="og:title" content="BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2025" />
+  <meta property="og:title" content="BOOM Coffee | Protein Shakes & Healthy Snacks – Coming September 2026" />
   <meta property="og:description" content="Fuel your workout and recovery with BOOM Coffee. Protein shakes, clean snacks, and coffee made for athletes, kids, and community." />
   <meta property="og:image" content="https://risesportscomplex.com/coffee-page-images/boomsoon.png" />
   <meta property="og:url" content="https://risesportscomplex.com/coffee" />
@@ -149,7 +149,7 @@ export default function CoffeePage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mb-6"
             >
-              Opening September 2025, BOOM Coffee is set to become your favorite
+              Opening September 2026, BOOM Coffee is set to become your favorite
               place to refuel, refresh, and fuel at home.
             </motion.p>
             <motion.div
@@ -179,10 +179,10 @@ export default function CoffeePage() {
 
       {/* Coming Soon */}
       <SectionContainer className="bg-black" id="coming-soon">
-        <SectionHeading title="Coming Soon - September 2025" centered />
+        <SectionHeading title="Coming Soon - September 2026" centered />
 
         <div className="p-8 rounded-lg max-w-3xl mx-auto mb-8">
-          <CountdownTimer targetDate="2025-09-01T00:00:00" />
+          <CountdownTimer targetDate="2026-09-01T00:00:00" />
         </div>
       </SectionContainer>
 

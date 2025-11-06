@@ -18,6 +18,9 @@ export interface MembershipPlan {
   stripe_joining_fees_id?: string;
   amt_periods?: number;
   price: number;
+  unit_amount?: number;
+  interval?: string;
+  is_visible?: boolean;
   created_at?: string;
   updated_at?: string;
 }

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { MapPin, Calendar, Clock, Users, Zap, Trophy, Target, ChevronRight } from 'lucide-react';
 import { EmptyFeedback } from '@/components/ui/feedback';
+import { useRouter } from "next/navigation";
 
 interface EventItem {
   id: string;
@@ -165,6 +166,11 @@ export function ScheduleList({ events, selectedDate }: { events: EventItem[]; se
 }
 
 function EventCard({ event, index }: { event: EventItem; index: number }) {
+  const router = useRouter();
+
+  const navigateToEvent = () => {
+    router.push(`/events/${event.id}`);
+  };
   const getEventTypeIcon = (type?: string) => {
     switch (type?.toLowerCase()) {
       case 'tournament':
@@ -205,7 +211,9 @@ function EventCard({ event, index }: { event: EventItem; index: number }) {
   };
 
   return (
-    <div className="relative bg-black border border-gray-800 rounded-xl overflow-hidden">
+    <div
+      onClick={navigateToEvent}
+      className="relative bg-black border border-gray-800 rounded-xl overflow-hidden cursor-pointer hover:border-[#ffb800]/50 transition-colors duration-300">
       {/* Left accent bar */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${getEventTypeColor(event.program_type)}`}></div>
 

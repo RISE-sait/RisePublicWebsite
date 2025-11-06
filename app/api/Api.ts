@@ -385,15 +385,22 @@ export interface MembershipPlanPlanRequestDto {
 }
 
 export interface MembershipPlanResponse {
-  price: number;
   amt_periods?: number;
   created_at?: string;
+  credit_allocation?: number;
+  currency?: string;
   id?: string;
+  interval?: string;
+  is_visible?: boolean;
+  joining_fee_price?: string;
   membership_id?: string;
   name?: string;
+  price?: string;
   stripe_joining_fees_id?: string;
   stripe_price_id?: string;
+  unit_amount?: number;
   updated_at?: string;
+  weekly_credit_limit?: number;
 }
 
 export interface PaymentCheckoutResponseDto {

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Read(//f/RiseRepos/Rise-Admin-Shad-Version/components/**)",
+      "Read(//f/RiseRepos/Rise-Admin-Shad-Version/app/(dashboard)/manage/customers/**)",
+      "Read(//f/RiseRepos/Rise-Admin-Shad-Version/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

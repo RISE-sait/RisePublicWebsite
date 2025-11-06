@@ -25,20 +25,20 @@ export async function getUpcomingGames(): Promise<Game[]> {
 
     // Map each DTO into our front-end Game shape
     const games: Game[] = gamesResponse.map((g) => ({
-      id: g.id!, // Required ID
-      home_team_id: g.home_team_id!, // Required home team ID
-      home_team_name: g.home_team_name!, // Required home team name
+      id: g.id || "", // Required ID with fallback
+      home_team_id: g.home_team_id || "", // Required home team ID
+      home_team_name: g.home_team_name || "Unknown Team", // Required home team name
       home_team_logo_url: g.home_team_logo_url || "", // Optional logo URL, default to empty string
-      away_team_id: g.away_team_id!, // Required away team ID
-      away_team_name: g.away_team_name!, // Required away team name
+      away_team_id: g.away_team_id || "", // Required away team ID
+      away_team_name: g.away_team_name || "Unknown Team", // Required away team name
       away_team_logo_url: g.away_team_logo_url || "", // Optional logo URL
-      home_score: g.home_score, // Score values can be null/undefined
-      away_score: g.away_score,
-      start_time: g.start_time, // Event start timestamp
-      end_time: g.end_time, // Event end timestamp
-      location_id: g.location_id!, // Required location ID
-      location_name: g.location_name!, // Required location name
-      status: g.status!, // Event status (e.g., scheduled/ended)
+      home_score: g.home_score || 0, // Score values with fallback
+      away_score: g.away_score || 0,
+      start_time: g.start_time || "", // Event start timestamp
+      end_time: g.end_time || "", // Event end timestamp
+      location_id: g.location_id || "", // Required location ID
+      location_name: g.location_name || "Unknown Location", // Required location name
+      status: g.status || "scheduled", // Event status (e.g., scheduled/ended)
     }));
 
     // Return the array of normalized Game objects

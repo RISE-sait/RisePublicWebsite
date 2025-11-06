@@ -11,8 +11,7 @@ import type { Event } from "@/types/event"
 import { getAllEvents } from "@/services/eventsCalendar"
 import { ParticleBackground } from "@/components/ui/particle-background"
 import Link from "next/link"
-import { UpcomingEventCard } from "@/components/ui/upcoming-event-card"
-import { EventModal } from "@/components/event-modal" 
+import { UpcomingEventCard } from "@/components/ui/upcoming-event-card" 
 
 
 interface UpcomingEventsParallaxProps {
@@ -38,14 +37,6 @@ export function UpcomingEventsParallax({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [copiedEventId, setCopiedEventId] = useState<string | null>(null)
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
-  const [modalOpen, setModalOpen] = useState(false)
-
-  const handleViewDetails = (event: Event) => {
-    setSelectedEvent(event)
-    setModalOpen(true)
-  }
-  
 
   const ref = React.useRef<HTMLDivElement>(null)
 
@@ -216,20 +207,6 @@ export function UpcomingEventsParallax({
 
 
 
-  const getEventImage = (programType: string, programName: string) => {
-    // You can customize these based on your actual event types
-    if (programName.toLowerCase().includes("camp")) {
-      return "/home-page-images/summer-camps.jpg"
-    }
-    if (programName.toLowerCase().includes("league")) {
-      return "/home-page-images/summer-league.jpg"
-    }
-    if (programName.toLowerCase().includes("pro")) {
-      return "/home-page-images/pro-club.jpg"
-    }
-    return "/home-page-images/all-girls-camp.jpg"
-  }
-
   const shareEvent = async (event: Event, method: "copy" | "native") => {
     const eventUrl = `${window.location.origin}/schedule`
     const shareText = `🏀 ${event.program_name}\n\n📅 ${formatEventDateRange(event.start_time, (event as any).endDate, (event as any).isRecurring)}\n⏰ ${formatEventTime(event.start_time)}\n📍 ${event.location_name}\n\n${event.description || "Join us at RISE Basketball!"}\n\n${eventUrl}`
@@ -337,20 +314,9 @@ export function UpcomingEventsParallax({
                     endDate={(event as any).endDate}
                     copiedEventId={copiedEventId}
                     onShare={shareEvent}
-                    onViewDetails={handleViewDetails}
                   />
                 ))}
               </div>
-              {selectedEvent && (
-                <EventModal
-                  event={selectedEvent}
-                  isOpen={modalOpen}
-                  onClose={() => {
-                    setModalOpen(false)
-                    setSelectedEvent(null)
-                  }}
-                />
-              )}
 
               
 

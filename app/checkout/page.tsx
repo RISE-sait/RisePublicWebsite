@@ -27,7 +27,6 @@ export default function CheckoutPage() {
 
       try {
         const idToken = await user.getIdToken(true);
-        console.log("🔥 Firebase ID Token:", idToken);
 
         // STEP 1: Exchange Firebase ID token for backend JWT
         const authRes = await fetch(`${apiBaseUrl}/auth`, {

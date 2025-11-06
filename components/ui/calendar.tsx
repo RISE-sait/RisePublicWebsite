@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo,useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   addMonths,
   subMonths,
@@ -20,7 +21,6 @@ import { getUpcomingGames } from "@/services/gamesCalendar";
 import { getAllEvents } from "@/services/eventsCalendar";
 import { Game } from "@/types/game";
 import { Event } from "@/types/event";
-import { EventModal } from "@/components/event-modal"; 
 import { useFilteredEvents } from "@/hooks/useFilteredEvents";
 import { EmptyFeedback } from "@/components/ui/feedback"; // Adjust path if needed
 
@@ -29,90 +29,158 @@ import { EmptyFeedback } from "@/components/ui/feedback"; // Adjust path if need
 
 
 export default function SimpleCalendar({ selectedFilter }: { selectedFilter: string }) {
+  const router = useRouter();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [games, setGames] = useState<Game[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Game | Event | null>(null);
   const [scrollTargetDate, setScrollTargetDate] = useState<Date | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
+  const dayRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const openModal = (event: Game | Event) => {
-    setSelectedEvent(event);
-    setModalOpen(true);
-  };
+  // Handle hydration - MUST BE CALLED FIRST
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedEvent(null);
-  };
+  // Filter useEffect
+  useEffect(() => {
+    if (isLoading || !events || events.length === 0) return;
 
-useEffect(() => {
-  if (!events || events.length === 0) return;
+    const normalized = selectedFilter.toLowerCase();
 
-  const normalized = selectedFilter.toLowerCase();
+    if (normalized === "all" || normalized === "games") return;
 
-  if (normalized === "all" || normalized === "games") return;
+    const today = new Date();
 
-  const today = new Date();
+    const nextEvent = events
+      .filter(
+        (e) =>
+          e.program_type?.toLowerCase() === normalized &&
+          e.start_time &&
+          parseISO(e.start_time) >= today
+      )
+      .sort((a, b) => parseISO(a.start_time).getTime() - parseISO(b.start_time).getTime())[0];
 
-  const nextEvent = events
-    .filter(
-      (e) =>
-        e.program_type?.toLowerCase() === normalized &&
-        parseISO(e.start_time) >= today
-    )
-    .sort((a, b) => parseISO(a.start_time).getTime() - parseISO(b.start_time).getTime())[0];
+    if (!nextEvent) return;
 
-  if (!nextEvent) return;
+    const nextDate = parseISO(nextEvent.start_time);
+    const nextMonth = startOfMonth(nextDate);
+    const thisMonth = startOfMonth(currentMonth);
 
-  const nextDate = parseISO(nextEvent.start_time);
-  const nextMonth = startOfMonth(nextDate);
-  const thisMonth = startOfMonth(currentMonth);
+    setSelectedDate(nextDate);
 
-  setSelectedDate(nextDate);
+    if (!isSameMonth(nextMonth, thisMonth)) {
+      // ✅ Change calendar month and queue scroll
+      setCurrentMonth(nextMonth);
+      setScrollTargetDate(nextDate);
+    } else {
+      // ✅ Same month — scroll immediately
+      const key = format(nextDate, "yyyy-MM-dd");
+      setTimeout(() => {
+        const el = dayRefs.current[key];
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 500); // Increased delay to ensure calendar is rendered
+    }
+  }, [selectedFilter, events, isLoading, currentMonth]);
 
-  if (!isSameMonth(nextMonth, thisMonth)) {
-    // ✅ Change calendar month and queue scroll
-    setCurrentMonth(nextMonth);
-    setScrollTargetDate(nextDate);
-  } else {
-    // ✅ Same month — scroll immediately
-    const key = format(nextDate, "yyyy-MM-dd");
-    setTimeout(() => {
+  // Scroll target useEffect
+  useEffect(() => {
+    if (!scrollTargetDate) return;
+
+    const key = format(scrollTargetDate, "yyyy-MM-dd");
+
+    const timeout = setTimeout(() => {
       const el = dayRefs.current[key];
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center" });
       }
-    }, 300);
-  }
-}, [selectedFilter, events]);
+      setScrollTargetDate(null); // Clear it after scrolling
+    }, 300); // Give the new DOM time to render
 
-useEffect(() => {
-  if (!scrollTargetDate) return;
+    return () => clearTimeout(timeout);
+  }, [scrollTargetDate, currentMonth]);
 
-  const key = format(scrollTargetDate, "yyyy-MM-dd");
+  // Data fetching useEffect - only run when component is mounted
+  useEffect(() => {
+    if (!isMounted) return;
 
-  const timeout = setTimeout(() => {
-    const el = dayRefs.current[key];
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    const start = startOfMonth(subMonths(currentMonth, 1)); // load previous month too
+    const end = endOfMonth(addMonths(currentMonth, 2)); // and 2 months ahead
+
+    console.log("📅 Calendar: Fetching data for month:", format(currentMonth, "MMMM yyyy"), {
+      start: start.toISOString(),
+      end: end.toISOString(),
+      apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+      isMounted
+    });
+
+    setIsLoading(true);
+
+    Promise.all([
+      getUpcomingGames().then(data => {
+        console.log("📅 Games fetched:", data.length, data.length > 0 ? "✅" : "❌");
+        return data;
+      }).catch((err) => {
+        console.error("❌ Calendar: Failed to fetch games:", err);
+        return [];
+      }),
+      getAllEvents(start, end).then(data => {
+        console.log("📅 Events fetched:", data.length, data.length > 0 ? "✅" : "❌");
+        return data;
+      }).catch((err) => {
+        console.error("❌ Calendar: Failed to fetch events:", err);
+        return [];
+      })
+    ])
+    .then(([gamesData, eventsData]) => {
+      console.log("📅 Calendar: All data loaded", {
+        games: gamesData.length,
+        events: eventsData.length,
+        total: gamesData.length + eventsData.length
+      });
+      setGames(gamesData);
+      setEvents(eventsData);
+      setHasInitialized(true);
+    })
+    .catch((err) => {
+      console.error("❌ Calendar: Promise.all failed:", err);
+    })
+    .finally(() => {
+      setIsLoading(false);
+      console.log("📅 Calendar: Loading state set to false");
+    });
+  }, [currentMonth, isMounted]);
+
+  console.log("🔄 SimpleCalendar render:", {
+    selectedFilter,
+    isLoading,
+    hasInitialized,
+    isMounted,
+    gamesCount: games.length,
+    eventsCount: events.length,
+    currentMonth: format(currentMonth, "MMMM yyyy")
+  });
+
+  const navigateToEvent = (event: Game | Event) => {
+    // Check if it's a game or an event and route accordingly
+    if ("home_team_name" in event) {
+      // It's a game
+      router.push(`/games/${event.id}`);
+    } else {
+      // It's an event
+      router.push(`/events/${event.id}`);
     }
-    setScrollTargetDate(null); // Clear it after scrolling
-  }, 300); // Give the new DOM time to render
+  };
 
-  return () => clearTimeout(timeout);
-}, [scrollTargetDate, currentMonth]);
 
-  
-useEffect(() => {
-  const start = startOfMonth(subMonths(currentMonth, 1)); // load previous month too
-  const end = endOfMonth(addMonths(currentMonth, 2)); // and 2 months ahead
 
-  getUpcomingGames().then(setGames).catch(console.error);
-  getAllEvents(start, end).then(setEvents).catch(console.error);
-}, [currentMonth]);
+
 
 
   const getDayKey = (date: Date) => format(date, "yyyy-MM-dd");
@@ -161,9 +229,6 @@ useEffect(() => {
       </div>
     );
   };
-
-  const dayRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
 
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
@@ -267,7 +332,7 @@ useEffect(() => {
           {items.map((item) => (
             <li
               key={item.id}
-              onClick={() => openModal(item)}
+              onClick={() => navigateToEvent(item)}
               className="border border-gray-700 p-3 rounded-lg bg-black hover:bg-gray-800 transition duration-200 cursor-pointer"
             >
               <div className="font-medium mb-1">
@@ -294,6 +359,22 @@ useEffect(() => {
     </div>
   );
 
+  // Show loading state if not mounted, loading, or haven't initialized yet
+  if (!isMounted || isLoading || (!hasInitialized && games.length === 0 && events.length === 0)) {
+    const loadingMessage = !isMounted ? "Initializing calendar..." : "Loading calendar...";
+    console.log("📅 Showing loading state:", { isMounted, isLoading, hasInitialized, games: games.length, events: events.length });
+    return (
+      <div className="flex justify-center items-center p-4 sm:p-6 text-white bg-black rounded-lg shadow-lg max-w-7xl mx-auto min-h-[400px]">
+        <div className="text-center">
+          <div className="text-lg text-gray-400 mb-2">{loadingMessage}</div>
+          <div className="w-6 h-6 border-2 border-[#ffb800] border-t-transparent rounded-full animate-spin mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  console.log("📅 Rendering full calendar with data:", { games: games.length, events: events.length });
+
   return (
     <div className="flex flex-col lg:flex-row gap-8 p-4 sm:p-6 text-white bg-black rounded-lg shadow-lg max-w-7xl mx-auto">
       {/* Left: calendar is now scrollable and has a max-height */}
@@ -315,7 +396,6 @@ useEffect(() => {
         {renderEvents("Events", filteredByType["event"], "bg-green-500")}
         {renderEvents("Others", filteredByType["other"], "bg-orange-400")}
 
-        <EventModal isOpen={modalOpen} onClose={closeModal} event={selectedEvent} />
       </div>
     </div>
   );
