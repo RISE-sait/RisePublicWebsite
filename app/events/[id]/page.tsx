@@ -10,6 +10,7 @@ import { getUpcomingGames } from "@/services/gamesCalendar";
 import { getAllEvents } from "@/services/eventsCalendar";
 import { Game } from "@/types/game";
 import { Event } from "@/types/event";
+import Image from "next/image";
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -151,6 +152,21 @@ export default function EventDetailPage() {
     }
   };
 
+  const getEventImage = () => {
+    if (!isGame(event!) && (event as Event).program_photo_url) {
+      return (event as Event).program_photo_url!;
+    }
+
+    // Fallback to default images
+    if (!isGame(event!)) {
+      const name = (event as Event).program_name?.toLowerCase() || "";
+      if (name.includes("camp")) return "/home-page-images/summer-camps.jpg";
+      if (name.includes("league")) return "/home-page-images/summer-league.jpg";
+      if (name.includes("pro")) return "/home-page-images/pro-club.jpg";
+    }
+    return "/home-page-images/all-girls-camp.jpg";
+  };
+
   if (error || !event) {
     return (
       <div className="min-h-screen bg-black text-white">
@@ -200,8 +216,28 @@ export default function EventDetailPage() {
           isGame(event) ? 'from-[#ffb800] via-[#ff8c00] to-[#ff6b00]' :
           `${getProgramColor((event as Event).program_type)}`
         } pt-20 pb-12`}>
-          {/* Black Overlay */}
-          <div className="absolute inset-0 bg-black/30"></div>
+          {/* Event Photo Background (for events with photos) */}
+          {!isGame(event) && (event as Event).program_photo_url && (
+            <>
+              <div className="absolute inset-0">
+                <Image
+                  src={getEventImage()}
+                  alt={(event as Event).program_name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              {/* Dark overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
+            </>
+          )}
+
+          {/* Black Overlay (for events without photos or games) */}
+          {(isGame(event) || !(event as Event).program_photo_url) && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
+
           {/* Animated Background Pattern */}
           <div className="absolute inset-0 opacity-20">
             <div className="absolute inset-0 animate-pulse" style={{
@@ -355,26 +391,33 @@ export default function EventDetailPage() {
                       <BookOpen className="h-6 w-6 text-[#ffb800]" />
                       Event Details
                     </h4>
-                    <div className="prose prose-lg prose-invert max-w-none">
-                      {(event as Event).description?.split('\n').map((paragraph, index) => (
-                        <p key={index} className="text-gray-200 mb-4 leading-relaxed text-lg">
-                          {paragraph.split(/(https?:\/\/[^\s]+)/).map((part, i) =>
-                            part.match(/https?:\/\//) ? (
-                              <a
-                                key={i}
-                                href={part}
-                                className="text-[#ffb800] underline hover:text-[#e0a300] transition-colors font-semibold"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {part}
-                              </a>
-                            ) : (
-                              part
-                            )
-                          )}
-                        </p>
-                      ))}
+                    <div className="space-y-4">
+                      {(event as Event).description?.split('\n').map((paragraph, index) => {
+                        if (!paragraph.trim()) return null;
+
+                        return (
+                          <p key={index} className="text-gray-200 leading-relaxed text-lg break-words">
+                            {paragraph.split(/(https?:\/\/[^\s]+)/g).map((part, i) => {
+                              // Check if this part is a URL
+                              if (part.match(/^https?:\/\//)) {
+                                return (
+                                  <a
+                                    key={i}
+                                    href={part}
+                                    className="text-[#ffb800] underline decoration-[#ffb800]/50 hover:text-[#e0a300] hover:decoration-[#e0a300] transition-all duration-200 font-semibold break-all inline-block"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ pointerEvents: 'auto' }}
+                                  >
+                                    {part}
+                                  </a>
+                                );
+                              }
+                              return part;
+                            })}
+                          </p>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

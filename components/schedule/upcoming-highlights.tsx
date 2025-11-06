@@ -7,6 +7,7 @@ import { Event } from "@/types/event";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EmptyFeedback } from "@/components/ui/feedback";
+import { useRouter } from "next/navigation";
 
 
 interface Props {
@@ -25,6 +26,11 @@ export default function UpcomingHighlights({
   setHighlightPage,
 }: Props) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const navigateToEvent = (event: Event) => {
+    router.push(`/events/${event.id}`);
+  };
 
   const upcomingHighlights = useMemo(() => {
     return [...events]

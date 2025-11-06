@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseApp } from "@/configs/firebase";
 import { motion } from "framer-motion";
@@ -22,11 +22,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [showResendLink, setShowResendLink] = useState(false);
 
   // grab 'plan' query-param and next/router
   const searchParams = useSearchParams();
   const router = useRouter();
   const plan = searchParams.get("plan");
+
+  // Refresh Firebase user status when landing on login page
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      // Reload user to get fresh emailVerified status
+      currentUser.reload().catch((err) => {
+        console.error("Failed to reload user:", err);
+      });
+    }
+  }, [auth]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +54,15 @@ export default function LoginPage() {
         password
       );
       const firebaseUser = userCredential.user;
+
+      // Reload user to get the latest emailVerified status from Firebase
+      await firebaseUser.reload();
+
+      // Check if email is verified
+      if (!firebaseUser.emailVerified) {
+        setShowResendLink(true);
+        throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
+      }
 
       // Step 2: Get Firebase ID token
       const idToken = await firebaseUser.getIdToken();
@@ -218,10 +239,10 @@ localStorage.setItem("jwt", jwt);
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center mt-6"
+          className="text-center mt-6 space-y-3"
         >
           <p className="text-gray-400">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <a
               href={plan ? `/signup?plan=${plan}` : "/signup"}
               className="text-[#ffb800] hover:underline"
@@ -229,6 +250,17 @@ localStorage.setItem("jwt", jwt);
               Sign up
             </a>
           </p>
+          {showResendLink && (
+            <p className="text-gray-400">
+              Didn't receive verification email?{" "}
+              <a
+                href="/resend-verification"
+                className="text-[#ffb800] hover:underline"
+              >
+                Resend
+              </a>
+            </p>
+          )}
         </motion.div>
       </motion.div>
     </div>

@@ -19,6 +19,7 @@ import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
 import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
+import { AppDownloadButtons } from "@/components/app-download-buttons"
 
 
 
@@ -505,28 +506,12 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap gap-4"
             >
-              <Button
-                variant="default"
-                className="bg-[#ffb800] text-black ..."
-                onClick={() =>
-                  gtagEvent({
-                    action: "click_coming_soon",
-                    category: "app",
-                    label: "RISE App Coming Soon",
-                  })
-                }
-              >
-                COMING SOON
-              </Button>
-              <div className="relative w-24 h-24 shadow-lg rounded-lg overflow-hidden">
-                {/* <img
-                  src="/placeholder.svg?height=100&width=100"
-                  alt="QR Code"
-                  className="object-contain w-full h-full"
-                /> */}
-              </div>
+              <AppDownloadButtons
+                showLabel={true}
+                labelText="Download the RISE App"
+                layout="horizontal"
+              />
             </motion.div>
           </div>
           <motion.div

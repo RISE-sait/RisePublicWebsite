@@ -3,6 +3,7 @@ export interface Event {
   program_type: string;
   program_id: string;
   program_name: string;
+  program_photo_url?: string; // Photo URL from program
   location_id: string;
   location_name: string;
   start_time: string; // ISO string

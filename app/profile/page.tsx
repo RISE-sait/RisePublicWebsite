@@ -355,26 +355,37 @@ export default function ProfilePage() {
             </div>
 
             {/* User Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <h1 className="text-xl font-semibold text-white mb-1">
-                    {getUserDisplayName()}
-                  </h1>
-                  <p className="text-gray-400 text-sm mb-2">{userProfile?.email || user?.email}</p>
-                  {userProfile?.phone && (
-                    <p className="text-gray-400 text-sm">{userProfile.phone}</p>
-                  )}
-                </div>
+            <div className="flex-1 min-w-0 w-full">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-xl font-semibold text-white mb-2">
+                      {getUserDisplayName()}
+                    </h1>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <p className="text-gray-300 text-sm break-all">{userProfile?.email || user?.email}</p>
+                      </div>
+                      {userProfile?.phone && (
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                          <p className="text-gray-300 text-sm">{userProfile.phone}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2 flex-shrink-0">
-                  <button
-                    onClick={openEditModal}
-                    className="px-3 py-1 bg-gray-800 text-white text-sm rounded hover:bg-gray-700 transition-colors border border-gray-600"
-                  >
-                    Edit Profile
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 flex-shrink-0">
+                    <button
+                      onClick={openEditModal}
+                      className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700 transition-colors border border-gray-600 flex items-center gap-2"
+                    >
+                      <Edit3 className="h-4 w-4" />
+                      Edit Profile
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

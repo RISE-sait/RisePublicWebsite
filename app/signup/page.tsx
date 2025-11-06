@@ -38,9 +38,13 @@ export default function SignupPage() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([])
+  const [passwordTouched, setPasswordTouched] = useState(false)
+  const [ageWarning, setAgeWarning] = useState("")
 
   // Additional fields from the JSON schema
   const [athleteData, setAthleteData] = useState<AthleteData>({
@@ -55,15 +59,46 @@ export default function SignupPage() {
     waivers: [
       {
         is_waiver_signed: false,
-        waiver_url: "https://storage.googleapis.com/rise-sports/waivers/code.pdf", // mentioned in the error
+        waiver_url: "https://storage.googleapis.com/rise-sports/waivers/waiver.pdf",
       },
       {
         is_waiver_signed: false,
-        waiver_url: "https://storage.googleapis.com/rise-sports/waivers/tetris.pdf", // hypothetical second required waiver
+        waiver_url: "https://storage.googleapis.com/rise-sports/waivers/terms.pdf",
       },
     ],
     email: "",
   })
+
+  // Password validation function - returns object with individual checks
+  const getPasswordValidation = (pwd: string) => {
+    return {
+      minLength: pwd.length >= 8,
+      hasUppercase: /[A-Z]/.test(pwd),
+      hasLowercase: /[a-z]/.test(pwd),
+      hasNumber: /[0-9]/.test(pwd),
+      hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)
+    }
+  }
+
+  // Check if all password requirements are met
+  const isPasswordValid = (pwd: string): boolean => {
+    const validation = getPasswordValidation(pwd)
+    return Object.values(validation).every(v => v === true)
+  }
+
+  // Calculate age from date of birth
+  const calculateAge = (dob: string): number => {
+    const birthDate = new Date(dob)
+    const today = new Date()
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const monthDiff = today.getMonth() - birthDate.getMonth()
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+
+    return age
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement
@@ -71,16 +106,17 @@ export default function SignupPage() {
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked
 
-      if (name === "waiver_signed") {
-  setAthleteData((prev) => ({
-    ...prev,
-    waivers: prev.waivers.map((waiver) => ({
-      ...waiver,
-      is_waiver_signed: checked,
-    })),
-  }))
-
-
+      if (name === "waiver_0" || name === "waiver_1") {
+        // Handle individual waiver checkboxes
+        const waiverIndex = parseInt(name.split("_")[1])
+        setAthleteData((prev) => ({
+          ...prev,
+          waivers: prev.waivers.map((waiver, index) =>
+            index === waiverIndex
+              ? { ...waiver, is_waiver_signed: checked }
+              : waiver
+          ),
+        }))
       } else {
         setAthleteData((prev) => ({
           ...prev,
@@ -88,6 +124,16 @@ export default function SignupPage() {
         }))
       }
     } else {
+      // Check age if DOB is being changed
+      if (name === "dob" && value) {
+        const age = calculateAge(value)
+        if (age < 13) {
+          setAgeWarning("You must be at least 13 years old to create an account. Please use a parent's email address and have them verify the account.")
+        } else {
+          setAgeWarning("")
+        }
+      }
+
       setAthleteData((prev) => ({
         ...prev,
         [name]: value,
@@ -100,6 +146,7 @@ const handleSignup = async (e: React.FormEvent) => {
   setLoading(true)
   setError("")
   setSuccess(false)
+  setPasswordErrors([])
 
   const {
     first_name,
@@ -123,9 +170,33 @@ const handleSignup = async (e: React.FormEvent) => {
     !email.trim() ||
     !phone_number ||
     !allWaiversSigned ||
-    !password.trim()
+    !password.trim() ||
+    !confirmPassword.trim()
   ) {
     setError("Please fill out all required fields.")
+    setLoading(false)
+    return
+  }
+
+  // Age validation
+  const age = calculateAge(dob)
+  if (age < 13) {
+    setError("You must be at least 13 years old to create an account. Please use a parent's email address and have them verify the account.")
+    setLoading(false)
+    return
+  }
+
+  // Password validation
+  if (!isPasswordValid(password)) {
+    setError("Password does not meet complexity requirements.")
+    setPasswordTouched(true)
+    setLoading(false)
+    return
+  }
+
+  // Password match validation
+  if (password !== confirmPassword) {
+    setError("Passwords do not match.")
     setLoading(false)
     return
   }
@@ -285,6 +356,16 @@ const handleSignup = async (e: React.FormEvent) => {
                       required
                     />
                   </div>
+                  {ageWarning && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-start gap-2 text-amber-400 bg-amber-400/10 p-2 rounded-md text-xs"
+                    >
+                      <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                      <span>{ageWarning}</span>
+                    </motion.div>
+                  )}
                 </div>
 
                 {/* Gender */}
@@ -357,11 +438,78 @@ const handleSignup = async (e: React.FormEvent) => {
                       placeholder="••••••••"
                       className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value)
+                        setPasswordTouched(true)
+                        setPasswordErrors([])
+                      }}
+                      onBlur={() => setPasswordTouched(true)}
                       required
                     />
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Password must be at least 6 characters</p>
+                  {passwordTouched && password && (() => {
+                    const validation = getPasswordValidation(password)
+                    const hasErrors = !Object.values(validation).every(v => v === true)
+
+                    if (!hasErrors) return null
+
+                    return (
+                      <div className="text-xs space-y-1 mt-2">
+                        {!validation.minLength && (
+                          <div className="flex items-center gap-2 text-red-400">
+                            <AlertCircle className="h-3 w-3 flex-shrink-0" />
+                            <span>At least 8 characters</span>
+                          </div>
+                        )}
+                        {!validation.hasUppercase && (
+                          <div className="flex items-center gap-2 text-red-400">
+                            <AlertCircle className="h-3 w-3 flex-shrink-0" />
+                            <span>One uppercase letter</span>
+                          </div>
+                        )}
+                        {!validation.hasLowercase && (
+                          <div className="flex items-center gap-2 text-red-400">
+                            <AlertCircle className="h-3 w-3 flex-shrink-0" />
+                            <span>One lowercase letter</span>
+                          </div>
+                        )}
+                        {!validation.hasNumber && (
+                          <div className="flex items-center gap-2 text-red-400">
+                            <AlertCircle className="h-3 w-3 flex-shrink-0" />
+                            <span>One number</span>
+                          </div>
+                        )}
+                        {!validation.hasSpecialChar && (
+                          <div className="flex items-center gap-2 text-red-400">
+                            <AlertCircle className="h-3 w-3 flex-shrink-0" />
+                            <span>One special character (!@#$%^&*...)</span>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })()}
+                </div>
+
+                {/* Confirm Password */}
+                <div className="space-y-2">
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      placeholder="••••••••"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">Re-enter your password to confirm</p>
                 </div>
 
                 {/* Country Code */}
@@ -428,8 +576,8 @@ const handleSignup = async (e: React.FormEvent) => {
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
-                      id="waiver_signed"
-                      name="waiver_signed"
+                      id="waiver_0"
+                      name="waiver_0"
                       type="checkbox"
                       className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
                       checked={athleteData.waivers[0].is_waiver_signed}
@@ -438,7 +586,7 @@ const handleSignup = async (e: React.FormEvent) => {
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="waiver_signed" className="font-medium text-gray-300">
+                    <label htmlFor="waiver_0" className="font-medium text-gray-300">
                       I agree to the{" "}
                       <a
                         href={athleteData.waivers[0].waiver_url}
@@ -446,11 +594,44 @@ const handleSignup = async (e: React.FormEvent) => {
                         rel="noopener noreferrer"
                         className="text-[#ffb800] underline"
                       >
-                        waiver terms
+                        Waiver
                       </a>
+                      {" "}*
                     </label>
                     <p className="text-gray-400">
-                      By checking this box, you acknowledge that you have read and agree to the waiver terms.
+                      By checking this box, you acknowledge that you have read and agree to the waiver.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Terms of Service */}
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="waiver_1"
+                      name="waiver_1"
+                      type="checkbox"
+                      className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
+                      checked={athleteData.waivers[1].is_waiver_signed}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="waiver_1" className="font-medium text-gray-300">
+                      I agree to the{" "}
+                      <a
+                        href={athleteData.waivers[1].waiver_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#ffb800] underline"
+                      >
+                        Terms of Service
+                      </a>
+                      {" "}*
+                    </label>
+                    <p className="text-gray-400">
+                      By checking this box, you acknowledge that you have read and agree to the terms of service.
                     </p>
                   </div>
                 </div>
@@ -472,26 +653,6 @@ const handleSignup = async (e: React.FormEvent) => {
                       Email Marketing
                     </label>
                     <p className="text-gray-400">I consent to receive promotional emails from RISE.</p>
-                  </div>
-                </div>
-
-                {/* SMS Consent */}
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="has_consent_to_sms"
-                      name="has_consent_to_sms"
-                      type="checkbox"
-                      className="h-4 w-4 text-[#ffb800] focus:ring-[#ffb800] border-gray-600 rounded"
-                      checked={athleteData.has_consent_to_sms}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="has_consent_to_sms" className="font-medium text-gray-300">
-                      SMS Notifications
-                    </label>
-                    <p className="text-gray-400">I consent to receive SMS notifications from RISE.</p>
                   </div>
                 </div>
               </div>
@@ -534,7 +695,7 @@ const handleSignup = async (e: React.FormEvent) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center mt-6"
+          className="text-center mt-6 space-y-3"
         >
           <p className="text-gray-400">
             Already have an account?{" "}
@@ -542,6 +703,17 @@ const handleSignup = async (e: React.FormEvent) => {
               Sign in
             </a>
           </p>
+          {success && (
+            <p className="text-gray-400">
+              Didn't receive verification email?{" "}
+              <a
+                href="/resend-verification"
+                className="text-[#ffb800] hover:underline"
+              >
+                Resend
+              </a>
+            </p>
+          )}
         </motion.div>
       </motion.div>
     </div>

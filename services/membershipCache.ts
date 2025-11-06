@@ -10,8 +10,8 @@ interface CachedMembershipData {
   timestamp: number;
 }
 
-// Cache duration: 5 minutes
-const CACHE_DURATION = 5 * 60 * 1000;
+// Cache duration: 10 minutes (for faster loading on repeat visits)
+const CACHE_DURATION = 10 * 60 * 1000;
 
 let cache: CachedMembershipData | null = null;
 let fetchPromise: Promise<CachedMembershipData> | null = null;
