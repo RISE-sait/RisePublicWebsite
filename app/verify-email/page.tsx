@@ -70,7 +70,7 @@ export default function VerifyEmailPage() {
   }
 
   const attemptMobileRedirect = (verificationToken: string) => {
-    const deepLink = `myapp://verify-email?token=${verificationToken}`
+    const deepLink = `myapp://` // Just open the app to home screen
 
     // Try to open the deep link
     window.location.href = deepLink

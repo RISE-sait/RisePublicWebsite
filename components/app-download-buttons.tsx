@@ -47,10 +47,8 @@ export function AppDownloadButtons({
   const handleAppStoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (deepLink && isMobile) {
       e.preventDefault()
-      // Try to open deep link first
-      const finalDeepLink = verificationToken
-        ? `myapp://verify-email?token=${verificationToken}`
-        : deepLink
+      // Just open the app to home screen (verification happens on web now)
+      const finalDeepLink = `myapp://`
 
       window.location.href = finalDeepLink
 
@@ -64,10 +62,8 @@ export function AppDownloadButtons({
   const handleGooglePlayClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (deepLink && isMobile) {
       e.preventDefault()
-      // Try to open deep link first
-      const finalDeepLink = verificationToken
-        ? `myapp://verify-email?token=${verificationToken}`
-        : deepLink
+      // Just open the app to home screen (verification happens on web now)
+      const finalDeepLink = `myapp://`
 
       window.location.href = finalDeepLink
 
