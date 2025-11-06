@@ -8,8 +8,6 @@ import { cn } from "@/lib/utils";
 import { event as gtagEvent } from "@/lib/gtag";
 import { usePathname } from "next/navigation";
 
-
-
 interface VideoHeroProps {
   title: string;
   subtitle?: string;
@@ -51,7 +49,6 @@ export function VideoHero({
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -170,7 +167,7 @@ export function VideoHero({
               </motion.p>
             )}
 
-            {/* Summer Promo Block */}
+            {/* Fall Promo Block */}
             {isHomePage && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -179,7 +176,14 @@ export function VideoHero({
                 className="bg-white/10 text-white backdrop-blur-md px-4 sm:px-6 py-4 rounded-xl mt-4 mx-auto max-w-xl shadow-lg border border-white/20"
               >
                 <p className="text-sm sm:text-base text-white text-center">
-                  <span className="font-semibold">Summer Special:</span> Save <span className="font-semibold">$100</span> on Full-Year Memberships with code <span className="font-semibold text-yellow-300">SUMMER100</span>, or take <span className="font-semibold">10% off</span> Seasonal Memberships with code <span className="font-semibold text-yellow-300">SUMMER10</span>.
+                  <span className="font-semibold text-yellow-300">
+                    Join now
+                  </span>{" "}
+                  to get access to the{" "}
+                  <span className="font-semibold text-yellow-300">
+                    exclusive Fall League Club
+                  </span>{" "}
+                  and start your journey today!
                 </p>
               </motion.div>
             )}
@@ -211,7 +215,6 @@ export function VideoHero({
                   >
                     {primaryButtonText}
                   </a>
-
                 </Button>
               )}
 

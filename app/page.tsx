@@ -147,8 +147,8 @@ export default function Home() {
       {/* Hero Section */}
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
-        subtitle="Now's the Best Time to Join RISE"
-        description="Get access to Summer Rise League, Pro Club Training, and more — plus limited-time membership discounts."
+        subtitle="Now’s the Best Time to Join RISE"
+        description="Get access to Fall Rise League, Pro Club Training, and more - take your game to the next level this fall season."
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
@@ -176,14 +176,13 @@ export default function Home() {
       <PartnerLogos />
 
       {/* Stats Section */}
-      
-        <UpcomingEventsParallax
-          bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
-          bgColor="#000"
-          overlayOpacity={0.8}
-          maxEvents={6}
-        />
 
+      <UpcomingEventsParallax
+        bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
+        bgColor="#000"
+        overlayOpacity={0.8}
+        maxEvents={6}
+      />
 
       {/* RISE Performance Membership */}
       <SectionContainer>
@@ -358,38 +357,46 @@ export default function Home() {
             features={[
               {
                 title: "All Girls Camp",
-                description: "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
+                description:
+                  "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
                 image: "/home-page-images/all-girls-camp.jpg",
                 buttonText: "Learn More",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: currentSeason.leagueName,
                 description: currentSeason.leagueDescription,
                 image: "/home-page-images/summer-league.jpg",
                 buttonText: "Join Now",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: currentSeason.campName,
                 description: currentSeason.campDescription,
                 image: "/home-page-images/summer-camps.jpg",
                 buttonText: "Register",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "Pro Club",
-                description: "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
+                description:
+                  "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
                 image: "/home-page-images/pro-club.jpg",
                 buttonText: "Apply Now",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
               {
                 title: "JR Rise",
-                description: "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
+                description:
+                  "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
                 image: "/home-page-images/jr-rise.jpg",
                 buttonText: "Sign Up",
-                buttonLink: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
               },
             ]}
             columns={5}
