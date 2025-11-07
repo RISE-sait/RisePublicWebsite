@@ -4,7 +4,10 @@
       "mcp__ide__getDiagnostics",
       "Read(//f/RiseRepos/Rise-Admin-Shad-Version/components/**)",
       "Read(//f/RiseRepos/Rise-Admin-Shad-Version/app/(dashboard)/manage/customers/**)",
-      "Read(//f/RiseRepos/Rise-Admin-Shad-Version/**)"
+      "Read(//f/RiseRepos/Rise-Admin-Shad-Version/**)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

@@ -301,12 +301,13 @@ export default function PerformancePage() {
         </SectionContainer>
       </ParallaxSection>
 
-      {/* Memberships */}
+      {/* Memberships 
       <SectionContainer className="bg-black">
         <SectionHeading title="Memberships" centered />
 
         <PerformanceMembershipsSection />
       </SectionContainer>
+      */}
 
       {/* Gallery */}
       <SectionContainer>

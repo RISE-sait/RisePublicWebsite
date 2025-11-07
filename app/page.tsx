@@ -404,11 +404,12 @@ export default function Home() {
         </SectionContainer>
       </ParallaxSection>
 
-      {/* Memberships Section */}
+      {/* Memberships Section -UNCOMMENT LATER 
       <SectionContainer id="memberships">
         <SectionHeading title="Memberships" centered />
         <MembershipsSection />
       </SectionContainer>
+      */}
 
       {/* Compare Plans */}
       <ParallaxSection
