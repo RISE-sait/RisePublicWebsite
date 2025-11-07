@@ -386,7 +386,7 @@ export default function BasketballPage() {
         </div>
       </SectionContainer>
 
-      {/* Latest Events */}
+      {/* Latest Events 
       <SectionContainer>
         <SectionHeading
           title="Latest Events"
@@ -395,7 +395,7 @@ export default function BasketballPage() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* single image, full width on mobile */}
+          {/* single image, full width on mobile 
           <div className="w-full h-auto md:h-[600px] relative">
             <Image
               src="/basketball-page-images/summerleague.jpg"
@@ -406,14 +406,14 @@ export default function BasketballPage() {
             />
           </div>
 
-          {/* past games list */}
+          {/* past games list 
           <div className="glass-dark p-4 sm:p-6 rounded-lg overflow-y-auto max-h-[400px]">
             <PastGamesSection limit={5} />
           </div>
         </div>
       </SectionContainer>
 
-      {/* All Games */}
+      {/* All Games 
       <ParallaxSection bgColor="#000" className="py-16">
         <SectionContainer>
           <AnimatedText
@@ -465,11 +465,12 @@ export default function BasketballPage() {
         </SectionContainer>
       </ParallaxSection> */}
 
-      {/* Memberships */}
+      {/* Memberships UNCOMMENT LATER 
       <SectionContainer>
         <SectionHeading title="Basketball Memberships" centered />
         <BasketballMembershipsSection />
       </SectionContainer>
+      */}
 
       {/* Gallery */}
       <SectionContainer>
