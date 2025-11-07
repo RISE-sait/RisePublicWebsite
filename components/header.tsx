@@ -109,16 +109,26 @@ export default function Header() {
 
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
+      // TODO: Restore internal memberships page later
+      // {
+      //   href: "/allmemberships",
+      //   label: "Memberships",
+      // },
       {
-        href: "/allmemberships",
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
         label: "Memberships",
       },
       { href: "/coaches", label: "Coaches" },
       { href: "/games", label: "Games" },
     ],
     "/performance": [
+      // TODO: Restore internal memberships page later
+      // {
+      //   href: "/allmemberships?category=fitness",
+      //   label: "Memberships",
+      // },
       {
-        href: "/allmemberships?category=fitness",
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
         label: "Memberships",
       },
     ],
@@ -200,8 +210,9 @@ export default function Header() {
             </ul>
           </nav>
 
+          {/* TODO: Restore Auth Section later */}
           {/* Auth Section */}
-          <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
+          {/* <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
             {loading ? (
               <div className="px-3 py-1.5 text-sm text-gray-400">Loading...</div>
             ) : isAuthenticated ? (
@@ -210,7 +221,6 @@ export default function Header() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors"
                 >
-                  {/* Profile Picture */}
                   <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-600">
                     {getProfilePicture() ? (
                       <img
@@ -281,7 +291,7 @@ export default function Header() {
                 </Link>
               </>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -382,14 +392,14 @@ export default function Header() {
                 );
               })}
 
+              {/* TODO: Restore Mobile Auth Section later */}
               {/* Mobile Auth Section */}
-              <div className="border-t border-gray-700 mt-4 pt-4">
+              {/* <div className="border-t border-gray-700 mt-4 pt-4">
                 {loading ? (
                   <div className="py-3 px-4 text-sm text-gray-400">Loading...</div>
                 ) : isAuthenticated ? (
                   <div>
                     <div className="px-4 py-2 flex items-center space-x-3 border-b border-gray-700">
-                      {/* Mobile Profile Picture */}
                       <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-600">
                         {getProfilePicture() ? (
                           <img
@@ -452,7 +462,7 @@ export default function Header() {
                     </Link>
                   </>
                 )}
-              </div>
+              </div> */}
             </nav>
           </motion.div>
         )}
