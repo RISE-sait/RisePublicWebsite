@@ -147,12 +147,12 @@ export default function Home() {
       {/* Hero Section */}
       <VideoHero
         title="RISE ABOVE THE COMPETITION"
-        subtitle="Now’s the Best Time to Join RISE"
+        subtitle="Now's the Best Time to Join RISE"
         description="Get access to Fall Rise League, Pro Club Training, and more - take your game to the next level this fall season."
         videoSrc="/headervideos/mainhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/allmemberships"
+        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
         secondaryButtonText="EXPLORE"
         secondaryButtonHref="#memberships"
         height="100vh"
@@ -322,7 +322,7 @@ export default function Home() {
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
                 <Link
-                  href="/allmemberships"
+                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
                   onClick={() =>
                     gtagEvent({
                       action: "click_join_now",
