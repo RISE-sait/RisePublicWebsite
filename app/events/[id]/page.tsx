@@ -88,6 +88,38 @@ export default function EventDetailPage() {
     });
   };
 
+  const calculateDuration = (startTime: string, endTime: string | null) => {
+    if (!endTime) return 'TBD';
+
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    // Calculate the number of calendar days between start and end
+    const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    const daysDiff = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Extract the time portion
+    const startHour = start.getHours() + start.getMinutes() / 60;
+    const endHour = end.getHours() + end.getMinutes() / 60;
+
+    // Calculate daily hours (hours per day)
+    const dailyHours = endHour - startHour;
+
+    // If it's a single day event
+    if (daysDiff === 0) {
+      const hours = Math.round(dailyHours * 10) / 10; // Round to 1 decimal
+      return `${hours} hour${hours !== 1 ? 's' : ''}`;
+    }
+
+    // If it's a multi-day event
+    const totalDays = daysDiff + 1; // Include both start and end days
+    const totalHours = Math.round(dailyHours * totalDays * 10) / 10; // Round to 1 decimal
+    const dailyHoursRounded = Math.round(dailyHours * 10) / 10;
+
+    return `${dailyHoursRounded} hrs/day × ${totalDays} days (${totalHours} hrs total)`;
+  };
+
   const isGame = (item: Game | Event): item is Game => {
     return "home_team_name" in item;
   };
@@ -348,10 +380,7 @@ export default function EventDetailPage() {
                         <span className="text-gray-300 font-semibold">Duration</span>
                       </div>
                       <p className="text-white text-lg font-bold">
-                        {event.end_time
-                          ? `${Math.round((new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / (1000 * 60 * 60))} hours`
-                          : 'TBD'
-                        }
+                        {calculateDuration(event.start_time, event.end_time)}
                       </p>
                     </div>
                     <div className="p-6 bg-black/20 rounded-xl border border-white/5">
