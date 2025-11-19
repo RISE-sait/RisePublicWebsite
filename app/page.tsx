@@ -8,14 +8,10 @@ import { PlanComparisonTable } from "@/components/ui/plan-comparison-table";
 import { Button } from "@/components/ui/button";
 import { VideoHero } from "@/components/ui/video-hero";
 import { ParallaxSection } from "@/components/ui/parallax-section";
-import { StatsCounter } from "@/components/ui/stats-counter";
-import { AnimatedText } from "@/components/ui/animated-text";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import PartnerLogos from "@/components/partner-logos";
 import { PLAN_COMPARISON } from "@/lib/constants";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import { MembershipsSection } from "@/components/membershipsSection";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
 import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
@@ -168,7 +164,20 @@ export default function Home() {
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
           className="flex flex-col items-center"
         >
-          <ChevronDown className="h-8 w-8 text-white" />
+          <svg
+            className="h-8 w-8 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </motion.div>
       </motion.div>
 
@@ -362,7 +371,7 @@ export default function Home() {
                 image: "/home-page-images/all-girls-camp.png",
                 buttonText: "Learn More",
                 buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
                 title: currentSeason.leagueName,
@@ -370,7 +379,7 @@ export default function Home() {
                 image: "/home-page-images/summer-league.png",
                 buttonText: "Join Now",
                 buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
                 title: currentSeason.campName,
@@ -378,7 +387,7 @@ export default function Home() {
                 image: "/home-page-images/summer-camps.jpg",
                 buttonText: "Register",
                 buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
                 title: "Pro Club",
@@ -387,7 +396,7 @@ export default function Home() {
                 image: "/home-page-images/pro-club.jpg",
                 buttonText: "Apply Now",
                 buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
                 title: "JR Rise",
@@ -396,7 +405,7 @@ export default function Home() {
                 image: "/home-page-images/jr-rise.png",
                 buttonText: "Sign Up",
                 buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
             ]}
             columns={5}
