@@ -54,17 +54,21 @@ export function UpcomingEventsParallax({
         setLoading(true)
 
         const now = new Date()
+        // Set start to beginning of today to include events that started earlier today
+        const startOfToday = new Date()
+        startOfToday.setHours(0, 0, 0, 0)
         const end = new Date()
         end.setMonth(now.getMonth() + 3) // get 3 months of upcoming events
 
-        const allEvents = await getAllEvents(now, end)
+        const allEvents = await getAllEvents(startOfToday, end)
 
         // Group events by program_name to handle recurring events
         const eventGroups = new Map<string, Event[]>()
 
         allEvents.forEach((event) => {
-          const eventDate = new Date(event.start_time)
-          if (eventDate >= now) {
+          // Include event if it hasn't ended yet (use end_time if available, otherwise use start_time)
+          const eventEndTime = event.end_time ? new Date(event.end_time) : new Date(event.start_time)
+          if (eventEndTime >= now) {
             const key = event.program_name
             if (!eventGroups.has(key)) {
               eventGroups.set(key, [])
