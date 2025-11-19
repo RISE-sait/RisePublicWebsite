@@ -31,8 +31,8 @@ export default function Home() {
   const getCurrentSeason = () => {
     const month = new Date().getMonth() + 1; // 1-12
 
-    // Winter: December, January, February (12, 1, 2)
-    if (month === 12 || month === 1 || month === 2) {
+    // Winter: November, December, January (11, 12, 1)
+    if (month === 11 || month === 12 || month === 1) {
       return {
         name: 'Winter',
         leagueName: 'Winter League',
@@ -41,8 +41,8 @@ export default function Home() {
         campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
       };
     }
-    // Spring: March, April, May (3, 4, 5)
-    if (month >= 3 && month <= 5) {
+    // Spring: February, March, April (2, 3, 4)
+    if (month >= 2 && month <= 4) {
       return {
         name: 'Spring',
         leagueName: 'Spring League',
@@ -51,8 +51,8 @@ export default function Home() {
         campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this spring.',
       };
     }
-    // Summer: June, July, August (6, 7, 8)
-    if (month >= 6 && month <= 8) {
+    // Summer: May, June, July (5, 6, 7)
+    if (month >= 5 && month <= 7) {
       return {
         name: 'Summer',
         leagueName: 'Summer League',
@@ -61,7 +61,7 @@ export default function Home() {
         campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.',
       };
     }
-    // Fall: September, October, November (9, 10, 11)
+    // Fall: August, September, October (8, 9, 10)
     return {
       name: 'Fall',
       leagueName: 'Fall League',
@@ -359,7 +359,7 @@ export default function Home() {
                 title: "All Girls Camp",
                 description:
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
-                image: "/home-page-images/all-girls-camp.jpg",
+                image: "/home-page-images/all-girls-camp.png",
                 buttonText: "Learn More",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
@@ -367,7 +367,7 @@ export default function Home() {
               {
                 title: currentSeason.leagueName,
                 description: currentSeason.leagueDescription,
-                image: "/home-page-images/summer-league.jpg",
+                image: "/home-page-images/summer-league.png",
                 buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
@@ -393,7 +393,7 @@ export default function Home() {
                 title: "JR Rise",
                 description:
                   "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
-                image: "/home-page-images/jr-rise.jpg",
+                image: "/home-page-images/jr-rise.png",
                 buttonText: "Sign Up",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses",
