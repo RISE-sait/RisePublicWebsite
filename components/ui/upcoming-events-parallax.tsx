@@ -64,7 +64,7 @@ export function UpcomingEventsParallax({
 
         allEvents.forEach((event) => {
           const eventDate = new Date(event.start_time)
-          if (eventDate > now) {
+          if (eventDate >= now) {
             const key = event.program_name
             if (!eventGroups.has(key)) {
               eventGroups.set(key, [])

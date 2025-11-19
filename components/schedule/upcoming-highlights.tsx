@@ -34,7 +34,7 @@ export default function UpcomingHighlights({
 
   const upcomingHighlights = useMemo(() => {
     return [...events]
-      .filter((event) => new Date(event.start_time) > new Date())
+      .filter((event) => new Date(event.start_time) >= new Date())
       .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   }, [events]);
 
