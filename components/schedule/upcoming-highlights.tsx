@@ -33,8 +33,13 @@ export default function UpcomingHighlights({
   };
 
   const upcomingHighlights = useMemo(() => {
+    const now = new Date();
     return [...events]
-      .filter((event) => new Date(event.start_time) > new Date())
+      .filter((event) => {
+        // Include event if it hasn't ended yet (use end_time if available, otherwise use start_time)
+        const eventEndTime = event.end_time ? new Date(event.end_time) : new Date(event.start_time);
+        return eventEndTime >= now;
+      })
       .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   }, [events]);
 
