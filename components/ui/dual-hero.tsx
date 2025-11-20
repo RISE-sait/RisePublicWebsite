@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { VideoHero } from "./video-hero";
+import Image from "next/image";
 
 interface EventHeroProps {
   title: string;
@@ -108,18 +109,26 @@ function EventHeroContent({
 }: EventHeroProps & { height: string }) {
   return (
     <div className="relative overflow-hidden" style={{ height }}>
-      {/* Background Image */}
+      {/* Background Image - Optimized with Next.js Image */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src={imageSrc}
           alt={title}
-          className="w-full h-full object-cover"
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          className="object-cover"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
+          fetchPriority="high"
+          loading="eager"
         />
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/60 z-10"></div>
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="container mx-auto px-4">
           <motion.div
             className="max-w-4xl mx-auto text-center"
@@ -139,39 +148,31 @@ function EventHeroContent({
               </span>
             </motion.div>
 
-            {/* Title */}
-            <motion.h1
+            {/* Title with backdrop box for better readability */}
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight drop-shadow-lg"
+              className="bg-black/40 backdrop-blur-md px-6 md:px-8 py-6 md:py-8 rounded-2xl mb-6 border border-white/10 shadow-2xl"
             >
-              {title}
-            </motion.h1>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                {title}
+              </h1>
 
-            {/* Subtitle */}
-            {subtitle && (
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 text-[#ffb800] drop-shadow-lg"
-              >
-                {subtitle}
-              </motion.h2>
-            )}
+              {/* Subtitle */}
+              {subtitle && (
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mt-4 text-[#ffb800]">
+                  {subtitle}
+                </h2>
+              )}
 
-            {/* Description */}
-            {description && (
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto drop-shadow-lg leading-relaxed"
-              >
-                {description}
-              </motion.p>
-            )}
+              {/* Description */}
+              {description && (
+                <p className="text-lg md:text-xl text-white/90 mt-4 max-w-2xl mx-auto leading-relaxed">
+                  {description}
+                </p>
+              )}
+            </motion.div>
 
             {/* CTA Button */}
             {primaryButtonText && primaryButtonHref && (

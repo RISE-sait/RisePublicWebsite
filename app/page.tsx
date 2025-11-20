@@ -136,6 +136,14 @@ export default function Home() {
         {/* Site Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffb800" />
+
+        {/* Preload critical hero image for instant display */}
+        <link
+          rel="preload"
+          as="image"
+          href="/home-page-images/kapwatournamentwinter.png"
+          fetchPriority="high"
+        />
       </Head>
       <h1 className="sr-only">
         RISE Basketball Calgary – Youth and Adult Basketball Programs
