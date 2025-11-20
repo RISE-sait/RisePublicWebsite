@@ -120,10 +120,10 @@ export default function FAQPage() {
           <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
           <p className="text-gray-300 mb-6">Can't find what you're looking for? Our friendly staff is here to help!</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="bg-[#ffb800] hover:bg-[#e0a300] text-black font-semibold px-6 py-3 rounded-lg">
+            <Link href="/contact" className="bg-[#ffb800] hover:bg-[#e0a300] text-black font-semibold px-8 py-4 rounded-lg">
               Contact Us
             </Link>
-            <Link href="/" className="border border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black font-semibold px-6 py-3 rounded-lg">
+            <Link href="/" className="border border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black font-semibold px-8 py-4 rounded-lg">
               Back to Home
             </Link>
           </div>
