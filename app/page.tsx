@@ -141,9 +141,14 @@ export default function Home() {
         <link
           rel="preload"
           as="image"
-          href="/home-page-images/kapwatournamentwinter.png"
+          href="/home-page-images/KapwaTournamentWinter.png"
+          type="image/png"
           fetchPriority="high"
         />
+
+        {/* DNS prefetch and preconnect for faster resource loading */}
+        <link rel="dns-prefetch" href="https://app.glofox.com" />
+        <link rel="preconnect" href="https://bracketteam.com" />
       </Head>
       <h1 className="sr-only">
         RISE Basketball Calgary – Youth and Adult Basketball Programs
@@ -156,7 +161,7 @@ export default function Home() {
           title: "KAPWA HOLIDAY SHOWCASE 2025",
           subtitle: "Join Calgary's Premier Basketball Competition",
           description: "Experience elite-level basketball competition. Register your team now for an unforgettable tournament experience.",
-          imageSrc: "/home-page-images/kapwatournamentwinter.png", // Update with actual image path
+          imageSrc: "/home-page-images/KapwaTournamentWinter.png",
           primaryButtonText: "REGISTER NOW",
           primaryButtonHref: "https://bracketteam.com/event/6640/KAPWA_Holiday_Showcase/event_info",
           duration: 5, // Shows for 7 seconds

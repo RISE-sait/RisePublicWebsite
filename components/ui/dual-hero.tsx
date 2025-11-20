@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { VideoHero } from "./video-hero";
-import Image from "next/image";
 
 interface EventHeroProps {
   title: string;
@@ -109,20 +108,15 @@ function EventHeroContent({
 }: EventHeroProps & { height: string }) {
   return (
     <div className="relative overflow-hidden" style={{ height }}>
-      {/* Background Image - Optimized with Next.js Image */}
+      {/* Background Image - Optimized for instant loading */}
       <div className="absolute inset-0">
-        <Image
+        <img
           src={imageSrc}
           alt={title}
-          fill
-          priority
-          quality={90}
-          sizes="100vw"
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
-          fetchPriority="high"
+          className="w-full h-full object-cover"
           loading="eager"
+          fetchPriority="high"
+          decoding="sync"
         />
         <div className="absolute inset-0 bg-black/60 z-10"></div>
       </div>
