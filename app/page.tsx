@@ -7,6 +7,7 @@ import { FeatureGrid } from "@/components/ui/feature-grid";
 import { PlanComparisonTable } from "@/components/ui/plan-comparison-table";
 import { Button } from "@/components/ui/button";
 import { VideoHero } from "@/components/ui/video-hero";
+import { DualHero } from "@/components/ui/dual-hero";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import PartnerLogos from "@/components/partner-logos";
@@ -141,16 +142,27 @@ export default function Home() {
       </h1>
 
       {/* Hero Section */}
-      <VideoHero
-        title="RISE ABOVE THE COMPETITION"
-        subtitle="Now's the Best Time to Join RISE"
-        description="Get access to Fall Rise League, Pro Club Training, and more - take your game to the next level this fall season."
-        videoSrc="/headervideos/mainhead.mp4"
-        fallbackImageSrc="/backuplogo.jpg"
-        primaryButtonText="JOIN NOW"
-        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
-        secondaryButtonText="EXPLORE"
-        secondaryButtonHref="#memberships"
+      <DualHero
+        // Kapwa Tournament Event Hero (shows first for 7 seconds)
+        eventHero={{
+          title: "KAPWA HOLIDAY SHOWCASE 2025",
+          subtitle: "Join Calgary's Premier Basketball Competition",
+          description: "Experience elite-level basketball competition. Register your team now for an unforgettable tournament experience.",
+          imageSrc: "/home-page-images/kapwatournamentwinter.png", // Update with actual image path
+          primaryButtonText: "REGISTER NOW",
+          primaryButtonHref: "https://bracketteam.com/event/6640/KAPWA_Holiday_Showcase/event_info",
+          duration: 5, // Shows for 7 seconds
+        }}
+        // Main Hero (shows after 7 seconds)
+        mainTitle="RISE ABOVE THE COMPETITION"
+        mainSubtitle="Now's the Best Time to Join RISE"
+        mainDescription="Canada's Premier Basketball Academy & Training Facility"
+        mainVideoSrc="/headervideos/mainhead.mp4"
+        mainFallbackImageSrc="/backuplogo.jpg"
+        mainPrimaryButtonText="JOIN NOW"
+        mainPrimaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        mainSecondaryButtonText="EXPLORE"
+        mainSecondaryButtonHref="#memberships"
         height="100vh"
       />
 
@@ -192,6 +204,73 @@ export default function Home() {
         overlayOpacity={0.8}
         maxEvents={6}
       />
+
+      {/* Discover All That RISE Has to Offer */}
+      <ParallaxSection bgColor="#000" className="py-24 md:py-32 relative">
+        <ParticleBackground
+          particleColor="#ffb800"
+          particleCount={100}
+          connectParticles={true}
+        />
+
+        <SectionContainer className="px-4 md:px-6">
+          <SectionHeading
+            title="Discover All That RISE Has to Offer"
+            centered
+            titleClassName="text-3xl md:text-4xl lg:text-5xl"
+            className="mb-16"
+          />
+
+          <FeatureGrid
+            features={[
+              {
+                title: "All Girls Camp",
+                description:
+                  "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
+                image: "/home-page-images/all-girls-camp.png",
+                buttonText: "Learn More",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+              {
+                title: currentSeason.leagueName,
+                description: currentSeason.leagueDescription,
+                image: "/home-page-images/summer-league.png",
+                buttonText: "Join Now",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+              {
+                title: currentSeason.campName,
+                description: currentSeason.campDescription,
+                image: "/home-page-images/summer-camps.jpg",
+                buttonText: "Register",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+              {
+                title: "Pro Club",
+                description:
+                  "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
+                image: "/home-page-images/pro-club.jpg",
+                buttonText: "Apply Now",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+              {
+                title: "JR Rise",
+                description:
+                  "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
+                image: "/home-page-images/jr-rise.png",
+                buttonText: "Sign Up",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+            ]}
+            columns={3}
+          />
+        </SectionContainer>
+      </ParallaxSection>
 
       {/* RISE Performance Membership */}
       <SectionContainer>
@@ -347,71 +426,6 @@ export default function Home() {
           </div>
         </div>
       </SectionContainer>
-
-      {/* Discover All That RISE Has to Offer */}
-      <ParallaxSection bgColor="#000" className="py-20 relative">
-        <ParticleBackground
-          particleColor="#ffb800"
-          particleCount={100}
-          connectParticles={true}
-        />
-
-        <SectionContainer>
-          <SectionHeading
-            title="Discover All That RISE Has to Offer"
-            centered
-          />
-
-          <FeatureGrid
-            features={[
-              {
-                title: "All Girls Camp",
-                description:
-                  "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
-                image: "/home-page-images/all-girls-camp.png",
-                buttonText: "Learn More",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: currentSeason.leagueName,
-                description: currentSeason.leagueDescription,
-                image: "/home-page-images/summer-league.png",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: currentSeason.campName,
-                description: currentSeason.campDescription,
-                image: "/home-page-images/summer-camps.jpg",
-                buttonText: "Register",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "Pro Club",
-                description:
-                  "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
-                image: "/home-page-images/pro-club.jpg",
-                buttonText: "Apply Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "JR Rise",
-                description:
-                  "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
-                image: "/home-page-images/jr-rise.png",
-                buttonText: "Sign Up",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-            ]}
-            columns={5}
-          />
-        </SectionContainer>
-      </ParallaxSection>
 
       {/* Memberships Section -UNCOMMENT LATER 
       <SectionContainer id="memberships">

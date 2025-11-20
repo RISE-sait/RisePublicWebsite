@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, Phone, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   NAVIGATION_ITEMS,
@@ -154,7 +154,7 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <div className="h-20 w-auto">
+          <div className="h-[92px] w-auto">
             <img
               src="header-logo.png"
               alt={SITE_NAME}
@@ -209,6 +209,27 @@ export default function Header() {
               })}
             </ul>
           </nav>
+
+          {/* Contact Actions */}
+          <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
+            <a
+              href="tel:5878997473"
+              className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors rounded hover:bg-white/5"
+              aria-label="Call (587) 899-7473"
+            >
+              <Phone className="h-4 w-4" />
+              <span>(587) 899-7473</span>
+            </a>
+            <a
+              href="https://maps.app.goo.gl/XPdN6F1kzKYwMYRZ7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors rounded hover:bg-white/5"
+              aria-label="View on Google Maps"
+            >
+              <MapPin className="h-4 w-4" />
+            </a>
+          </div>
 
           {/* TODO: Restore Auth Section later */}
           {/* Auth Section */}
@@ -296,7 +317,7 @@ export default function Header() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden"
+          className="md:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center"
           onClick={toggleMenu}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >
@@ -329,7 +350,7 @@ export default function Header() {
                       key={idx}
                       href={item.href}
                       className={cn(
-                        "py-3 px-4 text-sm font-medium",
+                        "py-4 px-4 text-sm font-medium min-h-[48px] flex items-center",
                         pathname === item.href
                           ? "text-[#ffb800]"
                           : "text-white hover:text-[#ffb800]"
@@ -347,7 +368,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         className={cn(
-                          "py-3 px-4 text-sm font-medium",
+                          "py-4 px-4 text-sm font-medium flex-1 min-h-[48px] flex items-center",
                           pathname === item.href
                             ? "text-[#ffb800]"
                             : "text-white hover:text-[#ffb800]"
@@ -356,7 +377,7 @@ export default function Header() {
                         {item.label}
                       </Link>
                       <button
-                        className="p-3"
+                        className="p-4 min-w-[48px] min-h-[48px] flex items-center justify-center"
                         onClick={() =>
                           setOpenSubmenu(isOpen ? null : item.href)
                         }
@@ -364,7 +385,7 @@ export default function Header() {
                       >
                         <ChevronDown
                           className={cn(
-                            "h-4 w-4 transition-transform",
+                            "h-5 w-5 transition-transform",
                             isOpen ? "rotate-180" : "rotate-0"
                           )}
                         />
@@ -377,7 +398,7 @@ export default function Header() {
                           <Link
                             key={sidx}
                             href={sub.href}
-                            className="py-2 px-4 text-sm text-white hover:text-[#ffb800]"
+                            className="py-4 px-4 text-sm text-white hover:text-[#ffb800] min-h-[48px] flex items-center"
                             onClick={() => {
                               setIsMenuOpen(false);
                               setOpenSubmenu(null);
@@ -391,6 +412,28 @@ export default function Header() {
                   </div>
                 );
               })}
+
+              {/* Mobile Contact Actions */}
+              <div className="border-t border-gray-700 mt-4 pt-4 space-y-3">
+                <a
+                  href="tel:5878997473"
+                  className="flex items-center space-x-3 py-4 px-4 text-sm font-medium text-white hover:text-[#ffb800] transition-colors min-h-[48px]"
+                  aria-label="Call (587) 899-7473"
+                >
+                  <Phone className="h-5 w-5" />
+                  <span>(587) 899-7473</span>
+                </a>
+                <a
+                  href="https://maps.app.goo.gl/XPdN6F1kzKYwMYRZ7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 py-4 px-4 text-sm font-medium text-white hover:text-[#ffb800] transition-colors min-h-[48px]"
+                  aria-label="View on Google Maps"
+                >
+                  <MapPin className="h-5 w-5" />
+                  <span>View on Google Maps</span>
+                </a>
+              </div>
 
               {/* TODO: Restore Mobile Auth Section later */}
               {/* Mobile Auth Section */}

@@ -38,7 +38,11 @@ export function FeatureGrid({
   };
 
   return (
-    <div className={cn(`grid ${gridCols[columns]} gap-6`, className)}>
+    <div className={cn(
+      `grid ${gridCols[columns]} gap-6 md:gap-8 lg:gap-10`,
+      "max-w-7xl mx-auto",
+      className
+    )}>
       {features.map((feature, index) => (
         <FeatureCard
           key={index}

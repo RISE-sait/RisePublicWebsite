@@ -87,7 +87,7 @@ export function RotatingPlayerStats({
         <div className="flex items-center justify-between">
           <button
             onClick={handleBack}
-            className="bg-[#ffb800] text-black px-3 py-1 rounded hover:bg-[#e0a300] z-10"
+            className="bg-[#ffb800] text-black px-4 py-1.5 rounded hover:bg-[#e0a300] z-10"
           >
             ←
           </button>
@@ -103,7 +103,7 @@ export function RotatingPlayerStats({
           </div>
           <button
             onClick={handleNext}
-            className="bg-[#ffb800] text-black px-3 py-1 rounded hover:bg-[#e0a300] z-10"
+            className="bg-[#ffb800] text-black px-4 py-1.5 rounded hover:bg-[#e0a300] z-10"
           >
             →
           </button>

@@ -257,10 +257,10 @@ export function UpcomingEventCard({
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <Button
                 onClick={() => router.push(`/events/${event.id}`)}
-                className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30"
+                className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30 min-h-[48px]"
                 >
                 <span className="flex items-center justify-center gap-2">
                     View Details
@@ -273,9 +273,9 @@ export function UpcomingEventCard({
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 hover:border-[#ffb800]/50 bg-transparent"
+                  className="border-white/30 text-white hover:bg-white/10 hover:border-[#ffb800]/50 bg-transparent min-w-[48px] min-h-[48px]"
                 >
-                  <Share2 className="h-4 w-4" />
+                  <Share2 className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-black/90 backdrop-blur-sm border-white/20">
@@ -289,7 +289,7 @@ export function UpcomingEventCard({
                         console.error("Failed to copy:", err)
                     }
                     }}
-                    className="text-white hover:bg-white/10 cursor-pointer"
+                    className="text-white hover:bg-white/10 cursor-pointer min-h-[48px] py-3"
                 >
                     {copiedEventId === event.id ? (
                     <>
@@ -318,7 +318,7 @@ export function UpcomingEventCard({
                         console.error("Failed to share:", err)
                         }
                     }}
-                    className="text-white hover:bg-white/10 cursor-pointer"
+                    className="text-white hover:bg-white/10 cursor-pointer min-h-[48px] py-3"
                     >
                     <Share2 className="h-4 w-4 mr-2" />
                     Share Event

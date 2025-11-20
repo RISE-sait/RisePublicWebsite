@@ -153,7 +153,7 @@ export default function PrivacyPolicyPage() {
         <div className="text-center mt-10">
           <Link
             href="/"
-            className="inline-block bg-[#ffb800] hover:bg-[#e0a300] text-black font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+            className="inline-block bg-[#ffb800] hover:bg-[#e0a300] text-black font-semibold px-8 py-4 rounded-lg transition-colors duration-200"
           >
             Back to Home
           </Link>

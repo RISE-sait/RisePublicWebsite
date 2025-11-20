@@ -167,7 +167,7 @@ export function VideoHero({
               </motion.p>
             )}
 
-            {/* Fall Promo Block */}
+            {/* RISE Promo Block */}
             {isHomePage && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -176,14 +176,7 @@ export function VideoHero({
                 className="bg-white/10 text-white backdrop-blur-md px-4 sm:px-6 py-4 rounded-xl mt-4 mx-auto max-w-xl shadow-lg border border-white/20"
               >
                 <p className="text-sm sm:text-base text-white text-center">
-                  <span className="font-semibold text-yellow-300">
-                    Join now
-                  </span>{" "}
-                  to get access to the{" "}
-                  <span className="font-semibold text-yellow-300">
-                    exclusive Fall League Club
-                  </span>{" "}
-                  and start your journey today!
+                  Open <span className="font-bold text-[#ffb800]">365</span> days a year. Elite pro-level training. National-calibre coaches. Year-round programs for all ages. <span className="font-bold text-[#ffb800]">RISE</span> is where athletes come to <span className="font-bold text-[#ffb800]">develop</span>, <span className="font-bold text-[#ffb800]">compete</span>, and <span className="font-bold text-[#ffb800]">win</span>.
                 </p>
               </motion.div>
             )}
@@ -192,13 +185,13 @@ export function VideoHero({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-wrap justify-center gap-4 mt-5"
+              className="flex flex-col sm:flex-row justify-center gap-5 mt-8 mx-auto max-w-xl w-full px-4"
             >
               {primaryButtonText && (
                 <Button
                   variant="default"
                   size="lg"
-                  className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg text-lg"
+                  className="w-full sm:flex-1 bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-2xl text-xl font-bold py-6 px-8 border-2 border-[#ffb800] min-h-[56px]"
                   asChild
                 >
                   <a
@@ -222,7 +215,7 @@ export function VideoHero({
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white/10 hover:scale-105 transition-all shadow-lg text-lg"
+                  className="w-full sm:flex-1 border-2 border-white text-white bg-white/10 hover:bg-white hover:text-black hover:scale-105 transition-all shadow-2xl text-xl font-bold py-6 px-8 backdrop-blur-sm min-h-[56px]"
                   asChild
                 >
                   <a
