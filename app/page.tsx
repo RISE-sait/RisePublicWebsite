@@ -240,7 +240,7 @@ export default function Home() {
                 title: "All Girls Program",
                 description:
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
-                image: "/home-page-images/all-girls-camp.webp",
+                image: "/home-page-images/all-girls-camp.jpg",
                 buttonText: "Learn More",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
@@ -262,11 +262,11 @@ export default function Home() {
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
-                title: "All Girls Camp",
+                title: "High School Winter League",
                 description:
-                  "Train like a pro in our elite-level development camp tailored for advanced athletes aiming for the next level.",
-                image: "/home-page-images/allgirlleauge.webp",
-                buttonText: "Apply Now",
+                  "Competitive winter league designed for high school athletes to elevate their game and compete at the next level.",
+                image: "/home-page-images/hs-winter-leauge.png",
+                buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
