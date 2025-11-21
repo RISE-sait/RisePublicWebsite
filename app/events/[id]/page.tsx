@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, MapPin, Clock, Users, Trophy, Info, Star, BookOpen, Target, Zap, Timer, Award, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, Users, Trophy, Info, Star, BookOpen, Target, Zap, Timer, Award, Share2, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionContainer } from "@/components/ui/section-container";
 import { getUpcomingGames } from "@/services/gamesCalendar";
@@ -124,6 +124,117 @@ export default function EventDetailPage() {
     return "home_team_name" in item;
   };
 
+  const shareToLinkedIn = () => {
+    if (!event) return;
+
+    const title = isGame(event)
+      ? `${(event as Game).home_team_name} vs ${(event as Game).away_team_name}`
+      : (event as Event).program_name;
+
+    // Catchy intros for different event types
+    const getCatchyIntro = () => {
+      if (isGame(event)) {
+        const intros = [
+          "🏀 Game day! Don't miss this one...",
+          "🔥 Mark your calendars!",
+          "⭐ This is going to be good!",
+          "🏆 Basketball season is here!",
+          "💪 Get ready for some action!"
+        ];
+        return intros[Math.floor(Math.random() * intros.length)];
+      } else {
+        const programType = (event as Event).program_type?.toLowerCase() || '';
+        if (programType.includes('camp')) {
+          return "🌟 Exciting opportunity alert!";
+        } else if (programType.includes('tournament')) {
+          return "🏆 Competition time!";
+        } else if (programType.includes('tryout')) {
+          return "⭐ Your chance to shine!";
+        } else if (programType.includes('course')) {
+          return "📚 Level up your game!";
+        } else {
+          return "🎯 Don't miss out on this!";
+        }
+      }
+    };
+
+    const catchyIntro = getCatchyIntro();
+
+    const description = isGame(event)
+      ? `Join us for an exciting basketball game at ${event.location_name} on ${formatDate(event.start_time)} at ${formatTime(event.start_time)}!`
+      : (event as Event).description?.substring(0, 300) || `Join us for ${(event as Event).program_name} at ${event.location_name}`;
+
+    const url = window.location.href;
+
+    // Construct the full post with catchy intro
+    const fullPost = `${catchyIntro}\n\n${title}\n\n${description}\n\n📍 ${event.location_name}\n📅 ${formatDate(event.start_time)}\n⏰ ${formatTime(event.start_time)}${event.end_time ? ` - ${formatTime(event.end_time)}` : ''}`;
+
+    // Try to copy the text to clipboard first, then open LinkedIn
+    navigator.clipboard.writeText(fullPost).then(() => {
+      // Show a brief message that text is copied
+      const originalTitle = document.title;
+      document.title = '✓ Post text copied! Paste it in LinkedIn';
+      setTimeout(() => {
+        document.title = originalTitle;
+      }, 3000);
+    }).catch(() => {
+      console.log('Could not copy to clipboard');
+    });
+
+    // LinkedIn share URL with summary and title parameters (may work depending on LinkedIn's current API)
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(fullPost)}&title=${encodeURIComponent(title)}`;
+    window.open(linkedInUrl, '_blank', 'width=600,height=600');
+  };
+
+  const shareToFacebook = () => {
+    if (!event) return;
+
+    const url = window.location.href;
+    const title = isGame(event)
+      ? `${(event as Game).home_team_name} vs ${(event as Game).away_team_name}`
+      : (event as Event).program_name;
+
+    // Catchy intros for different event types
+    const getCatchyIntro = () => {
+      if (isGame(event)) {
+        const intros = [
+          "🏀 Game day! Don't miss this one...",
+          "🔥 Mark your calendars!",
+          "⭐ This is going to be good!",
+          "🏆 Basketball season is here!",
+          "💪 Get ready for some action!"
+        ];
+        return intros[Math.floor(Math.random() * intros.length)];
+      } else {
+        const programType = (event as Event).program_type?.toLowerCase() || '';
+        if (programType.includes('camp')) {
+          return "🌟 Exciting opportunity alert!";
+        } else if (programType.includes('tournament')) {
+          return "🏆 Competition time!";
+        } else if (programType.includes('tryout')) {
+          return "⭐ Your chance to shine!";
+        } else if (programType.includes('course')) {
+          return "📚 Level up your game!";
+        } else {
+          return "🎯 Don't miss out on this!";
+        }
+      }
+    };
+
+    const catchyIntro = getCatchyIntro();
+
+    const description = isGame(event)
+      ? `Join us for an exciting basketball game at ${event.location_name} on ${formatDate(event.start_time)} at ${formatTime(event.start_time)}!`
+      : (event as Event).description?.substring(0, 300) || `Join us for ${(event as Event).program_name} at ${event.location_name}`;
+
+    // Construct the full post with catchy intro
+    const fullPost = `${catchyIntro}\n\n${title}\n\n${description}\n\n📍 ${event.location_name}\n📅 ${formatDate(event.start_time)}\n⏰ ${formatTime(event.start_time)}${event.end_time ? ` - ${formatTime(event.end_time)}` : ''}`;
+
+    // Facebook share URL with quote parameter
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(fullPost)}`;
+    window.open(facebookUrl, '_blank', 'width=600,height=600');
+  };
+
   const shareEvent = async () => {
     const shareData = {
       title: isGame(event!)
@@ -224,22 +335,38 @@ export default function EventDetailPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
         {/* Navigation */}
         <div className="relative">
-        <div className="absolute top-6 left-6 z-20 flex gap-3">
+        <div className="absolute top-16 left-6 z-20 flex flex-wrap gap-3">
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 border border-white/20"
+            className="bg-black/70 backdrop-blur-md text-white hover:bg-black/90 border-2 border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 font-semibold"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-5 w-5 mr-2" />
             Back
           </Button>
           <Button
             onClick={shareEvent}
             variant="ghost"
-            className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 border border-white/20"
+            className="bg-black/70 backdrop-blur-md text-white hover:bg-black/90 border-2 border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 font-semibold"
           >
-            <Share2 className="h-4 w-4 mr-2" />
+            <Share2 className="h-5 w-5 mr-2" />
             Share
+          </Button>
+          <Button
+            onClick={shareToLinkedIn}
+            variant="ghost"
+            className="bg-[#0077b5]/80 backdrop-blur-md text-white hover:bg-[#0077b5] border-2 border-[#0077b5]/50 hover:border-[#0077b5] shadow-lg hover:shadow-xl transition-all duration-300 px-4 py-3 font-semibold"
+            title="Share on LinkedIn"
+          >
+            <Linkedin className="h-5 w-5" />
+          </Button>
+          <Button
+            onClick={shareToFacebook}
+            variant="ghost"
+            className="bg-[#1877f2]/80 backdrop-blur-md text-white hover:bg-[#1877f2] border-2 border-[#1877f2]/50 hover:border-[#1877f2] shadow-lg hover:shadow-xl transition-all duration-300 px-4 py-3 font-semibold"
+            title="Share on Facebook"
+          >
+            <Facebook className="h-5 w-5" />
           </Button>
         </div>
 
