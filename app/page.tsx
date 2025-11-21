@@ -33,9 +33,9 @@ export default function Home() {
       return {
         name: 'Winter',
         leagueName: 'Winter League',
-        campName: 'Winter Camps',
+        campName: 'Winter Programs',
         leagueDescription: 'Join our competitive winter league with weekly games, team practices, and playoff action for all skill levels.',
-        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
+        campDescription: 'Multi-week Programs designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
       };
     }
     // Spring: February, March, April (2, 3, 4)
@@ -237,10 +237,10 @@ export default function Home() {
           <FeatureGrid
             features={[
               {
-                title: "All Girls Camp",
+                title: "All Girls Program",
                 description:
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
-                image: "/home-page-images/all-girls-camp.png",
+                image: "/home-page-images/all-girls-camp.webp",
                 buttonText: "Learn More",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
@@ -248,7 +248,7 @@ export default function Home() {
               {
                 title: currentSeason.leagueName,
                 description: currentSeason.leagueDescription,
-                image: "/home-page-images/summer-league.png",
+                image: "/home-page-images/summer-league.webp",
                 buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
@@ -256,16 +256,16 @@ export default function Home() {
               {
                 title: currentSeason.campName,
                 description: currentSeason.campDescription,
-                image: "/home-page-images/summer-camps.jpg",
+                image: "/home-page-images/winterprograms.webp",
                 buttonText: "Register",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
-                title: "Pro Club",
+                title: "All Girls Camp",
                 description:
-                  "Train like a pro in our elite-level development program tailored for advanced athletes aiming for the next level.",
-                image: "/home-page-images/pro-club.jpg",
+                  "Train like a pro in our elite-level development camp tailored for advanced athletes aiming for the next level.",
+                image: "/home-page-images/allgirlleauge.webp",
                 buttonText: "Apply Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
@@ -274,7 +274,7 @@ export default function Home() {
                 title: "JR Rise",
                 description:
                   "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
-                image: "/home-page-images/jr-rise.png",
+                image: "/home-page-images/jr-rise.webp",
                 buttonText: "Sign Up",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
