@@ -254,14 +254,6 @@ export default function Home() {
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
               {
-                title: currentSeason.campName,
-                description: currentSeason.campDescription,
-                image: "/home-page-images/winterprograms.webp",
-                buttonText: "Register",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
                 title: "High School Winter League",
                 description:
                   "Competitive winter league designed for high school athletes to elevate their game and compete at the next level.",
