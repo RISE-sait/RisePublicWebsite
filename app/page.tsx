@@ -271,6 +271,15 @@ export default function Home() {
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
+              {
+                title: "Full Year Memberships",
+                description:
+                  "Get year-round access to all programs, training sessions, and exclusive member benefits with our comprehensive annual membership.",
+                image: "/home-page-images/full-year-membership.jpg",
+                buttonText: "Join Now",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
             ]}
             columns={3}
           />
