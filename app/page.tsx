@@ -237,6 +237,15 @@ export default function Home() {
           <FeatureGrid
             features={[
               {
+                title: "Full Year Memberships",
+                description:
+                  "Get year-round access to all programs, training sessions, and exclusive member benefits with our comprehensive annual membership.",
+                image: "/home-page-images/full-year-membership.jpg",
+                buttonText: "Join Now",
+                buttonLink:
+                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+              },
+              {
                 title: "All Girls Program",
                 description:
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
@@ -268,15 +277,6 @@ export default function Home() {
                   "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
                 image: "/home-page-images/jr-rise.webp",
                 buttonText: "Sign Up",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "Full Year Memberships",
-                description:
-                  "Get year-round access to all programs, training sessions, and exclusive member benefits with our comprehensive annual membership.",
-                image: "/home-page-images/full-year-membership.jpg",
-                buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
