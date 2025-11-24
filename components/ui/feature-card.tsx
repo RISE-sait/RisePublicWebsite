@@ -100,6 +100,17 @@ export function FeatureCard({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
           onClick={() => setIsModalOpen(false)}
         >
+          {/* Close button - positioned outside modal content for visibility */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="fixed top-4 right-4 z-[60] bg-black/80 backdrop-blur-sm hover:bg-black text-white rounded-full p-3 transition-all duration-200 hover:scale-110 border border-white/20"
+            aria-label="Close"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -108,17 +119,6 @@ export function FeatureCard({
             className="relative max-w-6xl w-full max-h-[90vh] bg-[#111] rounded-lg overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close button */}
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 z-10 bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white rounded-full p-2 transition-all duration-200 hover:scale-110"
-              aria-label="Close"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
             {/* Full image */}
             <div className="relative w-full h-full flex items-center justify-center p-8">
               <Image
