@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface FeatureCardProps {
   title: string;
@@ -28,6 +29,62 @@ export function FeatureCard({
 }: FeatureCardProps)
  {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const modalContent = (
+    <AnimatePresence>
+      {isModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="fixed top-6 right-6 z-[10000] bg-white text-black hover:bg-gray-200 rounded-full p-3 transition-all duration-200 hover:scale-110 shadow-2xl"
+            aria-label="Close"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="relative max-w-6xl w-full max-h-[90vh] bg-[#111] rounded-lg overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Full image */}
+            <div className="relative w-full h-full flex items-center justify-center p-8">
+              <Image
+                src={image || "/placeholder.svg"}
+                alt={title}
+                width={1200}
+                height={1200}
+                quality={90}
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+            </div>
+
+            {/* Image title */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
+              <h3 className="text-2xl font-bold text-white">{title}</h3>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 
   return (
     <>
@@ -90,55 +147,8 @@ export function FeatureCard({
       </div>
     </motion.div>
 
-    {/* Full Image Modal */}
-    <AnimatePresence>
-      {isModalOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
-          onClick={() => setIsModalOpen(false)}
-        >
-          {/* Close button - positioned outside modal content for visibility */}
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="fixed top-4 right-4 z-[60] bg-black/80 backdrop-blur-sm hover:bg-black text-white rounded-full p-3 transition-all duration-200 hover:scale-110 border border-white/20"
-            aria-label="Close"
-          >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative max-w-6xl w-full max-h-[90vh] bg-[#111] rounded-lg overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Full image */}
-            <div className="relative w-full h-full flex items-center justify-center p-8">
-              <Image
-                src={image || "/placeholder.svg"}
-                alt={title}
-                width={1200}
-                height={1200}
-                quality={90}
-                className="w-full h-auto max-h-[80vh] object-contain"
-              />
-            </div>
-
-            {/* Image title */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
-              <h3 className="text-2xl font-bold text-white">{title}</h3>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    {/* Full Image Modal - rendered via portal to ensure it's above everything */}
+    {mounted && createPortal(modalContent, document.body)}
   </>
   );
 }
