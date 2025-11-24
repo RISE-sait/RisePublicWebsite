@@ -14,6 +14,7 @@ interface ParallaxSectionProps {
   className?: string;
   overlayOpacity?: number;
   direction?: "up" | "down";
+  id?: string;
 }
 
 export function ParallaxSection({
@@ -24,6 +25,7 @@ export function ParallaxSection({
   className,
   overlayOpacity = 0.7,
   direction = "up",
+  id,
 }: ParallaxSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -40,7 +42,7 @@ export function ParallaxSection({
   );
 
   return (
-    <div ref={ref} className={cn("relative overflow-hidden", className)}>
+    <div ref={ref} id={id} className={cn("relative overflow-hidden", className)}>
       {bgImage && (
         <motion.div className="absolute inset-0 w-full h-full" style={{ y }}>
           <div
