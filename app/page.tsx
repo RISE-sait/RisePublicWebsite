@@ -175,7 +175,7 @@ export default function Home() {
         mainPrimaryButtonText="JOIN NOW"
         mainPrimaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
         mainSecondaryButtonText="EXPLORE"
-        mainSecondaryButtonHref="#memberships"
+        mainSecondaryButtonHref="#discover"
         height="100vh"
       />
 
@@ -219,7 +219,7 @@ export default function Home() {
       />
 
       {/* Discover All That RISE Has to Offer */}
-      <ParallaxSection bgColor="#000" className="py-24 md:py-32 relative">
+      <ParallaxSection id="discover" bgColor="#000" className="py-24 md:py-32 relative">
         <ParticleBackground
           particleColor="#ffb800"
           particleCount={100}
@@ -250,7 +250,7 @@ export default function Home() {
                 description:
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
                 image: "/home-page-images/all-girls-camp.jpg",
-                buttonText: "Learn More",
+                buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
@@ -276,7 +276,7 @@ export default function Home() {
                 description:
                   "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
                 image: "/home-page-images/jr-rise.webp",
-                buttonText: "Sign Up",
+                buttonText: "Join Now",
                 buttonLink:
                   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
               },
