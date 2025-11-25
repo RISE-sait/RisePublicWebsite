@@ -465,12 +465,11 @@ export default function BasketballPage() {
         </SectionContainer>
       </ParallaxSection> */}
 
-      {/* Memberships UNCOMMENT LATER 
+      {/* Basketball Memberships */}
       <SectionContainer>
         <SectionHeading title="Basketball Memberships" centered />
         <BasketballMembershipsSection />
       </SectionContainer>
-      */}
 
       {/* Gallery */}
       <SectionContainer>
