@@ -30,6 +30,7 @@ export interface UserMembership {
   price?: string;
   start_date?: string;
   renewal_date?: string;
+  next_payment_date?: string;
   status?: string;
 }
 
@@ -126,6 +127,47 @@ export interface WeeklyUsage {
   week_end?: string;
   credits_used?: number;
   weekly_limit?: number;
+}
+
+export interface SubsidyInfo {
+  id: string;
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  provider: {
+    id: string;
+    name: string;
+  };
+  approved_amount: number;
+  total_amount_used: number;
+  remaining_balance: number;
+  status: string;
+  valid_from: string;
+  reason?: string;
+  admin_notes?: string;
+  approved_by?: string;
+  approved_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SubsidyBalance {
+  has_active_subsidy: boolean;
+  provider_name: string;
+  remaining_balance: number;
+}
+
+export interface SubsidyUsage {
+  id: string;
+  date: string;
+  transaction_type: string;
+  description?: string;
+  original_amount: number;
+  subsidy_applied: number;
+  customer_paid: number;
+  stripe_invoice_id?: string;
 }
 
 // Helper function to decode JWT and extract user info
@@ -479,13 +521,9 @@ export async function getUserCreditBalance(): Promise<UserCreditBalance | null> 
         console.error("❌ JWT is not valid or expired");
         throw new Error('Authentication required - JWT invalid');
       }
-      if (res.status === 404) {
-        console.log("⚠️ Credits endpoint not found - user may not have credits");
-        return null;
-      }
-      const errorText = await res.text();
-      console.error(`❌ Failed to get user credits:`, res.status, errorText);
-      throw new Error(`Could not load credit data: ${res.status} ${errorText}`);
+      // 404 or other errors likely mean user doesn't have a credit package - not an error
+      console.log("⚠️ User may not have a credit package (status:", res.status, ")");
+      return null;
     }
 
     const data = await res.json();
@@ -609,13 +647,9 @@ export async function getWeeklyUsage(): Promise<WeeklyUsage | null> {
         console.error("❌ JWT is not valid or expired");
         throw new Error('Authentication required - JWT invalid');
       }
-      if (res.status === 404) {
-        console.log("⚠️ Weekly usage endpoint not found");
-        return null;
-      }
-      const errorText = await res.text();
-      console.error(`❌ Failed to get weekly usage:`, res.status, errorText);
-      throw new Error(`Could not load weekly usage: ${res.status} ${errorText}`);
+      // 404 or other errors likely mean user doesn't have a credit package - not an error
+      console.log("⚠️ User may not have weekly usage data (status:", res.status, ")");
+      return null;
     }
 
     const data = await res.json();
@@ -643,6 +677,138 @@ export async function getWeeklyUsage(): Promise<WeeklyUsage | null> {
     return normalizedData;
   } catch (err) {
     console.error("🔥 Error loading weekly usage:", err);
+    throw err;
+  }
+}
+
+export async function getSubsidyInfo(): Promise<SubsidyInfo[]> {
+  try {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting subsidy info");
+    console.log("🔑 Full JWT:", jwt);
+    console.log("🌐 API URL:", `${apiBaseUrl}/subsidies/me`);
+
+    const res = await fetch(`${apiBaseUrl}/subsidies/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /subsidies/me response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ No subsidies found for user");
+        return [];
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get subsidy info:`, res.status, errorText);
+      throw new Error(`Could not load subsidy data: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 Subsidy info response:", JSON.stringify(data, null, 2));
+
+    // API returns { data: [...], pagination: {...} }
+    return Array.isArray(data.data) ? data.data : [];
+  } catch (err) {
+    console.error("🔥 Error loading subsidy info:", err);
+    throw err;
+  }
+}
+
+export async function getSubsidyBalance(): Promise<SubsidyBalance | null> {
+  try {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting subsidy balance");
+    console.log("🌐 API URL:", `${apiBaseUrl}/subsidies/me/balance`);
+
+    const res = await fetch(`${apiBaseUrl}/subsidies/me/balance`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /subsidies/me/balance response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ No subsidy balance found for user");
+        return null;
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get subsidy balance:`, res.status, errorText);
+      throw new Error(`Could not load subsidy balance: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 Subsidy balance response:", JSON.stringify(data, null, 2));
+
+    return data;
+  } catch (err) {
+    console.error("🔥 Error loading subsidy balance:", err);
+    throw err;
+  }
+}
+
+export async function getSubsidyUsage(): Promise<SubsidyUsage[]> {
+  try {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting subsidy usage");
+    console.log("🌐 API URL:", `${apiBaseUrl}/subsidies/me/usage`);
+
+    const res = await fetch(`${apiBaseUrl}/subsidies/me/usage`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /subsidies/me/usage response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ No subsidy usage found for user");
+        return [];
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get subsidy usage:`, res.status, errorText);
+      throw new Error(`Could not load subsidy usage: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 Subsidy usage response:", JSON.stringify(data, null, 2));
+
+    // API returns { data: [...], pagination: {...} }
+    return Array.isArray(data.data) ? data.data : [];
+  } catch (err) {
+    console.error("🔥 Error loading subsidy usage:", err);
     throw err;
   }
 }
