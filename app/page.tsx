@@ -17,6 +17,7 @@ import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
 import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
 import { AppDownloadButtons } from "@/components/app-download-buttons"
+import { MembershipsSection } from "@/components/membershipsSection"
 
 
 
@@ -441,12 +442,11 @@ export default function Home() {
         </div>
       </SectionContainer>
 
-      {/* Memberships Section -UNCOMMENT LATER 
+      {/* Memberships Section */}
       <SectionContainer id="memberships">
         <SectionHeading title="Memberships" centered />
         <MembershipsSection />
       </SectionContainer>
-      */}
 
       {/* Compare Plans */}
       <ParallaxSection
