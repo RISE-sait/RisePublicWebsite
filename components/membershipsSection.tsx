@@ -88,6 +88,8 @@ export function MembershipsSection() {
   const displayPlans = getUniquePlansByType()
     // Sort by priority (lower number = higher priority)
     .sort((a, b) => a.priority - b.priority)
+    // Limit to 3 plans maximum
+    .slice(0, 3)
     // Add display index
     .map((plan, index) => ({
       ...plan,

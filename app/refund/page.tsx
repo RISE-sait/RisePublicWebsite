@@ -40,7 +40,7 @@ export default function RefundPolicyPage() {
             All Full-Year Memberships are final. No cancellations or refunds will be issued after registration.
           </p>
           <p className="mt-2">
-            The initial sign-up fee is <strong>non-refundable</strong>. For full membership details, please refer to the Member Contract available in your <Link href="https://your.glofox.app" target="_blank" className="text-yellow-400 underline">Glofox account</Link>.
+            The initial sign-up fee is <strong>non-refundable</strong>. For full membership details, please refer to the Member Contract available in your <Link href="/profile" className="text-yellow-400 underline">account</Link>.
           </p>
         </section>
 

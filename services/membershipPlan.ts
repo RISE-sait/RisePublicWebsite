@@ -54,6 +54,7 @@ export async function getPlansForMembership(
         is_visible: plan.is_visible,
         stripe_price_id: plan.stripe_price_id,
         stripe_joining_fees_id: plan.stripe_joining_fees_id,
+        joining_fee_price: plan.joining_fee_price ? parseFloat(plan.joining_fee_price.replace(/[$,]/g, '')) : undefined,
         amt_periods: plan.amt_periods,
         created_at: plan.created_at,
         updated_at: plan.updated_at,

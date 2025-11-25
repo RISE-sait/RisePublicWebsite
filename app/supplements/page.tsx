@@ -18,6 +18,7 @@ import { ChevronDown } from "lucide-react";
 import NewsletterSection from "@/components/newsletter-form";
 import RecaptchaContactForm from "@/components/contactForm";
 import Head from "next/head";
+import Link from "next/link";
 import Image from "next/image";
 
 
@@ -320,13 +321,9 @@ export default function SupplementsPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <a
-                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link href="/allmemberships">
                   JOIN THE PRORISE INNOVATION CLASS
-                </a>
+                </Link>
               </Button>
             </motion.div>
           </div>

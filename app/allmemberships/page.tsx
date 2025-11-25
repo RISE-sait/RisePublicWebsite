@@ -14,6 +14,7 @@ import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
 import { getMembershipPlanCheckoutUrl, getCreditPackageCheckoutUrl } from "@/services/checkout";
 import Link from "next/link";
 import TabNavigation from "@/components/tab-navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * MembershipsPage:
@@ -27,6 +28,7 @@ interface MembershipWithPlans extends Membership {
   planName?: string;
   membershipTypeId?: string;
   membershipTypeName?: string;
+  joiningFee?: number;
 }
 
 export default function MembershipsPage() {
@@ -41,6 +43,10 @@ export default function MembershipsPage() {
   // Next.js router and search params
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Get user profile to check for active membership
+  const { userProfile } = useAuth();
+  const hasActiveMembership = !!(userProfile?.membership_info?.membership_name);
 
   // Static map of badge labels by index position
   const badgeMap: Record<number, string> = {
@@ -227,19 +233,24 @@ export default function MembershipsPage() {
           }
 
           // Create an entry for each plan
-          return plans.map((plan, index) => ({
-            ...membership,
-            planId: plan.id,
-            planName: plan.name || `${membership.name} - Option ${index + 1}`,
-            plans: [plan], // Keep single plan for compatibility with checkout
-            displayPrice: plan.price,
-            period: plan.interval === "month" ? "Monthly" : membership.period,
-            // Add plan-specific identifier for grouping
-            membershipTypeId: membership.id,
-            membershipTypeName: membership.name,
-            // Create unique ID for this plan entry
-            id: `${membership.id}-${plan.id}`,
-          }));
+          return plans.map((plan, index) => {
+            console.log(`📋 Plan "${plan.name}" joining fee:`, plan.joining_fee_price);
+            return {
+              ...membership,
+              planId: plan.id,
+              planName: plan.name || `${membership.name} - Option ${index + 1}`,
+              plans: [plan], // Keep single plan for compatibility with checkout
+              displayPrice: plan.price,
+              period: plan.interval === "month" ? "Monthly" : membership.period,
+              // Add plan-specific identifier for grouping
+              membershipTypeId: membership.id,
+              membershipTypeName: membership.name,
+              // Create unique ID for this plan entry
+              id: `${membership.id}-${plan.id}`,
+              // Include joining fee if present
+              joiningFee: plan.joining_fee_price,
+            };
+          });
         });
 
         // Add credit packages as membership entries
@@ -510,13 +521,24 @@ export default function MembershipsPage() {
                               </div>
                             </>
                           ) : (
-                            <div className="flex items-baseline">
-                              <span className="text-sm mr-2">Starting at</span>
-                              <span className="text-3xl font-bold">
-                                ${membership.displayPrice}
-                              </span>
-                              <span className="ml-1">/{membership.period}</span>
-                            </div>
+                            <>
+                              <div className="flex items-baseline">
+                                <span className="text-sm mr-2">Starting at</span>
+                                <span className="text-3xl font-bold">
+                                  ${membership.displayPrice}
+                                </span>
+                                <span className="ml-1">/{membership.period}</span>
+                              </div>
+                              {typeof membership.joiningFee === 'number' && membership.joiningFee > 0 && (
+                                <div className={`inline-flex items-center gap-1 mt-2 px-2 py-1 rounded-md text-xs font-medium ${
+                                  isFeatured
+                                    ? "bg-black/10 text-black/80"
+                                    : "bg-[#ffb800]/10 text-[#ffb800]"
+                                }`}>
+                                  + ${membership.joiningFee} annual fee
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>
@@ -559,18 +581,29 @@ export default function MembershipsPage() {
 
                     {/* Call-to-action button */}
                     <div className="mt-auto">
-                      <Button
-                        variant="default"
-                        disabled={checkoutLoading[membership.id]}
-                        onClick={() => handleCheckout(membership)}
-                        className={`w-full transition-all duration-300 hover:scale-105 shadow-lg font-bold ${
-                          isFeatured
-                            ? "bg-black text-white hover:bg-gray-800 disabled:bg-gray-400"
-                            : "bg-[#ffb800] text-black hover:bg-[#e0a300] disabled:bg-gray-400"
-                        }`}
-                      >
-                        {checkoutLoading[membership.id] ? "LOADING..." : "JOIN NOW"}
-                      </Button>
+                      {/* Only show disabled button for memberships, not credit packages */}
+                      {hasActiveMembership && !(membership as any).isCreditPackage ? (
+                        <Button
+                          variant="default"
+                          disabled
+                          className="w-full font-bold cursor-not-allowed bg-gray-600 text-gray-300 opacity-60"
+                        >
+                          Already a Member
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="default"
+                          disabled={checkoutLoading[membership.id]}
+                          onClick={() => handleCheckout(membership)}
+                          className={`w-full transition-all duration-300 hover:scale-105 shadow-lg font-bold ${
+                            isFeatured
+                              ? "bg-black text-white hover:bg-gray-800 disabled:bg-gray-400"
+                              : "bg-[#ffb800] text-black hover:bg-[#e0a300] disabled:bg-gray-400"
+                          }`}
+                        >
+                          {checkoutLoading[membership.id] ? "LOADING..." : "JOIN NOW"}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </motion.div>
