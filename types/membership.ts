@@ -16,6 +16,7 @@ export interface MembershipPlan {
   name?: string;
   stripe_price_id?: string;
   stripe_joining_fees_id?: string;
+  joining_fee_price?: number;
   amt_periods?: number;
   price: number;
   unit_amount?: number;

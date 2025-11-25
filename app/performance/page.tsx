@@ -119,7 +119,7 @@ export default function PerformancePage() {
         videoSrc="/headervideos/performancehead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        primaryButtonHref="/allmemberships"
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
@@ -284,7 +284,7 @@ export default function PerformancePage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships">
+                <Link href="/allmemberships">
                   JOIN NOW
                 </Link>
               </Button>

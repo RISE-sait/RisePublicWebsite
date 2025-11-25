@@ -48,7 +48,7 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               <strong>Payment Info:</strong> Collected and processed securely
-              via Stripe or Glofox; we do not store card details.
+              via Stripe; we do not store card details.
             </li>
             <li>
               <strong>Usage Data:</strong> Site activity, pages visited, and
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-2xl font-semibold mb-2">5. Data Sharing</h2>
           <p className="text-base sm:text-lg text-gray-200">
             We do not sell or rent your data. Information may be shared with
-            trusted third‑party providers (e.g., Glofox, Stripe) solely for the
+            trusted third‑party providers (e.g., Stripe) solely for the
             purpose of delivering our services. These providers are
             contractually obligated to protect your data.
           </p>

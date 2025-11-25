@@ -148,7 +148,6 @@ export default function Home() {
         />
 
         {/* DNS prefetch and preconnect for faster resource loading */}
-        <link rel="dns-prefetch" href="https://app.glofox.com" />
         <link rel="preconnect" href="https://bracketteam.com" />
       </Head>
       <h1 className="sr-only">
@@ -174,7 +173,7 @@ export default function Home() {
         mainVideoSrc="/headervideos/mainhead.mp4"
         mainFallbackImageSrc="/backuplogo.jpg"
         mainPrimaryButtonText="JOIN NOW"
-        mainPrimaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+        mainPrimaryButtonHref="/allmemberships"
         mainSecondaryButtonText="EXPLORE"
         mainSecondaryButtonHref="#discover"
         height="100vh"
@@ -243,8 +242,7 @@ export default function Home() {
                   "Get year-round access to all programs, training sessions, and exclusive member benefits with our comprehensive annual membership.",
                 image: "/home-page-images/full-year-membership.jpg",
                 buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+                buttonLink: "/allmemberships",
               },
               {
                 title: "All Girls Program",
@@ -252,16 +250,14 @@ export default function Home() {
                   "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
                 image: "/home-page-images/all-girls-camp.jpg",
                 buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+                buttonLink: "/allmemberships",
               },
               {
                 title: currentSeason.leagueName,
                 description: currentSeason.leagueDescription,
                 image: "/home-page-images/summer-league.webp",
                 buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+                buttonLink: "/allmemberships",
               },
               {
                 title: "High School Winter League",
@@ -269,8 +265,7 @@ export default function Home() {
                   "Competitive winter league designed for high school athletes to elevate their game and compete at the next level.",
                 image: "/home-page-images/hs-winter-leauge.png",
                 buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+                buttonLink: "/allmemberships",
               },
               {
                 title: "JR Rise",
@@ -278,8 +273,7 @@ export default function Home() {
                   "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
                 image: "/home-page-images/jr-rise.webp",
                 buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+                buttonLink: "/allmemberships",
               },
             ]}
             columns={3}
@@ -425,7 +419,7 @@ export default function Home() {
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
                 <Link
-                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  href="/allmemberships"
                   onClick={() =>
                     gtagEvent({
                       action: "click_join_now",

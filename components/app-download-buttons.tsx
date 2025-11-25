@@ -28,7 +28,7 @@ export function AppDownloadButtons({
   showLabel = false,
   labelText = "Download the app",
   appStoreUrl = "https://apps.apple.com/ca/app/rise-sports-complex/id6742468897",
-  googlePlayUrl = "https://play.google.com/store/apps/details?id=com.rise",
+  googlePlayUrl = "https://play.google.com/store/apps/details?id=com.risebasketball.mobile",
   className = "",
 }: AppDownloadButtonsProps) {
   const [isMobile, setIsMobile] = useState(false)
@@ -84,37 +84,35 @@ export function AppDownloadButtons({
         <p className="text-gray-400 text-sm mb-3 text-center">{labelText}</p>
       )}
       <div className={`flex ${layoutClasses} justify-center items-center`}>
-        {/* App Store Button - Coming Soon */}
-        <div className="relative inline-block">
-          <div className="opacity-50 cursor-not-allowed">
-            <img
-              src="/app-store-badge.svg"
-              alt="Download on the App Store - Coming Soon"
-              className="h-12 w-auto"
-            />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded shadow-lg">
-              COMING SOON
-            </span>
-          </div>
-        </div>
+        {/* App Store Button */}
+        <a
+          href={appStoreUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleAppStoreClick}
+          className="transition-transform hover:scale-105"
+        >
+          <img
+            src="/app-store-badge.svg"
+            alt="Download on the App Store"
+            className="h-12 w-auto"
+          />
+        </a>
 
-        {/* Google Play Button - Coming Soon */}
-        <div className="relative inline-block">
-          <div className="opacity-50 cursor-not-allowed">
-            <img
-              src="/google-play-badge.svg"
-              alt="Get it on Google Play - Coming Soon"
-              className="h-12 w-auto"
-            />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-[#ffb800] text-black text-xs font-bold px-2 py-1 rounded shadow-lg">
-              COMING SOON
-            </span>
-          </div>
-        </div>
+        {/* Google Play Button */}
+        <a
+          href={googlePlayUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleGooglePlayClick}
+          className="transition-transform hover:scale-105"
+        >
+          <img
+            src="/google-play-badge.svg"
+            alt="Get it on Google Play"
+            className="h-12 w-auto"
+          />
+        </a>
       </div>
     </div>
   )
