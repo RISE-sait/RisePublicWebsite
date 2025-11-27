@@ -769,6 +769,63 @@ export async function getSubsidyBalance(): Promise<SubsidyBalance | null> {
   }
 }
 
+export interface Waiver {
+  id: string;
+  user_id?: string;
+  file_url: string;
+  file_name?: string;
+  file_size?: number;
+  file_type?: string;
+  notes?: string;
+  uploaded_at?: {
+    Time: string;
+    Valid: boolean;
+  };
+  uploaded_by?: string;
+}
+
+export async function getUserWaivers(userId: string): Promise<Waiver[]> {
+  try {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      throw new Error('Authentication required');
+    }
+
+    console.log("🔍 Getting user waivers for user:", userId);
+
+    const res = await fetch(`${apiBaseUrl}/waivers/user/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+    });
+
+    console.log("🔍 /waivers/user/{id} response status:", res.status);
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error('Authentication required - JWT invalid');
+      }
+      if (res.status === 404) {
+        console.log("⚠️ No waivers found for user");
+        return [];
+      }
+      const errorText = await res.text();
+      console.error(`❌ Failed to get user waivers:`, res.status, errorText);
+      throw new Error(`Could not load waivers: ${res.status} ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("🔍 User waivers response:", data);
+
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error("🔥 Error loading user waivers:", err);
+    throw err;
+  }
+}
+
 export async function getSubsidyUsage(): Promise<SubsidyUsage[]> {
   try {
     const jwt = localStorage.getItem('jwt');
