@@ -5,7 +5,7 @@ import { useState } from "react"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import { firebaseApp } from "@/configs/firebase"
 import { motion } from "framer-motion"
-import { ChevronRight, Mail, Lock, CheckCircle, AlertCircle, User, Phone, Calendar, Flag } from "lucide-react"
+import { ChevronRight, Mail, Lock, CheckCircle, AlertCircle, User, Phone, Calendar, Flag, UserCheck, Heart, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ParticleBackground } from "@/components/ui/particle-background"
 import PhoneInput from "react-phone-number-input"
@@ -28,6 +28,9 @@ interface AthleteData {
   has_consent_to_sms: boolean
   waivers: WaiverType[]
   email: string
+  emergency_contact_name: string
+  emergency_contact_phone: string
+  emergency_contact_relationship: string
 }
 
 export default function SignupPage() {
@@ -45,6 +48,8 @@ export default function SignupPage() {
   const [passwordErrors, setPasswordErrors] = useState<string[]>([])
   const [passwordTouched, setPasswordTouched] = useState(false)
   const [ageWarning, setAgeWarning] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // Additional fields from the JSON schema
   const [athleteData, setAthleteData] = useState<AthleteData>({
@@ -67,6 +72,9 @@ export default function SignupPage() {
       },
     ],
     email: "",
+    emergency_contact_name: "",
+    emergency_contact_phone: "",
+    emergency_contact_relationship: "",
   })
 
   // Password validation function - returns object with individual checks
@@ -98,6 +106,18 @@ export default function SignupPage() {
     }
 
     return age
+  }
+
+  // Format phone number to E.164 format (e.g., +15141234567)
+  const formatPhoneNumber = (phone: string): string => {
+    if (!phone) return ""
+    // Remove all non-digit characters except the leading +
+    const cleaned = phone.replace(/[^\d+]/g, "")
+    // Ensure it starts with +
+    if (!cleaned.startsWith("+")) {
+      return "+" + cleaned
+    }
+    return cleaned
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -156,6 +176,9 @@ const handleSignup = async (e: React.FormEvent) => {
     phone_number,
     waivers,
     email,
+    emergency_contact_name,
+    emergency_contact_phone,
+    emergency_contact_relationship,
   } = athleteData
 
   //  Waiver validation
@@ -171,9 +194,12 @@ const handleSignup = async (e: React.FormEvent) => {
     !phone_number ||
     !allWaiversSigned ||
     !password.trim() ||
-    !confirmPassword.trim()
+    !confirmPassword.trim() ||
+    !emergency_contact_name.trim() ||
+    !emergency_contact_phone ||
+    !emergency_contact_relationship
   ) {
-    setError("Please fill out all required fields.")
+    setError("Please fill out all required fields, including emergency contact information.")
     setLoading(false)
     return
   }
@@ -208,10 +234,14 @@ const handleSignup = async (e: React.FormEvent) => {
 
     const { email: _, ...cleanAthleteData } = athleteData
 
+    // Format phone numbers to E.164 format before sending to API
     const athletePayload = {
       ...cleanAthleteData,
+      phone_number: formatPhoneNumber(cleanAthleteData.phone_number),
+      emergency_contact_phone: formatPhoneNumber(cleanAthleteData.emergency_contact_phone),
     }
 
+    console.log("📤 Submitting athlete payload:", athletePayload)
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/register/athlete`, {
       method: "POST",
@@ -434,9 +464,9 @@ const handleSignup = async (e: React.FormEvent) => {
                     </div>
                     <input
                       id="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      className="w-full pl-10 pr-10 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value)
@@ -446,6 +476,13 @@ const handleSignup = async (e: React.FormEvent) => {
                       onBlur={() => setPasswordTouched(true)}
                       required
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
                   </div>
                   {passwordTouched && password && (() => {
                     const validation = getPasswordValidation(password)
@@ -501,15 +538,43 @@ const handleSignup = async (e: React.FormEvent) => {
                     </div>
                     <input
                       id="confirmPassword"
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      className={`w-full pl-10 pr-10 py-3 bg-black/50 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white ${
+                        confirmPassword && password
+                          ? password === confirmPassword
+                            ? "border-green-500"
+                            : "border-red-500"
+                          : "border-gray-700"
+                      }`}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Re-enter your password to confirm</p>
+                  {/* Password match indicator */}
+                  {confirmPassword && (
+                    <div className={`flex items-center gap-2 text-xs ${password === confirmPassword ? "text-green-400" : "text-red-400"}`}>
+                      {password === confirmPassword ? (
+                        <>
+                          <CheckCircle className="h-3 w-3" />
+                          <span>Passwords match</span>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="h-3 w-3" />
+                          <span>Passwords do not match</span>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Country Code */}
@@ -564,6 +629,89 @@ const handleSignup = async (e: React.FormEvent) => {
                 </div>
                 <p className="text-xs text-gray-400 mt-1">Format: international e.g. +1 514 123 4567</p>
               </div>
+              </div>
+            </div>
+
+            {/* Emergency Contact Information Section */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">
+                Emergency Contact Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Emergency Contact Name */}
+                <div className="space-y-2">
+                  <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-gray-300">
+                    Contact Name *
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <UserCheck className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="emergency_contact_name"
+                      name="emergency_contact_name"
+                      type="text"
+                      placeholder="Jane Doe"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.emergency_contact_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Emergency Contact Relationship */}
+                <div className="space-y-2">
+                  <label htmlFor="emergency_contact_relationship" className="block text-sm font-medium text-gray-300">
+                    Relationship *
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Heart className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      id="emergency_contact_relationship"
+                      name="emergency_contact_relationship"
+                      className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                      value={athleteData.emergency_contact_relationship}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="">Select relationship</option>
+                      <option value="Parent">Parent</option>
+                      <option value="Guardian">Guardian</option>
+                      <option value="Spouse">Spouse</option>
+                      <option value="Sibling">Sibling</option>
+                      <option value="Friend">Friend</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Emergency Contact Phone */}
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-gray-300">
+                    Contact Phone Number *
+                  </label>
+                  <div className="relative">
+                    <PhoneInput
+                      international
+                      defaultCountry="CA"
+                      id="emergency_contact_phone"
+                      placeholder="e.g. +1 514 123 4567"
+                      value={athleteData.emergency_contact_phone}
+                      onChange={(value) =>
+                        setAthleteData((prev) => ({
+                          ...prev,
+                          emergency_contact_phone: value || "",
+                        }))
+                      }
+                      className="phone-input-wrapper"
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">Emergency contact's phone number in international format</p>
+                </div>
               </div>
             </div>
 
