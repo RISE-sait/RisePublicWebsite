@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { VideoHero } from "./video-hero";
 
@@ -8,7 +8,9 @@ interface EventHeroProps {
   title: string;
   subtitle?: string;
   description?: string;
-  imageSrc: string;
+  mediaSrc: string;
+  mediaType: "image" | "video";
+  thumbnailSrc?: string;
   primaryButtonText?: string;
   primaryButtonHref?: string;
   duration?: number; // Duration in seconds
@@ -43,17 +45,27 @@ export function DualHero({
   mainSecondaryButtonHref,
   height = "100vh",
 }: DualHeroProps) {
-  const [showEvent, setShowEvent] = useState(!!eventHero);
+  const [showEvent, setShowEvent] = useState(false);
+  const [hasShownEvent, setHasShownEvent] = useState(false);
 
+  // Update showEvent when eventHero becomes available
   useEffect(() => {
-    if (eventHero) {
+    if (eventHero && !hasShownEvent) {
+      setShowEvent(true);
+      setHasShownEvent(true);
+    }
+  }, [eventHero, hasShownEvent]);
+
+  // Timer to hide event hero after duration
+  useEffect(() => {
+    if (showEvent && eventHero) {
       const timer = setTimeout(() => {
         setShowEvent(false);
       }, (eventHero.duration || 7) * 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [eventHero]);
+  }, [showEvent, eventHero]);
 
   return (
     <div className="relative" style={{ height }}>
@@ -101,23 +113,51 @@ function EventHeroContent({
   title,
   subtitle,
   description,
-  imageSrc,
+  mediaSrc,
+  mediaType,
+  thumbnailSrc,
   primaryButtonText,
   primaryButtonHref,
   height,
 }: EventHeroProps & { height: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoError, setVideoError] = useState(false);
+
+  useEffect(() => {
+    if (mediaType === "video" && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay failed, video will show poster/thumbnail
+        setVideoError(true);
+      });
+    }
+  }, [mediaType]);
+
   return (
     <div className="relative overflow-hidden" style={{ height }}>
-      {/* Background Image - Optimized for instant loading */}
+      {/* Background Media */}
       <div className="absolute inset-0">
-        <img
-          src={imageSrc}
-          alt={title}
-          className="w-full h-full object-cover"
-          loading="eager"
-          fetchPriority="high"
-          decoding="sync"
-        />
+        {mediaType === "video" && !videoError ? (
+          <video
+            ref={videoRef}
+            src={mediaSrc}
+            poster={thumbnailSrc || undefined}
+            className="w-full h-full object-cover"
+            muted
+            loop
+            playsInline
+            autoPlay
+            onError={() => setVideoError(true)}
+          />
+        ) : (
+          <img
+            src={thumbnailSrc || mediaSrc}
+            alt={title}
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+          />
+        )}
         <div className="absolute inset-0 bg-black/60 z-10"></div>
       </div>
 
@@ -138,7 +178,7 @@ function EventHeroContent({
               className="inline-block mb-6"
             >
               <span className="bg-[#ffb800] text-black px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wide shadow-lg">
-                🏆 Special Event
+                Special Event
               </span>
             </motion.div>
 
