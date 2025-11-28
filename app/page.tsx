@@ -10,6 +10,7 @@ import { VideoHero } from "@/components/ui/video-hero";
 import { DualHero } from "@/components/ui/dual-hero";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ParticleBackground } from "@/components/ui/particle-background";
+import { PromoVideosSection } from "@/components/ui/promo-videos-section";
 import PartnerLogos from "@/components/partner-logos";
 import { PLAN_COMPARISON } from "@/lib/constants";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -17,63 +18,65 @@ import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
 import { UpcomingEventsParallax } from "@/components/ui/upcoming-events-parallax"
 import { AppDownloadButtons } from "@/components/app-download-buttons"
-
+import { useEffect, useState } from "react";
+import { getActiveHeroPromos, getActiveFeatureCards, getActivePromoVideos, HeroPromo, FeatureCard, PromoVideo } from "@/services/websitePromos";
 
 
 export default function Home() {
+  const [heroPromos, setHeroPromos] = useState<HeroPromo[]>([]);
+  const [featureCards, setFeatureCards] = useState<FeatureCard[]>([]);
+  const [promoVideos, setPromoVideos] = useState<PromoVideo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPromos() {
+      try {
+        const [heroData, featureData, videoData] = await Promise.all([
+          getActiveHeroPromos(),
+          getActiveFeatureCards(),
+          getActivePromoVideos(),
+        ]);
+        setHeroPromos(heroData);
+        setFeatureCards(featureData);
+        setPromoVideos(videoData);
+      } catch (error) {
+        console.error("Error fetching promos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPromos();
+  }, []);
+
+  // Get the first active hero promo - only show if there's actual API data
+  const activeHeroPromo = heroPromos.length > 0 ? heroPromos[0] : null;
+  const eventHero = activeHeroPromo ? {
+    title: activeHeroPromo.title,
+    subtitle: activeHeroPromo.subtitle || undefined,
+    description: activeHeroPromo.description || undefined,
+    mediaSrc: activeHeroPromo.media_url,
+    mediaType: activeHeroPromo.media_type || "image",
+    thumbnailSrc: activeHeroPromo.thumbnail_url || undefined,
+    primaryButtonText: activeHeroPromo.button_text || undefined,
+    primaryButtonHref: activeHeroPromo.button_link || undefined,
+    duration: activeHeroPromo.duration_seconds,
+  } : null;
+
+  // Convert feature cards to feature grid format - only if there's API data
+  const features = featureCards.map(card => ({
+    title: card.title,
+    description: card.description || "",
+    image: card.image_url,
+    buttonText: card.button_text || "Learn More",
+    buttonLink: card.button_link || "#",
+  }));
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-
-  // Get current season based on date
-  const getCurrentSeason = () => {
-    const month = new Date().getMonth() + 1; // 1-12
-
-    // Winter: November, December, January (11, 12, 1)
-    if (month === 11 || month === 12 || month === 1) {
-      return {
-        name: 'Winter',
-        leagueName: 'Winter League',
-        campName: 'Winter Programs',
-        leagueDescription: 'Join our competitive winter league with weekly games, team practices, and playoff action for all skill levels.',
-        campDescription: 'Multi-week Programs designed to improve skills, foster friendships, and bring out the best in every player during the winter season.',
-      };
-    }
-    // Spring: February, March, April (2, 3, 4)
-    if (month >= 2 && month <= 4) {
-      return {
-        name: 'Spring',
-        leagueName: 'Spring League',
-        campName: 'Spring Camps',
-        leagueDescription: 'Join our competitive spring league with weekly games, team practices, and playoff action for all skill levels.',
-        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this spring.',
-      };
-    }
-    // Summer: May, June, July (5, 6, 7)
-    if (month >= 5 && month <= 7) {
-      return {
-        name: 'Summer',
-        leagueName: 'Summer League',
-        campName: 'Summer Camps',
-        leagueDescription: 'Join our competitive summer league with weekly games, team practices, and playoff action for all skill levels.',
-        campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player.',
-      };
-    }
-    // Fall: August, September, October (8, 9, 10)
-    return {
-      name: 'Fall',
-      leagueName: 'Fall League',
-      campName: 'Fall Camps',
-      leagueDescription: 'Join our competitive fall league with weekly games, team practices, and playoff action for all skill levels.',
-      campDescription: 'Multi-week camps designed to improve skills, foster friendships, and bring out the best in every player this fall.',
-    };
-  };
-
-  const currentSeason = getCurrentSeason();
 
   return (
     <div className="flex flex-col">
       <Head>
-        <title>RISE Basketball | Calgary’s Elite Basketball Facility</title>
+        <title>RISE Basketball | Calgary's Elite Basketball Facility</title>
         <meta
           name="description"
           content="Join RISE Basketball in Calgary for year-round youth and adult basketball programs, elite coaching, open gym access, and a state-of-the-art training facility."
@@ -81,7 +84,7 @@ export default function Home() {
         <meta name="robots" content="index, follow" />
         <meta
           property="og:title"
-          content="RISE Basketball | Calgary’s Elite Basketball Facility"
+          content="RISE Basketball | Calgary's Elite Basketball Facility"
         />
         <meta
           property="og:description"
@@ -156,17 +159,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <DualHero
-        // Kapwa Tournament Event Hero (shows first for 7 seconds)
-        eventHero={{
-          title: "KAPWA HOLIDAY SHOWCASE 2025",
-          subtitle: "Join Calgary's Premier Basketball Competition",
-          description: "Experience elite-level basketball competition. Register your team now for an unforgettable tournament experience.",
-          imageSrc: "/home-page-images/KapwaTournamentWinter.png",
-          primaryButtonText: "REGISTER NOW",
-          primaryButtonHref: "https://bracketteam.com/event/6640/KAPWA_Holiday_Showcase/event_info",
-          duration: 5, // Shows for 7 seconds
-        }}
-        // Main Hero (shows after 7 seconds)
+        // Dynamic Event Hero from API (or fallback to default)
+        eventHero={eventHero}
+        // Main Hero (shows after event)
         mainTitle="RISE ABOVE THE COMPETITION"
         mainSubtitle="Now's the Best Time to Join RISE"
         mainDescription="Canada's Premier Basketball Academy & Training Facility"
@@ -209,8 +204,14 @@ export default function Home() {
       {/* Partners Section */}
       <PartnerLogos />
 
-      {/* Stats Section */}
+      {/* Promo Videos Section - Highlights */}
+      <PromoVideosSection
+        videos={promoVideos}
+        title="RISE Highlights"
+        subtitle="See What's Happening at RISE"
+      />
 
+      {/* Upcoming Events Section */}
       <UpcomingEventsParallax
         bgImage="/images/stats-bg.jpg" // Optional: Use any background you want
         bgColor="#000"
@@ -218,73 +219,30 @@ export default function Home() {
         maxEvents={6}
       />
 
-      {/* Discover All That RISE Has to Offer */}
-      <ParallaxSection id="discover" bgColor="#000" className="py-24 md:py-32 relative">
-        <ParticleBackground
-          particleColor="#ffb800"
-          particleCount={100}
-          connectParticles={true}
-        />
-
-        <SectionContainer className="px-4 md:px-6">
-          <SectionHeading
-            title="Discover All That RISE Has to Offer"
-            centered
-            titleClassName="text-3xl md:text-4xl lg:text-5xl"
-            className="mb-16"
+      {/* Discover All That RISE Has to Offer - Only show if there are feature cards */}
+      {features.length > 0 && (
+        <ParallaxSection id="discover" bgColor="#000" className="py-24 md:py-32 relative">
+          <ParticleBackground
+            particleColor="#ffb800"
+            particleCount={100}
+            connectParticles={true}
           />
 
-          <FeatureGrid
-            features={[
-              {
-                title: "Full Year Memberships",
-                description:
-                  "Get year-round access to all programs, training sessions, and exclusive member benefits with our comprehensive annual membership.",
-                image: "/home-page-images/full-year-membership.jpg",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "All Girls Program",
-                description:
-                  "Empowering young female athletes through skill development and team-building in a supportive, girl-focused environment.",
-                image: "/home-page-images/all-girls-camp.jpg",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: currentSeason.leagueName,
-                description: currentSeason.leagueDescription,
-                image: "/home-page-images/summer-league.webp",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "High School Winter League",
-                description:
-                  "Competitive winter league designed for high school athletes to elevate their game and compete at the next level.",
-                image: "/home-page-images/hs-winter-leauge.png",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-              {
-                title: "JR Rise",
-                description:
-                  "Foundational training and fun for our youngest ballers — perfect for ages 5–9 just starting their journey.",
-                image: "/home-page-images/jr-rise.webp",
-                buttonText: "Join Now",
-                buttonLink:
-                  "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-              },
-            ]}
-            columns={3}
-          />
-        </SectionContainer>
-      </ParallaxSection>
+          <SectionContainer className="px-4 md:px-6">
+            <SectionHeading
+              title="Discover All That RISE Has to Offer"
+              centered
+              titleClassName="text-3xl md:text-4xl lg:text-5xl"
+              className="mb-16"
+            />
+
+            <FeatureGrid
+              features={features}
+              columns={3}
+            />
+          </SectionContainer>
+        </ParallaxSection>
+      )}
 
       {/* RISE Performance Membership */}
       <SectionContainer>
@@ -441,7 +399,7 @@ export default function Home() {
         </div>
       </SectionContainer>
 
-      {/* Memberships Section -UNCOMMENT LATER 
+      {/* Memberships Section -UNCOMMENT LATER
       <SectionContainer id="memberships">
         <SectionHeading title="Memberships" centered />
         <MembershipsSection />
