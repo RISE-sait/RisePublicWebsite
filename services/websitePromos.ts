@@ -1,6 +1,4 @@
-import getValue from "@/configs/constants";
-
-const API_BASE = getValue("API");
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface HeroPromo {
   id: string;
@@ -47,7 +45,7 @@ export interface PromoVideo {
 
 export async function getActiveHeroPromos(): Promise<HeroPromo[]> {
   try {
-    const response = await fetch(`${API_BASE}website/hero-promos/active`, {
+    const response = await fetch(`${API_BASE}/website/hero-promos/active`, {
       method: "GET",
       cache: "no-store", // Always fetch fresh data
     });
@@ -67,7 +65,7 @@ export async function getActiveHeroPromos(): Promise<HeroPromo[]> {
 
 export async function getActiveFeatureCards(): Promise<FeatureCard[]> {
   try {
-    const response = await fetch(`${API_BASE}website/feature-cards/active`, {
+    const response = await fetch(`${API_BASE}/website/feature-cards/active`, {
       method: "GET",
       cache: "no-store",
     });
@@ -88,8 +86,8 @@ export async function getActiveFeatureCards(): Promise<FeatureCard[]> {
 export async function getActivePromoVideos(category?: string): Promise<PromoVideo[]> {
   try {
     const url = category
-      ? `${API_BASE}website/promo-videos/active?category=${encodeURIComponent(category)}`
-      : `${API_BASE}website/promo-videos/active`;
+      ? `${API_BASE}/website/promo-videos/active?category=${encodeURIComponent(category)}`
+      : `${API_BASE}/website/promo-videos/active`;
 
     const response = await fetch(url, {
       method: "GET",
