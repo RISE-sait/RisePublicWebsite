@@ -68,7 +68,7 @@ export function DualHero({
   }, [showEvent, eventHero]);
 
   return (
-    <div className="relative" style={{ height }}>
+    <div className="relative bg-black" style={{ height }}>
       <AnimatePresence mode="wait">
         {showEvent && eventHero ? (
           <motion.div
@@ -84,7 +84,7 @@ export function DualHero({
         ) : (
           <motion.div
             key="main-hero"
-            initial={{ opacity: 0, scale: 1.05 }}
+            initial={hasShownEvent ? { opacity: 0, scale: 1.05 } : false}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             className="absolute inset-0"
