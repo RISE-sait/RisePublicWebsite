@@ -63,7 +63,7 @@ export function PromoVideosSection({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
@@ -108,45 +108,51 @@ export function PromoVideosSection({
               {videos.map((video, index) => (
                 <motion.div
                   key={video.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex-shrink-0 w-[280px] md:w-[320px] snap-start"
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, type: "spring", stiffness: 100, delay: index * 0.1 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="flex-shrink-0 w-[280px] md:w-[320px] snap-start group"
                 >
                   <div
                     onClick={() => openVideoModal(video)}
-                    className="group cursor-pointer relative rounded-xl overflow-hidden bg-zinc-900 border border-white/10 hover:border-[#ffb800]/50 transition-all duration-300 hover:shadow-2xl hover:shadow-[#ffb800]/10"
+                    className="cursor-pointer relative rounded-xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 hover:border-[#ffb800]/40 transition-all duration-500 shadow-2xl hover:shadow-[#ffb800]/20 h-full"
                   >
                     {/* Thumbnail */}
-                    <div className="relative aspect-video">
+                    <div className="relative h-48 overflow-hidden">
                       <img
                         src={video.thumbnail_url}
                         alt={video.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
                       {/* Play Button Overlay */}
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-16 h-16 rounded-full bg-[#ffb800] flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-lg">
                           <Play className="w-8 h-8 text-black ml-1" fill="currentColor" />
                         </div>
                       </div>
+
                       {/* Category Badge */}
                       {video.category && (
-                        <div className="absolute top-3 left-3">
-                          <span className="bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full uppercase tracking-wide">
+                        <div className="absolute top-4 left-4">
+                          <span className="bg-[#ffb800] text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-lg">
                             {video.category}
                           </span>
                         </div>
                       )}
                     </div>
+
                     {/* Video Info */}
-                    <div className="p-4">
-                      <h3 className="text-white font-semibold text-lg line-clamp-1 group-hover:text-[#ffb800] transition-colors">
+                    <div className="p-6">
+                      <h3 className="text-white font-bold text-xl mb-2 line-clamp-2 group-hover:text-[#ffb800] transition-colors duration-300">
                         {video.title}
                       </h3>
                       {video.description && (
-                        <p className="text-white/60 text-sm mt-2 line-clamp-2">
+                        <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
                           {video.description}
                         </p>
                       )}
@@ -174,7 +180,7 @@ export function PromoVideosSection({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
+              className="relative w-full max-w-5xl bg-[#111] rounded-xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
@@ -186,31 +192,28 @@ export function PromoVideosSection({
                 <X className="w-6 h-6" />
               </button>
 
-              {/* Video Player */}
-              <video
-                src={selectedVideo.video_url}
-                className="w-full h-full object-contain"
-                controls
-                autoPlay
-                playsInline
-              />
-            </motion.div>
+              {/* Video Title Above */}
+              <div className="p-6 pb-4">
+                <h3 className="text-white text-2xl font-bold pr-12">
+                  {selectedVideo.title}
+                </h3>
+                {selectedVideo.description && (
+                  <p className="text-gray-300 text-sm mt-2 leading-relaxed">
+                    {selectedVideo.description}
+                  </p>
+                )}
+              </div>
 
-            {/* Video Title Below */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
-            >
-              <h3 className="text-white text-xl font-semibold">
-                {selectedVideo.title}
-              </h3>
-              {selectedVideo.description && (
-                <p className="text-white/60 text-sm mt-2 max-w-lg">
-                  {selectedVideo.description}
-                </p>
-              )}
+              {/* Video Player */}
+              <div className="aspect-video">
+                <video
+                  src={selectedVideo.video_url}
+                  className="w-full h-full object-contain bg-black"
+                  controls
+                  autoPlay
+                  playsInline
+                />
+              </div>
             </motion.div>
           </motion.div>
         )}
