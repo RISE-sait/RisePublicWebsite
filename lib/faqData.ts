@@ -40,8 +40,8 @@ export const faqData: FAQItem[] = [
     category: "Membership",
     icon: CreditCard,
     link: {
-      text: "Glofox portal",
-      url: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+      text: "View Memberships",
+      url: "/allmemberships",
     },
   },
   {
@@ -64,7 +64,7 @@ export const faqData: FAQItem[] = [
     id: "6",
     question: "When is my membership automatically renewed, and how will I be billed?",
     answer:
-      "Memberships renew automatically according to your chosen plan monthly, quarterly, or annually. Billing is processed securely through our Glofox portal using your saved payment method, and you can update your renewal preferences anytime in your account settings.",
+      "Memberships renew automatically according to your chosen plan monthly, quarterly, or annually. Billing is processed securely using your saved payment method, and you can update your renewal preferences anytime in your account settings.",
     category: "Billing",
     icon: CreditCard,
   },

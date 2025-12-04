@@ -109,26 +109,16 @@ export default function Header() {
 
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
-      // TODO: Restore internal memberships page later
-      // {
-      //   href: "/allmemberships",
-      //   label: "Memberships",
-      // },
       {
-        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        href: "/allmemberships",
         label: "Memberships",
       },
       { href: "/coaches", label: "Coaches" },
       { href: "/games", label: "Games" },
     ],
     "/performance": [
-      // TODO: Restore internal memberships page later
-      // {
-      //   href: "/allmemberships?category=fitness",
-      //   label: "Memberships",
-      // },
       {
-        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
+        href: "/allmemberships?category=fitness",
         label: "Memberships",
       },
     ],
@@ -210,30 +200,30 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Contact Actions */}
-          <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
+          {/* Contact Icons */}
+          <div className="flex items-center space-x-1">
             <a
               href="tel:5878997473"
-              className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors rounded hover:bg-white/5"
+              className="p-2 text-gray-400 hover:text-[#ffb800] transition-colors rounded-full hover:bg-white/5"
               aria-label="Call (587) 899-7473"
+              title="(587) 899-7473"
             >
               <Phone className="h-4 w-4" />
-              <span>(587) 899-7473</span>
             </a>
             <a
               href="https://maps.app.goo.gl/XPdN6F1kzKYwMYRZ7"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors rounded hover:bg-white/5"
+              className="p-2 text-gray-400 hover:text-[#ffb800] transition-colors rounded-full hover:bg-white/5"
               aria-label="View on Google Maps"
+              title="View on Google Maps"
             >
               <MapPin className="h-4 w-4" />
             </a>
           </div>
 
-          {/* TODO: Restore Auth Section later */}
           {/* Auth Section */}
-          {/* <div className="flex items-center space-x-2 border-l border-gray-700 pl-4">
+          <div className="flex items-center space-x-3 ml-4">
             {loading ? (
               <div className="px-3 py-1.5 text-sm text-gray-400">Loading...</div>
             ) : isAuthenticated ? (
@@ -242,7 +232,7 @@ export default function Header() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-white hover:text-[#ffb800] transition-colors"
                 >
-                  <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-600">
+                  <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-[#ffb800]/50">
                     {getProfilePicture() ? (
                       <img
                         src={getProfilePicture()!}
@@ -290,13 +280,13 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <>
+              <div className="flex items-center space-x-2">
                 <Link
                   href="/login"
                   className={cn(
-                    "px-3 py-1.5 text-sm font-medium rounded transition-colors",
+                    "px-4 py-2 text-sm font-medium rounded-md transition-colors border border-gray-600 hover:border-[#ffb800]",
                     pathname === "/login"
-                      ? "text-[#ffb800]"
+                      ? "text-[#ffb800] border-[#ffb800]"
                       : "text-white hover:text-[#ffb800]"
                   )}
                 >
@@ -304,15 +294,13 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/signup"
-                  className={cn(
-                    "px-3 py-1.5 text-sm font-medium rounded transition-colors bg-[#ffb800] text-black hover:bg-[#e0a300]"
-                  )}
+                  className="px-4 py-2 text-sm font-medium rounded-md transition-all bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105"
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
-          </div> */}
+          </div>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -435,9 +423,8 @@ export default function Header() {
                 </a>
               </div>
 
-              {/* TODO: Restore Mobile Auth Section later */}
               {/* Mobile Auth Section */}
-              {/* <div className="border-t border-gray-700 mt-4 pt-4">
+              <div className="border-t border-gray-700 mt-4 pt-4">
                 {loading ? (
                   <div className="py-3 px-4 text-sm text-gray-400">Loading...</div>
                 ) : isAuthenticated ? (
@@ -505,7 +492,7 @@ export default function Header() {
                     </Link>
                   </>
                 )}
-              </div> */}
+              </div>
             </nav>
           </motion.div>
         )}

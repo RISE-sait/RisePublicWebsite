@@ -30,7 +30,7 @@ export default function SuccessPage() {
             Payment Successful!
           </h1>
           <p className="text-xl text-gray-300">
-            Thank you for joining <span className="text-[#ffb800]">RISE</span> Basketball. Your membership is now active!
+            Thank you for your purchase from <span className="text-[#ffb800]">RISE</span>!
           </p>
           {sessionId && (
             <p className="text-sm text-gray-400">
@@ -43,9 +43,9 @@ export default function SuccessPage() {
           <div className="bg-[#111] border border-gray-800 hover:border-[#ffb800]/30 rounded-lg p-6 space-y-4 transition-all duration-300">
             <h2 className="text-2xl font-semibold text-[#ffb800]">What's Next?</h2>
             <ul className="text-left space-y-2 text-gray-300">
-              <li>• Access your member dashboard to view your plan details</li>
-              <li>• Start booking your training sessions and open gym access</li>
-              <li>• Connect with our coaching staff to maximize your experience</li>
+              <li>• Check your email for a confirmation receipt</li>
+              <li>• Visit your profile to view your purchase details</li>
+              <li>• Contact us if you have any questions</li>
             </ul>
           </div>
 

@@ -2,9 +2,21 @@
 import { useState, useEffect } from "react";
 import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
 import { MembershipGrid } from "@/components/ui/membership-grid";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { SectionContainer } from "@/components/ui/section-container";
 import type { MembershipPlan as GridPlan } from "@/components/ui/membership-grid";
 
-export function BasketballMembershipsSection() {
+interface BasketballMembershipsSectionProps {
+  showHeading?: boolean;
+  headingTitle?: string;
+  containerClassName?: string;
+}
+
+export function BasketballMembershipsSection({
+  showHeading = false,
+  headingTitle = "Basketball Memberships",
+  containerClassName
+}: BasketballMembershipsSectionProps) {
   const [displayPlans, setDisplayPlans] = useState<GridPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
@@ -15,17 +27,26 @@ export function BasketballMembershipsSection() {
         // Use cached data
         const { memberships, membershipPlans } = await getCachedMembershipsWithPlans();
 
-        // Filter for basketball-related memberships
+        // Filter for basketball-related memberships that have visible plans
         const filteredMemberships = memberships.filter((membership) => {
           const membershipName = membership.name.toLowerCase();
           const description = (membership.description || "").toLowerCase();
+          const plans = membershipPlans.get(membership.id) || [];
 
-          // Include basketball memberships
+          // Must have at least one visible plan
+          if (plans.length === 0) {
+            return false;
+          }
+
+          // Include basketball memberships (full year, seasonal, etc.)
           return (
             membershipName.includes('basketball') ||
+            membershipName.includes('full year') ||
+            membershipName.includes('seasonal') ||
             membershipName.includes('jr') ||
             membershipName.includes('junior') ||
             membershipName.includes('hooper') ||
+            membershipName.includes('elite') ||
             description.includes('basketball')
           );
         });
@@ -95,5 +116,15 @@ export function BasketballMembershipsSection() {
   }
   if (error) return <p className="text-red-400">Error: {error}</p>;
 
-  return <MembershipGrid plans={displayPlans} columns={3} />;
+  // Hide section if no memberships to display
+  if (displayPlans.length === 0) {
+    return null;
+  }
+
+  return (
+    <SectionContainer className={containerClassName}>
+      {showHeading && <SectionHeading title={headingTitle} centered />}
+      <MembershipGrid plans={displayPlans} columns={3} />
+    </SectionContainer>
+  );
 }

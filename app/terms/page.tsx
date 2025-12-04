@@ -96,8 +96,7 @@ export default function TermsPage() {
             6. Third-Party Services
           </h2>
           <p className="text-base sm:text-lg">
-            We may integrate with third-party platforms such as Stripe and
-            Glofox. We are not responsible for the content, policies, or
+            We may integrate with third-party platforms such as Stripe. We are not responsible for the content, policies, or
             reliability of any external services. Please review their terms
             independently.
           </p>

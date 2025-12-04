@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseApp } from "@/configs/firebase";
 import { motion } from "framer-motion";
@@ -29,17 +29,6 @@ export default function LoginPage() {
   const router = useRouter();
   const plan = searchParams.get("plan");
 
-  // Refresh Firebase user status when landing on login page
-  useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      // Reload user to get fresh emailVerified status
-      currentUser.reload().catch((err) => {
-        console.error("Failed to reload user:", err);
-      });
-    }
-  }, [auth]);
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -53,21 +42,11 @@ export default function LoginPage() {
         email,
         password
       );
-      const firebaseUser = userCredential.user;
 
-      // Reload user to get the latest emailVerified status from Firebase
-      await firebaseUser.reload();
+      // Get Firebase ID token
+      const idToken = await userCredential.user.getIdToken(true);
 
-      // Check if email is verified
-      if (!firebaseUser.emailVerified) {
-        setShowResendLink(true);
-        throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
-      }
-
-      // Step 2: Get Firebase ID token
-      const idToken = await firebaseUser.getIdToken();
-
-      // Step 3: Exchange token with your backend
+      // Step 2: Exchange token with your backend (backend handles email verification check)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`,
         {
@@ -82,9 +61,16 @@ export default function LoginPage() {
       if (!response.ok) {
         const errorBody = await response.json();
         console.error("❌ Backend /auth error:", errorBody);
-        throw new Error(
-          errorBody.message || "Failed to authenticate with backend"
-        );
+
+        // Check if it's an email verification error (status 403 or message contains verify)
+        const errorString = JSON.stringify(errorBody).toLowerCase();
+        if (response.status === 403 || errorString.includes("verify")) {
+          await auth.signOut();
+          setShowResendLink(true);
+          throw new Error("Please verify your email address before logging in. Check your inbox for the verification link.");
+        }
+
+        throw new Error("Failed to authenticate. Please try again.");
       }
 
       const jwtHeader = response.headers.get("authorization");

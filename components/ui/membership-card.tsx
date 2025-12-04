@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { event as gtagEvent } from "@/lib/gtag";
+import { useAuth } from "@/contexts/AuthContext";
 
 
 interface MembershipCardProps {
@@ -37,6 +38,11 @@ export function MembershipCard({
   className,
   index = 0,
 }: MembershipCardProps) {
+  const { userProfile } = useAuth();
+
+  // Check if user has an active membership (if membership_info exists with a name, they have one)
+  const hasActiveMembership = !!(userProfile?.membership_info?.membership_name);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -160,29 +166,44 @@ export function MembershipCard({
             </Link>
           </Button>
 
-          <Button
-            asChild
-            variant="default"
-            className={cn(
-              "w-full transition-all duration-300 hover:scale-105 shadow-lg font-bold",
-              featured
-                ? "bg-black text-white hover:bg-gray-800"
-                : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
-            )}
-          >
-            <Link
-              href="/allmemberships"
-              onClick={() =>
-                gtagEvent({
-                  action: ctaText === "VIEW PLANS" ? "click_view_plans" : "click_join_membership",
-                  category: "membership",
-                  label: `${ctaText === "VIEW PLANS" ? "View Plans" : "Join Membership"} - ${title}`,
-                })
-              }
+          {hasActiveMembership ? (
+            <Button
+              variant="default"
+              disabled
+              className={cn(
+                "w-full font-bold cursor-not-allowed opacity-60",
+                featured
+                  ? "bg-black/50 text-white/70"
+                  : "bg-gray-600 text-gray-300"
+              )}
             >
-              {ctaText || "JOIN NOW"}
-            </Link>
-          </Button>
+              Already a Member
+            </Button>
+          ) : (
+            <Button
+              asChild
+              variant="default"
+              className={cn(
+                "w-full transition-all duration-300 hover:scale-105 shadow-lg font-bold",
+                featured
+                  ? "bg-black text-white hover:bg-gray-800"
+                  : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
+              )}
+            >
+              <Link
+                href="/allmemberships"
+                onClick={() =>
+                  gtagEvent({
+                    action: ctaText === "VIEW PLANS" ? "click_view_plans" : "click_join_membership",
+                    category: "membership",
+                    label: `${ctaText === "VIEW PLANS" ? "View Plans" : "Join Membership"} - ${title}`,
+                  })
+                }
+              >
+                {ctaText || "JOIN NOW"}
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>
