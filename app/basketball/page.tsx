@@ -466,10 +466,7 @@ export default function BasketballPage() {
       </ParallaxSection> */}
 
       {/* Basketball Memberships */}
-      <SectionContainer>
-        <SectionHeading title="Basketball Memberships" centered />
-        <BasketballMembershipsSection />
-      </SectionContainer>
+      <BasketballMembershipsSection showHeading headingTitle="Basketball Memberships" />
 
       {/* Gallery */}
       <SectionContainer>
