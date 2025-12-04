@@ -400,10 +400,7 @@ export default function Home() {
       </SectionContainer>
 
       {/* Memberships Section */}
-      <SectionContainer id="memberships">
-        <SectionHeading title="Memberships" centered />
-        <MembershipsSection />
-      </SectionContainer>
+      <MembershipsSection showHeading headingTitle="Memberships" containerId="memberships" />
 
       {/* Compare Plans */}
       <ParallaxSection

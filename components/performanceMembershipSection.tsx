@@ -2,9 +2,21 @@
 import { useState, useEffect } from "react";
 import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
 import { MembershipGrid } from "@/components/ui/membership-grid";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { SectionContainer } from "@/components/ui/section-container";
 import type { MembershipPlan as GridPlan } from "@/components/ui/membership-grid";
 
-export function PerformanceMembershipsSection() {
+interface PerformanceMembershipsSectionProps {
+  showHeading?: boolean;
+  headingTitle?: string;
+  containerClassName?: string;
+}
+
+export function PerformanceMembershipsSection({
+  showHeading = false,
+  headingTitle = "Memberships",
+  containerClassName
+}: PerformanceMembershipsSectionProps) {
   const [displayPlans, setDisplayPlans] = useState<GridPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
@@ -15,10 +27,16 @@ export function PerformanceMembershipsSection() {
         // Use cached data
         const { memberships, membershipPlans } = await getCachedMembershipsWithPlans();
 
-        // Filter for gym/fitness-related memberships
+        // Filter for gym/fitness-related memberships that have visible plans
         const filteredMemberships = memberships.filter((membership) => {
           const membershipName = membership.name.toLowerCase();
           const description = (membership.description || "").toLowerCase();
+          const plans = membershipPlans.get(membership.id) || [];
+
+          // Must have at least one visible plan
+          if (plans.length === 0) {
+            return false;
+          }
 
           // Include memberships that contain gym, fitness, strength, performance, or training keywords
           return (
@@ -27,9 +45,13 @@ export function PerformanceMembershipsSection() {
             membershipName.includes('performance') ||
             membershipName.includes('fitness') ||
             membershipName.includes('training') ||
+            membershipName.includes('unlimited') ||
+            membershipName.includes('workout') ||
             description.includes('gym') ||
             description.includes('strength') ||
-            description.includes('conditioning')
+            description.includes('conditioning') ||
+            description.includes('fitness') ||
+            description.includes('performance')
           );
         });
 
@@ -98,5 +120,15 @@ export function PerformanceMembershipsSection() {
   }
   if (error) return <p className="text-red-400">Error: {error}</p>;
 
-  return <MembershipGrid plans={displayPlans} columns={2} />;
+  // Hide section if no memberships to display
+  if (displayPlans.length === 0) {
+    return null;
+  }
+
+  return (
+    <SectionContainer className={containerClassName}>
+      {showHeading && <SectionHeading title={headingTitle} centered />}
+      <MembershipGrid plans={displayPlans} columns={2} />
+    </SectionContainer>
+  );
 }
