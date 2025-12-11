@@ -45,75 +45,6 @@ function getCacheKey(start?: string | Date, end?: string | Date): string {
 }
 
 /**
- * Parses date strings from the database which are now in America/Edmonton timezone
- * Handles multiple possible formats that might come from the database
- */
-function parseEventDate(dateString: string): Date | null {
-  if (!dateString || dateString.trim() === '') {
-    return null;
-  }
-
-  try {
-    let cleanedString = dateString.trim();
-
-    // Handle the duplicate timezone offset issue: "2025-08-31 09:00:00 -0600 -0600"
-    // Remove duplicate timezone offsets by replacing the pattern
-    const duplicateTimezonePattern = /(-0[67]00)\s+(-0[67]00)$/;
-    if (duplicateTimezonePattern.test(cleanedString)) {
-      cleanedString = cleanedString.replace(duplicateTimezonePattern, '$1');
-    }
-
-    let parsedDate: Date;
-
-    // Format 1: Check if it's already in ISO format
-    if (cleanedString.includes('T') && (cleanedString.includes('Z') || cleanedString.includes('+'))) {
-      parsedDate = new Date(cleanedString);
-    }
-    // Format 2: Handle "YYYY-MM-DD HH:MM:SS -0700 MST" (Mountain Standard Time)
-    else if (cleanedString.includes(' MST') || (cleanedString.includes(' -0700') && !cleanedString.includes('T'))) {
-      const isoString = cleanedString
-        .replace(' MST', '')
-        .replace(' -0700', '-07:00')
-        .replace(' ', 'T');
-      parsedDate = new Date(isoString);
-    }
-    // Format 3: Handle "YYYY-MM-DD HH:MM:SS -0600" (Mountain Daylight Time)
-    else if (cleanedString.includes(' MDT') || (cleanedString.includes(' -0600') && !cleanedString.includes('T'))) {
-      const isoString = cleanedString
-        .replace(' MDT', '')
-        .replace(' -0600', '-06:00')
-        .replace(' ', 'T');
-      parsedDate = new Date(isoString);
-    }
-    // Format 4: Handle generic "YYYY-MM-DD HH:MM:SS" format (assume local timezone)
-    else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(cleanedString)) {
-      // Convert to ISO format and let the browser handle timezone
-      const isoString = cleanedString.replace(' ', 'T');
-      parsedDate = new Date(isoString);
-    }
-    // Format 5: Handle other formats with timezone offset
-    else if (cleanedString.includes(' +') || cleanedString.includes(' -')) {
-      // Try to parse as-is first
-      parsedDate = new Date(cleanedString);
-    }
-    // Fallback: Try parsing as-is
-    else {
-      parsedDate = new Date(cleanedString);
-    }
-
-    // Validate the parsed date
-    if (isNaN(parsedDate.getTime())) {
-      return null;
-    }
-
-    return parsedDate;
-
-  } catch (error) {
-    return null;
-  }
-}
-
-/**
  * Fetches all events from the backend using optional start and end date filters.
  *
  * This hits the `/events` endpoint and transforms each object returned from the Go backend
@@ -121,8 +52,7 @@ function parseEventDate(dateString: string): Date | null {
  *
  * - The backend requires at least one filter (e.g. `after`, `before`, or other identifiers).
  * - This function applies `after` (start date) and `before` (end date) query params.
- * - The backend returns dates in America/Edmonton timezone format, which are
- *   converted to ISO 8601 format for frontend compatibility.
+ * - The backend returns dates in ISO 8601 format with timezone offset (e.g., "2025-10-24T09:00:00-06:00").
  * - Events are cached in-memory per unique date range to prevent duplicate fetches.
  *
  * @param start Optional ISO 8601 start datetime string or Date object
@@ -166,12 +96,9 @@ export async function getAllEvents(
   const raw: EventApiDto[] = await res.json();
 
   const transformed = raw.map((e) => {
-    // Parse the dates using our enhanced date parser
-    const startDate = parseEventDate(e.start_at);
-    const endDate = e.end_at ? parseEventDate(e.end_at) : null;
-
-    const start_time = startDate ? startDate.toISOString() : "";
-    const end_time = endDate ? endDate.toISOString() : "";
+    // The backend returns proper ISO 8601 format, use dates directly
+    const start_time = e.start_at || "";
+    const end_time = e.end_at || "";
 
     return {
       id: e.id,

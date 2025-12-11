@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { getUserMembership, getUserSchedule, updateUserProfile, getUserCreditBalance, getWeeklyUsage, getSubsidyInfo, getSubsidyBalance, getSubsidyUsage, UserProfile, UserMembership, UserScheduleResponse, UserCreditBalance, WeeklyUsage, SubsidyInfo, SubsidyBalance, SubsidyUsage } from "@/services/userProfile";
+import { getUserMembership, getUserSchedule, updateUserProfile, getUserCreditBalance, getWeeklyUsage, getSubsidyInfo, getSubsidyBalance, getSubsidyUsage, getUserWaivers, UserProfile, UserMembership, UserScheduleResponse, UserCreditBalance, WeeklyUsage, SubsidyInfo, SubsidyBalance, SubsidyUsage, Waiver } from "@/services/userProfile";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -21,7 +21,9 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Save
+  Save,
+  FileText,
+  ExternalLink
 } from "lucide-react";
 
 /**
@@ -49,6 +51,9 @@ export default function ProfilePage() {
   const [subsidyUsage, setSubsidyUsage] = useState<SubsidyUsage[]>([]);
   const [subsidiesLoading, setSubsidiesLoading] = useState(true);
   const [subsidiesError, setSubsidiesError] = useState("");
+  const [waivers, setWaivers] = useState<Waiver[]>([]);
+  const [waiversLoading, setWaiversLoading] = useState(true);
+  const [waiversError, setWaiversError] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState<Partial<UserProfile>>({});
@@ -138,16 +143,42 @@ export default function ProfilePage() {
       } finally {
         setSubsidiesLoading(false);
       }
+
+      // Fetch waivers data
+      try {
+        setWaiversLoading(true);
+
+        // Get user ID from userProfile or JWT
+        const userId = userProfile?.id;
+        if (userId) {
+          const waiversData = await getUserWaivers(userId);
+          setWaivers(waiversData);
+        } else {
+          console.log("⚠️ No user ID available for waivers fetch");
+          setWaivers([]);
+        }
+      } catch (error: any) {
+        console.error("Error fetching waivers:", error);
+        if (error.message?.includes('404')) {
+          // No waivers found - not an error
+          setWaivers([]);
+        } else {
+          setWaiversError(error.message || "Failed to load waivers");
+        }
+      } finally {
+        setWaiversLoading(false);
+      }
     };
 
     fetchUserData();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, userProfile?.id]);
 
   // Profile tabs
   const profileTabs = [
     { id: "overview", label: "Overview" },
     { id: "membership", label: "Membership" },
     { id: "schedule", label: "My Schedule" },
+    { id: "waivers", label: "Waivers" },
   ];
 
   // Format date helper
@@ -1040,6 +1071,90 @@ export default function ProfilePage() {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">No Activities</h4>
                   <p className="text-gray-400">You don't have any {scheduleTab} activities.</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === "waivers" && (
+            <div className="bg-gradient-to-br from-gray-900 to-gray-900/50 rounded-xl border border-gray-800 p-5">
+              <h3 className="text-lg font-semibold text-white mb-6">My Waivers</h3>
+
+              {/* Info Banner */}
+              <div className="flex items-center gap-3 p-4 bg-gray-800/50 rounded-xl mb-6 border border-gray-700/50">
+                <FileText className="h-5 w-5 text-[#ffb800] flex-shrink-0" />
+                <p className="text-sm text-gray-400">
+                  View your uploaded waiver documents. To upload new waivers, please use the RISE mobile app.
+                </p>
+              </div>
+
+              {waiversLoading ? (
+                <div className="animate-pulse space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-20 bg-gray-700 rounded-xl"></div>
+                  ))}
+                </div>
+              ) : waiversError ? (
+                <div className="flex items-center text-red-400 p-4 bg-red-900/10 rounded-lg border border-red-900/20">
+                  <AlertCircle className="h-5 w-5 mr-2" />
+                  <span>{waiversError}</span>
+                </div>
+              ) : waivers.length > 0 ? (
+                <div className="space-y-3">
+                  {waivers.map((waiver) => {
+                    const uploadDate = waiver.uploaded_at?.Valid && waiver.uploaded_at?.Time
+                      ? new Date(waiver.uploaded_at.Time).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })
+                      : 'Unknown date';
+
+                    return (
+                      <div
+                        key={waiver.id}
+                        className="flex items-center gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700/50 hover:border-gray-600/50 transition-colors"
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-[#ffb800]/10 flex items-center justify-center flex-shrink-0">
+                          <FileText className="h-6 w-6 text-[#ffb800]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white font-medium truncate">
+                            {waiver.file_name || 'Waiver Document'}
+                          </p>
+                          <p className="text-sm text-gray-400">
+                            Uploaded: {uploadDate}
+                          </p>
+                          {waiver.notes && (
+                            <p className="text-sm text-gray-500 mt-1 truncate italic">
+                              {waiver.notes}
+                            </p>
+                          )}
+                        </div>
+                        {waiver.file_url && (
+                          <a
+                            href={waiver.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2.5 bg-[#ffb800]/10 text-[#ffb800] rounded-lg hover:bg-[#ffb800]/20 transition-colors flex items-center gap-2"
+                            title="View waiver"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            <span className="text-sm font-medium hidden sm:inline">View</span>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-4">
+                    <FileText className="h-8 w-8 text-gray-500" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-white mb-2">No Waivers</h4>
+                  <p className="text-gray-400 mb-2">You haven't uploaded any waivers yet.</p>
+                  <p className="text-sm text-gray-500">Use the RISE mobile app to upload waiver documents.</p>
                 </div>
               )}
             </div>

@@ -302,11 +302,7 @@ export default function PerformancePage() {
       </ParallaxSection>
 
       {/* Memberships */}
-      <SectionContainer className="bg-black">
-        <SectionHeading title="Memberships" centered />
-
-        <PerformanceMembershipsSection />
-      </SectionContainer>
+      <PerformanceMembershipsSection showHeading headingTitle="Memberships" containerClassName="bg-black" />
 
       {/* Gallery */}
       <SectionContainer>
