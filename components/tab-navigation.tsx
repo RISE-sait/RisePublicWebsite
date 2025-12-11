@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
 interface Tab {
@@ -11,15 +11,28 @@ interface Tab {
 interface TabNavigationProps {
   tabs: Tab[]
   defaultTab?: string
+  activeTab?: string  // For controlled mode
   onChange?: (tabId: string) => void
   className?: string
 }
 
-export default function TabNavigation({ tabs, defaultTab, onChange, className }: TabNavigationProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id)
+export default function TabNavigation({ tabs, defaultTab, activeTab: controlledActiveTab, onChange, className }: TabNavigationProps) {
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id)
+
+  // Use controlled value if provided, otherwise use internal state
+  const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab
+
+  // Sync internal state with controlled value
+  useEffect(() => {
+    if (controlledActiveTab !== undefined) {
+      setInternalActiveTab(controlledActiveTab)
+    }
+  }, [controlledActiveTab])
 
   const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId)
+    if (controlledActiveTab === undefined) {
+      setInternalActiveTab(tabId)
+    }
     if (onChange) {
       onChange(tabId)
     }
@@ -27,7 +40,7 @@ export default function TabNavigation({ tabs, defaultTab, onChange, className }:
 
   return (
     <div className={cn("border-b border-gray-800", className)}>
-      <div className="flex -mb-px">
+      <div className="flex flex-wrap -mb-px">
         {tabs.map((tab) => (
           <button
             key={tab.id}

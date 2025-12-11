@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, MapPin, Clock, Users, Trophy, Info, Star, BookOpen, Target, Zap, Timer, Award, Share2, Linkedin, Facebook } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, Users, Trophy, Info, Star, BookOpen, Target, Zap, Timer, Award, Share2, Linkedin, Facebook, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionContainer } from "@/components/ui/section-container";
 import { getUpcomingGames } from "@/services/gamesCalendar";
@@ -11,6 +11,7 @@ import { getAllEvents } from "@/services/eventsCalendar";
 import { Game } from "@/types/game";
 import { Event } from "@/types/event";
 import Image from "next/image";
+import { RegisterEventDialog } from "@/components/register-event-dialog";
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -20,6 +21,7 @@ export default function EventDetailPage() {
   const [event, setEvent] = useState<Game | Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
+  const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -628,9 +630,19 @@ export default function EventDetailPage() {
                   Quick Actions
                 </h4>
                 <div className="space-y-4">
+                  {!isGame(event) && (event as Event).registration_required && (
+                    <Button
+                      onClick={() => setRegisterDialogOpen(true)}
+                      className="w-full bg-gradient-to-r from-[#ffb800] to-[#ff8c00] hover:from-[#e0a300] hover:to-[#e07800] text-black font-bold py-4 text-lg rounded-xl transition-all transform hover:scale-105"
+                    >
+                      <Ticket className="h-5 w-5 mr-2" />
+                      Register for Event
+                    </Button>
+                  )}
                   <Button
                     onClick={() => router.push('/schedule')}
-                    className="w-full bg-gradient-to-r from-[#ffb800] to-[#ff8c00] hover:from-[#e0a300] hover:to-[#e07800] text-black font-bold py-4 text-lg rounded-xl transition-all transform hover:scale-105"
+                    variant="outline"
+                    className="w-full border-white/30 text-white hover:bg-white/10 font-bold py-4 text-lg rounded-xl transition-all"
                   >
                     View Full Calendar
                   </Button>
@@ -651,6 +663,16 @@ export default function EventDetailPage() {
         {/* Bottom Spacing */}
         <div className="h-20"></div>
       </div>
+
+      {/* Register Event Dialog */}
+      <RegisterEventDialog
+        open={registerDialogOpen}
+        onOpenChange={setRegisterDialogOpen}
+        eventName={isGame(event)
+          ? `${(event as Game).home_team_name} vs ${(event as Game).away_team_name}`
+          : (event as Event).program_name
+        }
+      />
     </div>
   );
 }

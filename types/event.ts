@@ -10,6 +10,6 @@ export interface Event {
   end_time: string | null; // ISO string or null
   created_by: string;
   updated_by: string;
-  description?: string; // <-- Make sure this is here
-
+  description?: string;
+  registration_required?: boolean; // Whether registration is required for this event
 }
