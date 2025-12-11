@@ -1,6 +1,6 @@
 "use client"
 
-import { Smartphone, Calendar } from "lucide-react"
+import { Smartphone, CalendarCheck, CreditCard, Ticket } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -42,13 +42,57 @@ export function RegisterEventDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 mt-4">
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+        <div className="space-y-4 mt-4">
+          {/* Steps */}
+          <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-4">
+            <p className="text-sm font-semibold text-white">How to register:</p>
+
             <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-[#ffb800] mt-0.5 flex-shrink-0" />
-              <div>
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ffb800] text-black text-xs font-bold flex items-center justify-center">
+                1
+              </div>
+              <div className="flex-1">
                 <p className="text-sm text-gray-300">
-                  Download the app to browse events, register, and manage your bookings all in one place.
+                  Open the app and navigate to the <span className="text-white font-medium">Events</span> tab
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ffb800] text-black text-xs font-bold flex items-center justify-center">
+                2
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <CalendarCheck className="h-4 w-4 text-[#ffb800] flex-shrink-0" />
+                  <p className="text-sm text-gray-300">
+                    Select the event you want to register for
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ffb800] text-black text-xs font-bold flex items-center justify-center">
+                3
+              </div>
+              <div className="flex-1">
+                <div className="flex items-start gap-2">
+                  <Ticket className="h-4 w-4 text-[#ffb800] flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-300">
+                    Register using your <span className="text-white font-medium">membership</span> or <span className="text-white font-medium">credits</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
+                <CreditCard className="h-3 w-3" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-400">
+                  No membership or credits? You can also pay directly in the app
                 </p>
               </div>
             </div>
