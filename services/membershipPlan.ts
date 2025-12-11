@@ -10,7 +10,6 @@ export async function getPlansForMembership(
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!apiBaseUrl) {
-      console.error("❌ NEXT_PUBLIC_API_BASE_URL is not defined");
       throw new Error("API base URL is not configured");
     }
 
@@ -19,21 +18,12 @@ export async function getPlansForMembership(
     if (!res.ok) {
       // If 404, the membership might not have plans - return empty array instead of throwing
       if (res.status === 404) {
-        console.log(`⚠️ No plans endpoint found for membership ${membershipId}, returning empty array`);
         return [];
       }
-      const errorText = await res.text();
-      console.error(`❌ Failed to fetch plans:`, res.status, errorText);
       throw new Error("Could not load membership plans");
     }
 
     const data: MembershipPlanResponse[] = await res.json();
-
-    console.log(`🔍 Fetched ${data.length} plans for membership ${membershipId}`);
-    if (data.length > 0) {
-      console.log(`🔍 First plan example:`, data[0]);
-      console.log(`🔍 All plans visibility:`, data.map(p => ({ name: p.name, is_visible: p.is_visible })));
-    }
 
     // Filter plans: must be visible AND have price > $0
     const validPlans = data.filter((plan) => {
@@ -41,8 +31,6 @@ export async function getPlansForMembership(
       const isVisible = plan.is_visible !== false; // undefined or true = visible
       return isVisible && price > 0;
     });
-
-    console.log(`✅ ${validPlans.length} visible plans with price > $0 after filtering`);
 
     return validPlans.map((plan) => ({
         id: plan.id!,
@@ -60,7 +48,6 @@ export async function getPlansForMembership(
         updated_at: plan.updated_at,
       }));
   } catch (err) {
-    console.error("🔥 Error loading membership plans:", err);
     throw err;
   }
 }

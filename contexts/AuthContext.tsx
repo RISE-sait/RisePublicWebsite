@@ -59,33 +59,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedUserProfile = localStorage.getItem("userProfile");
 
     if (storedJwt) {
-      console.log("🔑 Found stored JWT:", storedJwt.substring(0, 20) + "...");
       setJwt(storedJwt);
     }
 
     if (storedUserProfile) {
       try {
         const parsedProfile = JSON.parse(storedUserProfile);
-        console.log("👤 Found stored user profile:", parsedProfile);
         setUserProfile(parsedProfile);
-      } catch (error) {
-        console.error("❌ Failed to parse stored user profile:", error);
+      } catch {
         localStorage.removeItem("userProfile");
       }
     }
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log("🔥 Firebase auth state changed:", firebaseUser?.email || "No user");
       setUser(firebaseUser);
 
       if (firebaseUser) {
         try {
           // Get Firebase ID token
           const idToken = await firebaseUser.getIdToken();
-          console.log("🎫 Got Firebase ID token:", idToken.substring(0, 20) + "...");
 
           // Always try to exchange with backend for fresh JWT
-          console.log("🔄 Exchanging Firebase token for backend JWT...");
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`,
             {
@@ -103,42 +97,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             // Get user profile data from response body
             const responseData = await response.json();
-            console.log("👤 Got user profile data from /auth:", responseData);
 
             if (backendJwt) {
-              console.log("✅ Got backend JWT:", backendJwt.substring(0, 20) + "...");
               localStorage.setItem("jwt", backendJwt);
               setJwt(backendJwt);
-            } else {
-              console.error("❌ No JWT in response headers");
             }
 
             // Store user profile data
             if (responseData) {
               localStorage.setItem("userProfile", JSON.stringify(responseData));
               setUserProfile(responseData);
-              console.log("✅ Stored user profile data");
             }
           } else {
-            const errorText = await response.text();
-            console.error("❌ Failed to exchange tokens:", response.status, errorText);
-            // Clear stored JWT and user profile if backend exchange fails
+            // Backend exchange failed (e.g., user not found in backend)
+            // Sign out of Firebase to clear stale auth state
             localStorage.removeItem("jwt");
             localStorage.removeItem("userProfile");
             setJwt(null);
             setUserProfile(null);
+            await signOut(auth);
           }
-        } catch (error) {
-          console.error("🔥 Error getting JWT:", error);
+        } catch {
           // Clear stored JWT and user profile on error
           localStorage.removeItem("jwt");
           localStorage.removeItem("userProfile");
           setJwt(null);
           setUserProfile(null);
+          await signOut(auth);
         }
       } else {
         // User is signed out, clear JWT and user profile
-        console.log("🚪 User signed out, clearing JWT and user profile");
         localStorage.removeItem("jwt");
         localStorage.removeItem("userProfile");
         setJwt(null);
@@ -166,7 +154,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUserProfile(null);
       setUser(null);
     } catch (error) {
-      console.error("Error signing out:", error);
       throw error;
     }
   };

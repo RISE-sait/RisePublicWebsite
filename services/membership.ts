@@ -7,7 +7,6 @@ export async function getAllMemberships(): Promise<Membership[]> {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!apiBaseUrl) {
-      console.error("❌ NEXT_PUBLIC_API_BASE_URL is not defined");
       throw new Error("API base URL is not configured");
     }
 
@@ -47,8 +46,6 @@ export async function getAllMemberships(): Promise<Membership[]> {
         }
       }
 
-      console.log(`🔍 Membership "${membership.name}" benefits:`, benefits);
-
       return {
         id: membership.id!,
         name: membership.name!,
@@ -64,7 +61,6 @@ export async function getAllMemberships(): Promise<Membership[]> {
 
     return memberships;
   } catch (error) {
-    console.error("Error fetching memberships:", error);
     throw error;
   }
 }

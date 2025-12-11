@@ -62,7 +62,6 @@ export function MembershipsSection() {
     const plansByType = new Map();
 
     plans.forEach(plan => {
-      console.log(`🔍 Processing plan: ${plan.title}, price: ${plan.price}`);
       if (plan.title && plan.title.trim() !== "") {
         const pattern = matchPlanToPattern(plan);
         if (pattern) {

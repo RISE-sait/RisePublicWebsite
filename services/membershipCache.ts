@@ -23,27 +23,21 @@ let fetchPromise: Promise<CachedMembershipData> | null = null;
 export async function getCachedMembershipsWithPlans(): Promise<CachedMembershipData> {
   // Return cached data if still valid
   if (cache && Date.now() - cache.timestamp < CACHE_DURATION) {
-    console.log("✅ Returning cached membership data");
     return cache;
   }
 
   // If a fetch is already in progress, wait for it
   if (fetchPromise) {
-    console.log("⏳ Waiting for existing fetch to complete...");
     return fetchPromise;
   }
 
   // Start a new fetch
-  console.log("🔍 Fetching fresh membership data...");
   fetchPromise = (async () => {
     try {
       // Fetch all data in parallel
       const [memberships, creditPackages] = await Promise.all([
         getAllMemberships(),
-        getAllCreditPackages().catch(err => {
-          console.warn("Failed to fetch credit packages:", err);
-          return [];
-        })
+        getAllCreditPackages().catch(() => [])
       ]);
 
       // Fetch plans for all memberships in parallel
@@ -51,8 +45,7 @@ export async function getCachedMembershipsWithPlans(): Promise<CachedMembershipD
         try {
           const plans = await getPlansForMembership(membership.id);
           return { membershipId: membership.id, plans };
-        } catch (err) {
-          console.warn(`Failed to fetch plans for ${membership.name}`);
+        } catch {
           return { membershipId: membership.id, plans: [] };
         }
       });
@@ -73,7 +66,6 @@ export async function getCachedMembershipsWithPlans(): Promise<CachedMembershipD
         timestamp: Date.now(),
       };
 
-      console.log("✅ Membership and credit package data cached successfully");
       return cache;
     } finally {
       fetchPromise = null;
@@ -89,5 +81,4 @@ export async function getCachedMembershipsWithPlans(): Promise<CachedMembershipD
 export function clearMembershipCache() {
   cache = null;
   fetchPromise = null;
-  console.log("🗑️ Membership cache cleared");
 }

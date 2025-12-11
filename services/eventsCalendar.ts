@@ -35,7 +35,7 @@ function formatToYYYYMMDD(date: Date): string {
   return date.toISOString().split("T")[0];
 }
 
-// ✅ In-memory cache to avoid refetching the same date ranges
+// In-memory cache to avoid refetching the same date ranges
 const eventCache = new Map<string, Event[]>();
 
 function getCacheKey(start?: string | Date, end?: string | Date): string {
@@ -50,11 +50,8 @@ function getCacheKey(start?: string | Date, end?: string | Date): string {
  */
 function parseEventDate(dateString: string): Date | null {
   if (!dateString || dateString.trim() === '') {
-    console.warn("Empty or null date string provided");
     return null;
   }
-
-  console.log("🕐 Parsing date string:", dateString);
 
   try {
     let cleanedString = dateString.trim();
@@ -63,9 +60,7 @@ function parseEventDate(dateString: string): Date | null {
     // Remove duplicate timezone offsets by replacing the pattern
     const duplicateTimezonePattern = /(-0[67]00)\s+(-0[67]00)$/;
     if (duplicateTimezonePattern.test(cleanedString)) {
-      console.log("🔧 Detected duplicate timezone offset, cleaning...");
       cleanedString = cleanedString.replace(duplicateTimezonePattern, '$1');
-      console.log("🔧 Cleaned string:", cleanedString);
     }
 
     let parsedDate: Date;
@@ -88,7 +83,6 @@ function parseEventDate(dateString: string): Date | null {
         .replace(' MDT', '')
         .replace(' -0600', '-06:00')
         .replace(' ', 'T');
-      console.log("🔧 Converted to ISO:", isoString);
       parsedDate = new Date(isoString);
     }
     // Format 4: Handle generic "YYYY-MM-DD HH:MM:SS" format (assume local timezone)
@@ -109,21 +103,12 @@ function parseEventDate(dateString: string): Date | null {
 
     // Validate the parsed date
     if (isNaN(parsedDate.getTime())) {
-      console.error("❌ Failed to parse date:", cleanedString);
       return null;
     }
-
-    console.log("✅ Successfully parsed date:", {
-      input: dateString,
-      cleaned: cleanedString,
-      output: parsedDate.toISOString(),
-      localString: parsedDate.toLocaleString()
-    });
 
     return parsedDate;
 
   } catch (error) {
-    console.error("❌ Error parsing date:", dateString, error);
     return null;
   }
 }
@@ -151,7 +136,6 @@ export async function getAllEvents(
 ): Promise<Event[]> {
   const key = getCacheKey(start, end);
   if (eventCache.has(key)) {
-    console.log("📋 Using cached events for key:", key);
     return eventCache.get(key)!;
   }
 
@@ -167,10 +151,11 @@ export async function getAllEvents(
     params.append("before", before);
   }
 
+  // Set a high limit to get all events in the date range
+  params.append("limit", "500");
+
   // Construct the full API URL
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?${params.toString()}`;
-
-  console.log("🚀 Fetching events from:", url);
 
   const res = await fetch(url);
 
@@ -180,37 +165,13 @@ export async function getAllEvents(
 
   const raw: EventApiDto[] = await res.json();
 
-  console.log("📥 Raw events received:", {
-    count: raw.length,
-    sample: raw.length > 0 ? {
-      id: raw[0].id,
-      start_at: raw[0].start_at,
-      end_at: raw[0].end_at,
-      program_name: raw[0].program.name
-    } : null
-  });
-
-  const transformed = raw.map((e, index) => {
-    console.log(`🔄 Transforming event ${index + 1}:`, {
-      id: e.id,
-      raw_start_at: e.start_at,
-      raw_end_at: e.end_at
-    });
-
+  const transformed = raw.map((e) => {
     // Parse the dates using our enhanced date parser
     const startDate = parseEventDate(e.start_at);
     const endDate = e.end_at ? parseEventDate(e.end_at) : null;
 
     const start_time = startDate ? startDate.toISOString() : "";
     const end_time = endDate ? endDate.toISOString() : "";
-
-    console.log(`✨ Event ${index + 1} transformed:`, {
-      id: e.id,
-      start_time,
-      end_time,
-      valid_start: start_time !== "",
-      valid_end: end_time !== ""
-    });
 
     return {
       id: e.id,
@@ -226,12 +187,6 @@ export async function getAllEvents(
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
       description: e.program.description ?? "",
     };
-  });
-
-  console.log("🎯 Final transformed events:", {
-    count: transformed.length,
-    validStartTimes: transformed.filter(e => e.start_time !== "").length,
-    validEndTimes: transformed.filter(e => e.end_time !== "").length
   });
 
   eventCache.set(key, transformed);
