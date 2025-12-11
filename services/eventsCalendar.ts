@@ -25,6 +25,7 @@ interface EventApiDto {
 
   start_at: string;
   end_at: string;
+  registration_required?: boolean; // Whether registration is required
 }
 
 /**
@@ -113,6 +114,7 @@ export async function getAllEvents(
       created_by: `${e.created_by.first_name} ${e.created_by.last_name}`,
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
       description: e.program.description ?? "",
+      registration_required: e.registration_required ?? false,
     };
   });
 

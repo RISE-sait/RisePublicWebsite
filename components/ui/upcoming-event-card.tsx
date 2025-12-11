@@ -1,10 +1,10 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { Clock, MapPin, ArrowRight, Repeat, Share2, Copy, Check } from "lucide-react"
+import { Clock, MapPin, ArrowRight, Repeat, Share2, Copy, Check, Ticket } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { cn } from "@/lib/utils"
 import type { Event } from "@/types/event"
 import { useRouter } from "next/navigation"
+import { RegisterEventDialog } from "@/components/register-event-dialog"
 
 
 interface UpcomingEventCardProps {
@@ -160,6 +161,7 @@ export function UpcomingEventCard({
   onShare,
 }: UpcomingEventCardProps) {
   const router = useRouter()
+  const [registerDialogOpen, setRegisterDialogOpen] = useState(false)
 
   const typeInfo = getEventTypeInfo(event.program_type)
 
@@ -257,10 +259,14 @@ export function UpcomingEventCard({
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <Button
                 onClick={() => router.push(`/events/${event.id}`)}
-                className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30 min-h-[48px]"
+                variant={event.registration_required ? "outline" : "default"}
+                className={event.registration_required
+                  ? "flex-1 border-white/30 text-white hover:bg-white/10 hover:border-[#ffb800]/50 bg-transparent font-bold transition-all duration-300 min-h-[48px]"
+                  : "flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30 min-h-[48px]"
+                }
                 >
                 <span className="flex items-center justify-center gap-2">
                     View Details
@@ -268,6 +274,17 @@ export function UpcomingEventCard({
                 </span>
             </Button>
 
+            {event.registration_required && (
+              <Button
+                  onClick={() => setRegisterDialogOpen(true)}
+                  className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30 min-h-[48px]"
+                  >
+                  <span className="flex items-center justify-center gap-2">
+                      <Ticket className="h-4 w-4" />
+                      Register
+                  </span>
+              </Button>
+            )}
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -330,6 +347,13 @@ export function UpcomingEventCard({
           </div>
         </CardContent>
       </Card>
+
+      {/* Register Event Dialog */}
+      <RegisterEventDialog
+        open={registerDialogOpen}
+        onOpenChange={setRegisterDialogOpen}
+        eventName={event.program_name}
+      />
     </motion.div>
   )
 }
