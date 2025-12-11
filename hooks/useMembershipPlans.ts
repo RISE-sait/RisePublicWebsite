@@ -10,15 +10,11 @@ export function useMembershipPlans() {
   useEffect(() => {
     async function fetchMembershipsWithPlans() {
       try {
-        console.log("🔍 Fetching memberships with cache...");
         // Use cached data for faster loading
         const cachedData = await getCachedMembershipsWithPlans();
         const { memberships, membershipPlans } = cachedData;
 
-        console.log("✅ Got cached memberships:", memberships.length);
-
         if (memberships.length === 0) {
-          console.warn("⚠️ No memberships returned from cache");
           setPlans([]);
           return;
         }
@@ -46,10 +42,8 @@ export function useMembershipPlans() {
           };
         });
 
-        console.log("✅ Final mapped plans:", membershipsWithPlans.length);
         setPlans(membershipsWithPlans);
       } catch (err: any) {
-        console.error("❌ Error in fetchMembershipsWithPlans:", err);
         setError(err.message);
       } finally {
         setLoading(false);

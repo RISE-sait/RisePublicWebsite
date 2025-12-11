@@ -35,7 +35,7 @@ function formatToYYYYMMDD(date: Date): string {
   return date.toISOString().split("T")[0];
 }
 
-// ✅ In-memory cache to avoid refetching the same date ranges
+// In-memory cache to avoid refetching the same date ranges
 const eventCache = new Map<string, Event[]>();
 
 function getCacheKey(start?: string | Date, end?: string | Date): string {
@@ -43,7 +43,6 @@ function getCacheKey(start?: string | Date, end?: string | Date): string {
   const before = end instanceof Date ? formatToYYYYMMDD(end) : end || "";
   return `${after}_${before}`;
 }
-
 
 /**
  * Fetches all events from the backend using optional start and end date filters.
@@ -67,7 +66,6 @@ export async function getAllEvents(
 ): Promise<Event[]> {
   const key = getCacheKey(start, end);
   if (eventCache.has(key)) {
-    console.log("📋 Using cached events for key:", key);
     return eventCache.get(key)!;
   }
 
@@ -83,10 +81,11 @@ export async function getAllEvents(
     params.append("before", before);
   }
 
+  // Set a high limit to get all events in the date range
+  params.append("limit", "500");
+
   // Construct the full API URL
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?${params.toString()}`;
-
-  console.log("🚀 Fetching events from:", url);
 
   const res = await fetch(url);
 
@@ -96,35 +95,10 @@ export async function getAllEvents(
 
   const raw: EventApiDto[] = await res.json();
 
-  console.log("📥 Raw events received:", {
-    count: raw.length,
-    sample: raw.length > 0 ? {
-      id: raw[0].id,
-      start_at: raw[0].start_at,
-      end_at: raw[0].end_at,
-      program_name: raw[0].program.name
-    } : null
-  });
-
-  const transformed = raw.map((e, index) => {
-    console.log(`🔄 Transforming event ${index + 1}:`, {
-      id: e.id,
-      raw_start_at: e.start_at,
-      raw_end_at: e.end_at
-    });
-
-    // Now that the backend returns proper ISO 8601 format, we can use the dates directly
-    // The dates come as "2025-10-24T09:00:00-06:00" which preserves timezone info
+  const transformed = raw.map((e) => {
+    // The backend returns proper ISO 8601 format, use dates directly
     const start_time = e.start_at || "";
     const end_time = e.end_at || "";
-
-    console.log(`✨ Event ${index + 1} transformed:`, {
-      id: e.id,
-      start_time,
-      end_time,
-      valid_start: start_time !== "",
-      valid_end: end_time !== ""
-    });
 
     return {
       id: e.id,
@@ -140,12 +114,6 @@ export async function getAllEvents(
       updated_by: `${e.updated_by.first_name} ${e.updated_by.last_name}`,
       description: e.program.description ?? "",
     };
-  });
-
-  console.log("🎯 Final transformed events:", {
-    count: transformed.length,
-    validStartTimes: transformed.filter(e => e.start_time !== "").length,
-    validEndTimes: transformed.filter(e => e.end_time !== "").length
   });
 
   eventCache.set(key, transformed);
