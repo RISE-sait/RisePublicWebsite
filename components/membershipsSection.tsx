@@ -67,7 +67,6 @@ export function MembershipsSection({
 
         setDisplayPlans(formattedPlans);
       } catch (err: any) {
-        console.error("Error fetching memberships:", err);
         setError(err.message);
       } finally {
         setLoading(false);

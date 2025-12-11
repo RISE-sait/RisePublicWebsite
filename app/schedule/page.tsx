@@ -30,26 +30,12 @@ export default function SchedulePage() {
 
     getAllEvents(now, end)
       .then((fetchedEvents) => {
-        
-        // Log event details for debugging
-        fetchedEvents.forEach((event, index) => {
-          console.log(`Event ${index + 1}:`, {
-            id: event.id,
-            name: event.program_name,
-            type: event.program_type,
-            startTime: event.start_time,
-            endTime: event.end_time,
-            location: event.location_id
-          });
-        });
-
         setEvents(fetchedEvents);
       })
-      .catch((err) => {
-        console.error("❌ Error fetching events:", err);
+      .catch(() => {
+        // Error fetching events - silent fail
       })
       .finally(() => {
-        console.log("📅 Event fetching completed");
         setLoading(false);
       });
   }, []);
@@ -69,72 +55,39 @@ export default function SchedulePage() {
 
   const upcomingHighlights = useMemo(() => {
     const now = new Date();
-    const highlights = [...events]
+    return [...events]
       .filter((event) => new Date(event.start_time) > now)
       .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
-
-    console.log("🔍 Upcoming highlights calculated:", {
-      totalEvents: events.length,
-      upcomingCount: highlights.length,
-      highlights: highlights.map(event => ({
-        name: event.program_name,
-        startTime: event.start_time,
-        type: event.program_type
-      }))
-    });
-
-    return highlights;
   }, [events]);
 
   const filteredEvents = useMemo(() => {
-    console.log("🔽 Filtering events with filter:", selectedFilter);
-    
-    let filtered;
-    
     if (selectedFilter === "all") {
-      filtered = upcomingHighlights;
-    } else {
-      const nameMatch = (event: Event, keywords: string[]) =>
-        keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
-
-      if (selectedFilter === "assessments") {
-        filtered = upcomingHighlights.filter((event) =>
-          nameMatch(event, ["assessment", "tryout"])
-        );
-      } else if (selectedFilter === "tournament") {
-        filtered = upcomingHighlights.filter((event) =>
-          nameMatch(event, ["tournament", "cup"])
-        );
-      } else {
-        filtered = upcomingHighlights.filter(
-          (event) => event.program_type?.toLowerCase() === selectedFilter
-        );
-      }
+      return upcomingHighlights;
     }
 
-    console.log("✨ Events after filtering:", {
-      filter: selectedFilter,
-      originalCount: upcomingHighlights.length,
-      filteredCount: filtered.length,
-      filteredEvents: filtered.map(event => ({
-        name: event.program_name,
-        type: event.program_type,
-        startTime: event.start_time
-      }))
-    });
+    const nameMatch = (event: Event, keywords: string[]) =>
+      keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
 
-    return filtered;
+    if (selectedFilter === "assessments") {
+      return upcomingHighlights.filter((event) =>
+        nameMatch(event, ["assessment", "tryout"])
+      );
+    } else if (selectedFilter === "tournament") {
+      return upcomingHighlights.filter((event) =>
+        nameMatch(event, ["tournament", "cup"])
+      );
+    } else {
+      return upcomingHighlights.filter(
+        (event) => event.program_type?.toLowerCase() === selectedFilter
+      );
+    }
   }, [selectedFilter, upcomingHighlights]);
 
-  // Log when view mode changes
   const handleViewModeChange = (mode: "calendar" | "list") => {
-    console.log("👀 View mode changed from", viewMode, "to", mode);
     setViewMode(mode);
   };
 
-  // Log when filter changes
   const handleFilterChange = (filter: string) => {
-    console.log("🎯 Filter changed from", selectedFilter, "to", filter);
     setSelectedFilter(filter);
   };
 
@@ -237,19 +190,13 @@ export default function SchedulePage() {
             loading ? (
               <div className="text-white text-center py-12">Loading calendar...</div>
             ) : (
-              <>
-                {console.log("📅 Rendering ScheduleCalendar with filter:", selectedFilter)}
-                <ScheduleCalendar selectedFilter={selectedFilter} />
-              </>
+              <ScheduleCalendar selectedFilter={selectedFilter} />
             )
           ) : (
             loading ? (
               <div className="text-white text-center py-12">Loading events...</div>
             ) : (
-              <>
-                {console.log("📋 Rendering ScheduleList with events:", filteredEvents.length, "events")}
-                <ScheduleList events={filteredEvents} />
-              </>
+              <ScheduleList events={filteredEvents} />
             )
           )}
         </motion.div>

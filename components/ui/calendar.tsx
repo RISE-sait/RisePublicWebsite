@@ -113,59 +113,21 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
     const start = startOfMonth(subMonths(currentMonth, 1)); // load previous month too
     const end = endOfMonth(addMonths(currentMonth, 2)); // and 2 months ahead
 
-    console.log("📅 Calendar: Fetching data for month:", format(currentMonth, "MMMM yyyy"), {
-      start: start.toISOString(),
-      end: end.toISOString(),
-      apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-      isMounted
-    });
-
     setIsLoading(true);
 
     Promise.all([
-      getUpcomingGames().then(data => {
-        console.log("📅 Games fetched:", data.length, data.length > 0 ? "✅" : "❌");
-        return data;
-      }).catch((err) => {
-        console.error("❌ Calendar: Failed to fetch games:", err);
-        return [];
-      }),
-      getAllEvents(start, end).then(data => {
-        console.log("📅 Events fetched:", data.length, data.length > 0 ? "✅" : "❌");
-        return data;
-      }).catch((err) => {
-        console.error("❌ Calendar: Failed to fetch events:", err);
-        return [];
-      })
+      getUpcomingGames().catch(() => []),
+      getAllEvents(start, end).catch(() => [])
     ])
     .then(([gamesData, eventsData]) => {
-      console.log("📅 Calendar: All data loaded", {
-        games: gamesData.length,
-        events: eventsData.length,
-        total: gamesData.length + eventsData.length
-      });
       setGames(gamesData);
       setEvents(eventsData);
       setHasInitialized(true);
     })
-    .catch((err) => {
-      console.error("❌ Calendar: Promise.all failed:", err);
-    })
     .finally(() => {
       setIsLoading(false);
-      console.log("📅 Calendar: Loading state set to false");
     });
   }, [currentMonth, isMounted]);
-
-  console.log("🔄 SimpleCalendar render:", {
-    selectedFilter,
-    isLoading,
-    hasInitialized,
-    isMounted,
-    gamesCount: games.length,
-    eventsCount: events.length,
-    currentMonth: format(currentMonth, "MMMM yyyy")
-  });
 
   const navigateToEvent = (event: Game | Event) => {
     // Check if it's a game or an event and route accordingly
@@ -362,7 +324,6 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
   // Show loading state if not mounted, loading, or haven't initialized yet
   if (!isMounted || isLoading || (!hasInitialized && games.length === 0 && events.length === 0)) {
     const loadingMessage = !isMounted ? "Initializing calendar..." : "Loading calendar...";
-    console.log("📅 Showing loading state:", { isMounted, isLoading, hasInitialized, games: games.length, events: events.length });
     return (
       <div className="flex justify-center items-center p-4 sm:p-6 text-white bg-black rounded-lg shadow-lg max-w-7xl mx-auto min-h-[400px]">
         <div className="text-center">
@@ -372,8 +333,6 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
       </div>
     );
   }
-
-  console.log("📅 Rendering full calendar with data:", { games: games.length, events: events.length });
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 p-4 sm:p-6 text-white bg-black rounded-lg shadow-lg max-w-7xl mx-auto">

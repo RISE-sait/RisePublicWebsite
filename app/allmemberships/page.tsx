@@ -152,9 +152,7 @@ export default function MembershipsPage() {
           return;
         }
 
-        console.log(`🔄 Getting checkout URL for credit package: ${creditPackageId}`);
         const checkoutUrl = await getCreditPackageCheckoutUrl(creditPackageId);
-        console.log(`✅ Got checkout URL: ${checkoutUrl}`);
 
         // Redirect to Stripe checkout
         window.open(checkoutUrl, '_blank');
@@ -167,15 +165,12 @@ export default function MembershipsPage() {
           return;
         }
 
-        console.log(`🔄 Getting checkout URL for plan: ${planId}`);
         const checkoutUrl = await getMembershipPlanCheckoutUrl(planId);
-        console.log(`✅ Got checkout URL: ${checkoutUrl}`);
 
         // Redirect to Stripe checkout
         window.open(checkoutUrl, '_blank');
       }
     } catch (error: any) {
-      console.error("❌ Checkout error:", error);
 
       // If authentication error, redirect to login with plan parameter
       if (error.message === 'Authentication required') {
@@ -210,13 +205,9 @@ export default function MembershipsPage() {
   useEffect(() => {
     async function fetchMembershipsWithPlans() {
       try {
-        console.log("🔍 Fetching memberships from cache...");
         const { memberships: data, membershipPlans, creditPackages } = await getCachedMembershipsWithPlans();
-        console.log("✅ Got memberships:", data.length);
-        console.log("✅ Got credit packages:", creditPackages.length);
 
         if (data.length === 0 && creditPackages.length === 0) {
-          console.warn("⚠️ No memberships or credit packages returned from API");
           setMemberships([]);
           setLoading(false);
           return;
@@ -228,14 +219,11 @@ export default function MembershipsPage() {
 
           // Skip memberships with no plans - only show actual membership plans
           if (plans.length === 0) {
-            console.log(`⚠️ Skipping "${membership.name}" - no plans available`);
             return [];
           }
 
           // Create an entry for each plan
-          return plans.map((plan, index) => {
-            console.log(`📋 Plan "${plan.name}" joining fee:`, plan.joining_fee_price);
-            return {
+          return plans.map((plan, index) => ({
               ...membership,
               planId: plan.id,
               planName: plan.name || `${membership.name} - Option ${index + 1}`,
@@ -249,8 +237,7 @@ export default function MembershipsPage() {
               id: `${membership.id}-${plan.id}`,
               // Include joining fee if present
               joiningFee: plan.joining_fee_price,
-            };
-          });
+            }));
         });
 
         // Add credit packages as membership entries
@@ -281,11 +268,9 @@ export default function MembershipsPage() {
         }));
 
         const allEntries = [...allPlanEntries, ...creditPackageEntries];
-        console.log("✅ Final entries (memberships + credit packages):", allEntries);
         setMemberships(allEntries);
         setLoading(false);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError("Failed to load memberships.");
         setLoading(false);
       }
