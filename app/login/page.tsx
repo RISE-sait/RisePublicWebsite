@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { firebaseApp } from "@/configs/firebase";
 import { motion } from "framer-motion";
 import {
@@ -10,6 +10,8 @@ import {
   ChevronRight,
   CheckCircle,
   AlertCircle,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ParticleBackground } from "@/components/ui/particle-background";
@@ -23,6 +25,9 @@ export default function LoginPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [showResendLink, setShowResendLink] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   // grab 'plan' query-param and next/router
   const searchParams = useSearchParams();
@@ -95,6 +100,33 @@ localStorage.setItem("jwt", jwt);
       setError(err.message || "Login failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Please enter your email address first");
+      return;
+    }
+
+    setResetLoading(true);
+    setError("");
+    setResetEmailSent(false);
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+    } catch (err: any) {
+      console.error(err);
+      if (err.code === "auth/user-not-found") {
+        setError("No account found with this email address");
+      } else if (err.code === "auth/invalid-email") {
+        setError("Please enter a valid email address");
+      } else {
+        setError("Failed to send reset email. Please try again.");
+      }
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -178,14 +210,37 @@ localStorage.setItem("jwt", jwt);
                 </div>
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-3 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
+                  className="w-full pl-10 pr-10 py-3 bg-black/50 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent text-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
+            </div>
+
+            {/* Forgot Password Link */}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                disabled={resetLoading}
+                className="text-sm text-[#ffb800] hover:underline disabled:opacity-50"
+              >
+                {resetLoading ? "Sending..." : "Forgot password?"}
+              </button>
             </div>
 
             <Button
@@ -205,6 +260,17 @@ localStorage.setItem("jwt", jwt);
               >
                 <CheckCircle className="h-5 w-5 flex-shrink-0" />
                 <span>Logged in successfully!</span>
+              </motion.div>
+            )}
+
+            {resetEmailSent && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-2 text-green-400 bg-green-400/10 p-3 rounded-md"
+              >
+                <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                <span>Password reset email sent! Check your inbox or spam folder.</span>
               </motion.div>
             )}
 
