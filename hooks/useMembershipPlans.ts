@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCachedMembershipsWithPlans } from "@/services/membershipCache";
 import type { MembershipPlan } from "@/components/ui/membership-grid";
+import { getPeriodFromInterval } from "@/lib/utils";
 
 export function useMembershipPlans() {
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
@@ -33,7 +34,7 @@ export function useMembershipPlans() {
             badge: membership.badge ?? "",
             title: membership.name,
             price: price,
-            period: firstPlan?.interval === "month" ? "Monthly" : membership.period ?? "Bi-Weekly",
+            period: getPeriodFromInterval(firstPlan?.interval, firstPlan?.amt_periods, membership.period),
             description: membership.description ?? "",
             features: membership.benefits ?? [],
             ctaText: membership.ctaText ?? "JOIN NOW",

@@ -8,7 +8,6 @@ import { FeatureGrid } from "@/components/ui/feature-grid";
 import { MembershipGrid } from "@/components/ui/membership-grid";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ThreeDCard } from "@/components/ui/3d-card";
-import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import { MEMBERSHIP_PLANS, PERFORMANCE_FEATURES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -141,23 +140,6 @@ export default function PerformancePage() {
 
       {/* Partners Section */}
       <PartnerLogos />
-
-      {/* Stats Section */}
-      <ParallaxSection className="py-16">
-        <ParticleBackground
-          particleColor="#ffb800"
-          particleCount={150}
-          connectParticles={true}
-        />
-        <SectionContainer>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatsCounter value={25} label="CLASSES PER MONTH" delay={0} />
-            <StatsCounter value={20000} label="SQ FT FACILITY" delay={0.2} />
-            <StatsCounter value={12} label="CERTIFIED TRAINERS" delay={0.4} />
-            <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0.6} />
-          </div>
-        </SectionContainer>
-      </ParallaxSection>
 
       {/* Why RISE Performance */}
       <SectionContainer id="why-rise" className="bg-[#111]">

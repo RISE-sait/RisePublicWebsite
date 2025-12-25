@@ -86,12 +86,10 @@ export default function Header() {
     "/",
     "/basketball",
     "/performance",
-    "/amenities",
     "/contact",
     "/reviews",
     "/schedule",
     "/faq",
-
   ];
   const filteredNav = NAVIGATION_ITEMS.filter((i) =>
     availablePages.includes(i.href)

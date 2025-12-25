@@ -161,7 +161,7 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
     [games, selectedDayKey]
   );
 
-  const programTypes = ["course", "tryouts", "tournament", "event", "other"];
+  const programTypes = ["course", "tryouts", "tournament", "event", "game", "other"];
   const filteredByType = useFilteredEvents(events, selectedDate, programTypes);
 
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
@@ -230,6 +230,10 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
             e.program_type === "event" && isEventOnDate(e, day)
           );
 
+          const hasGameEvents = events.some((e) =>
+            e.program_type === "game" && isEventOnDate(e, day)
+          );
+
         const dayCopy = new Date(day);
         days.push(
           <div
@@ -255,6 +259,7 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
             </span>
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-1">
               {hasGames && <span className="w-2 h-2 bg-yellow-500 rounded-full" />}
+              {hasGameEvents && <span className="w-2 h-2 bg-yellow-400 rounded-full" />}
               {hasCourses && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
               {hasTryouts && <span className="w-2 h-2 bg-pink-500 rounded-full" />}
               {hasTournaments && <span className="w-2 h-2 bg-purple-500 rounded-full" />}
@@ -349,6 +354,7 @@ export default function SimpleCalendar({ selectedFilter }: { selectedFilter: str
           Events on {selectedDate.toDateString()}
         </h2>
         {renderEvents("Games", filteredGames, "bg-yellow-500")}
+        {renderEvents("Game Events", filteredByType["game"], "bg-yellow-400")}
         {renderEvents("Courses", filteredByType["course"], "bg-blue-500")}
         {renderEvents("Assessments/Tryouts", filteredByType["tryouts"], "bg-pink-500")}
         {renderEvents("Tournaments", filteredByType["tournament"], "bg-purple-500")}

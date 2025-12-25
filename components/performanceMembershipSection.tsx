@@ -5,6 +5,7 @@ import { MembershipGrid } from "@/components/ui/membership-grid";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SectionContainer } from "@/components/ui/section-container";
 import type { MembershipPlan as GridPlan } from "@/components/ui/membership-grid";
+import { getPeriodFromInterval } from "@/lib/utils";
 
 interface PerformanceMembershipsSectionProps {
   showHeading?: boolean;
@@ -65,10 +66,15 @@ export function PerformanceMembershipsSection({
               ? Math.min(...plans.map(plan => plan.price))
               : membership.price;
 
+            // Get the first plan to check interval
+            const firstPlan = plans[0];
+
             return {
               ...membership,
               price: lowestPrice,
               planCount: plans.length,
+              interval: firstPlan?.interval,
+              amtPeriods: firstPlan?.amt_periods,
             };
           });
 
@@ -79,7 +85,7 @@ export function PerformanceMembershipsSection({
           badge: membership.badge || "",
           title: membership.name,
           price: membership.price,
-          period: membership.period || "Bi-Weekly",
+          period: getPeriodFromInterval(membership.interval, membership.amtPeriods, membership.period),
           description: membership.description || "",
           features: membership.benefits || [],
           ctaText: "VIEW PLANS",

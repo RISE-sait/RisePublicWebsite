@@ -56,21 +56,7 @@ export default function UpcomingHighlights({
   const filteredEvents = useMemo(() => {
     if (selectedFilter === "all") return uniqueRecurringHighlights;
 
-    const nameMatch = (event: Event, keywords: string[]) =>
-      keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
-
-    if (selectedFilter === "assessments") {
-      return uniqueRecurringHighlights.filter((event) =>
-        nameMatch(event, ["assessment", "tryout"])
-      );
-    }
-
-    if (selectedFilter === "tournament") {
-      return uniqueRecurringHighlights.filter((event) =>
-        nameMatch(event, ["tournament", "cup"])
-      );
-    }
-
+    // Filter by program_type
     return uniqueRecurringHighlights.filter(
       (event) => event.program_type?.toLowerCase() === selectedFilter
     );

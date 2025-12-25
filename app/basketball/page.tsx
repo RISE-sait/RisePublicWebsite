@@ -8,7 +8,6 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { AnimatedText } from "@/components/ui/animated-text";
-import { StatsCounter } from "@/components/ui/stats-counter";
 import PartnerLogos from "@/components/partner-logos";
 import TabNavigation from "@/components/tab-navigation";
 import { useState, useEffect } from "react";
@@ -134,28 +133,6 @@ export default function BasketballPage() {
 
       {/* Partners Section */}
       <PartnerLogos />
-
-      {/* Stats Section */}
-      <ParallaxSection bgColor="#111" className="py-16">
-        <ParticleBackground
-          particleColor="#ffb800"
-          particleCount={150}
-          connectParticles={true}
-        />
-        <SectionContainer>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatsCounter value={1077} label="ACTIVE MEMBERS" delay={0} />
-            <StatsCounter value={51} label="CERTIFIED COACHES" delay={0.2} />
-            <StatsCounter
-              value={99}
-              label="PLAYER SATISFACTION"
-              suffix="%"
-              delay={0.4}
-            />
-            <StatsCounter value={8} label="CHAMPIONSHIPS WON" delay={0.6} />
-          </div>
-        </SectionContainer>
-      </ParallaxSection>
 
       {/* Program Tabs */}
       <SectionContainer id="programs" className="">

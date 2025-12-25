@@ -44,14 +44,51 @@ export default function SchedulePage() {
     setHighlightPage(0);
   }, [selectedFilter]);
 
-  const programTypes = [
-    { id: "all", label: "All Programs" },
-    { id: "pro-club", label: "Pro Club" },
-    { id: "summer-league", label: "Summer League" },
-    { id: "jr-rise", label: "Jr. Rise" },
-    { id: "tournament", label: "Tournaments/Cups" },
-    { id: "assessments", label: "Tryouts / Assessments" },
-  ];
+  // Map of program type IDs to display labels
+  const programTypeLabels: Record<string, string> = {
+    "all": "All Programs",
+    "course": "Courses",
+    "tournament": "Tournaments",
+    "tryouts": "Tryouts",
+    "event": "Events",
+    "game": "Games",
+  };
+
+  // Dynamically extract unique program types from events
+  const programTypes = useMemo(() => {
+    const types = new Set<string>();
+    events.forEach((event) => {
+      if (event.program_type) {
+        types.add(event.program_type.toLowerCase());
+      }
+    });
+
+    // Build filter options - start with "all", then add types that exist in events
+    const filterOptions = [{ id: "all", label: "All Programs" }];
+
+    // Add types in a consistent order
+    const orderedTypes = ["course", "tournament", "tryouts", "event", "game"];
+    orderedTypes.forEach((type) => {
+      if (types.has(type)) {
+        filterOptions.push({
+          id: type,
+          label: programTypeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1),
+        });
+      }
+    });
+
+    // Add any other types not in our ordered list
+    types.forEach((type) => {
+      if (!orderedTypes.includes(type)) {
+        filterOptions.push({
+          id: type,
+          label: programTypeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1),
+        });
+      }
+    });
+
+    return filterOptions;
+  }, [events]);
 
   const upcomingHighlights = useMemo(() => {
     const now = new Date();
@@ -65,22 +102,10 @@ export default function SchedulePage() {
       return upcomingHighlights;
     }
 
-    const nameMatch = (event: Event, keywords: string[]) =>
-      keywords.some((kw) => event.program_name.toLowerCase().includes(kw));
-
-    if (selectedFilter === "assessments") {
-      return upcomingHighlights.filter((event) =>
-        nameMatch(event, ["assessment", "tryout"])
-      );
-    } else if (selectedFilter === "tournament") {
-      return upcomingHighlights.filter((event) =>
-        nameMatch(event, ["tournament", "cup"])
-      );
-    } else {
-      return upcomingHighlights.filter(
-        (event) => event.program_type?.toLowerCase() === selectedFilter
-      );
-    }
+    // Filter by program_type
+    return upcomingHighlights.filter(
+      (event) => event.program_type?.toLowerCase() === selectedFilter
+    );
   }, [selectedFilter, upcomingHighlights]);
 
   const handleViewModeChange = (mode: "calendar" | "list") => {
