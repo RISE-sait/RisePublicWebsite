@@ -74,6 +74,7 @@ export function PerformanceMembershipsSection({
               price: lowestPrice,
               planCount: plans.length,
               interval: firstPlan?.interval,
+              amtPeriods: firstPlan?.amt_periods,
             };
           });
 
@@ -84,7 +85,7 @@ export function PerformanceMembershipsSection({
           badge: membership.badge || "",
           title: membership.name,
           price: membership.price,
-          period: getPeriodFromInterval(membership.interval, membership.period),
+          period: getPeriodFromInterval(membership.interval, membership.amtPeriods, membership.period),
           description: membership.description || "",
           features: membership.benefits || [],
           ctaText: "VIEW PLANS",

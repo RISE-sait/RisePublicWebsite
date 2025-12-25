@@ -34,7 +34,7 @@ export function useMembershipPlans() {
             badge: membership.badge ?? "",
             title: membership.name,
             price: price,
-            period: getPeriodFromInterval(firstPlan?.interval, membership.period),
+            period: getPeriodFromInterval(firstPlan?.interval, firstPlan?.amt_periods, membership.period),
             description: membership.description ?? "",
             features: membership.benefits ?? [],
             ctaText: membership.ctaText ?? "JOIN NOW",

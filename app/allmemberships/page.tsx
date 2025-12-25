@@ -240,7 +240,7 @@ export default function MembershipsPage() {
               planName: plan.name || `${membership.name} - Option ${index + 1}`,
               plans: [plan], // Keep single plan for compatibility with checkout
               displayPrice: plan.price,
-              period: getPeriodFromInterval(plan.interval, membership.period),
+              period: getPeriodFromInterval(plan.interval, plan.amt_periods, membership.period),
               // Add plan-specific identifier for grouping
               membershipTypeId: membership.id,
               membershipTypeName: membership.name,
