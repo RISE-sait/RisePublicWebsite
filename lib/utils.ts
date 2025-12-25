@@ -6,11 +6,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Converts a plan's interval to a display-friendly period string
+ * Converts a plan's interval and period count to a display-friendly period string
  * @param interval - The billing interval from the plan (e.g., "month", "year", "week")
+ * @param amtPeriods - The number of periods (e.g., 2 for bi-weekly)
  * @param fallback - Optional fallback value if interval doesn't match known values
  */
-export function getPeriodFromInterval(interval?: string, fallback?: string): string {
+export function getPeriodFromInterval(interval?: string, amtPeriods?: number, fallback?: string): string {
+  // Handle bi-weekly (every 2 weeks)
+  if (interval === "week" && amtPeriods === 2) {
+    return "Bi-Weekly";
+  }
+
   switch (interval) {
     case "month":
       return "Monthly";

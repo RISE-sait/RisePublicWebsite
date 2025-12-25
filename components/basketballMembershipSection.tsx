@@ -70,6 +70,7 @@ export function BasketballMembershipsSection({
               price: lowestPrice,
               planCount: plans.length,
               interval: firstPlan?.interval,
+              amtPeriods: firstPlan?.amt_periods,
             };
           });
 
@@ -80,7 +81,7 @@ export function BasketballMembershipsSection({
           badge: membership.badge || (index === 0 ? "BEST VALUE" : "GREAT VALUE"),
           title: membership.name,
           price: membership.price,
-          period: getPeriodFromInterval(membership.interval, membership.period),
+          period: getPeriodFromInterval(membership.interval, membership.amtPeriods, membership.period),
           description: membership.description || "",
           features: membership.benefits || [],
           ctaText: "VIEW PLANS",
