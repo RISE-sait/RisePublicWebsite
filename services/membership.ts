@@ -53,7 +53,7 @@ export async function getAllMemberships(): Promise<Membership[]> {
         benefits,
         learnMoreText: membership.learnMoreText || "Learn More",
         ctaText: membership.ctaText || "Join Now",
-        period: membership.period || "Bi-Weekly",
+        period: membership.period || "Monthly",
         price: membership.price || 0,
         badge: membership.badge || "",
       };
