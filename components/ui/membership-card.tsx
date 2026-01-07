@@ -152,8 +152,11 @@ export function MembershipCard({
                 : "border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800]/10 hover:border-[#ffb800]"
             )}
           >
-            <Link
-              href="/allmemberships"
+            {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+            <a
+              href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() =>
                 gtagEvent({
                   action: "click_view_membership",
@@ -163,7 +166,7 @@ export function MembershipCard({
               }
             >
               {learnMoreText || "VIEW MORE"}
-            </Link>
+            </a>
           </Button>
 
           {hasActiveMembership ? (
@@ -190,8 +193,11 @@ export function MembershipCard({
                   : "bg-[#ffb800] text-black hover:bg-[#e0a300]"
               )}
             >
-              <Link
-                href="/allmemberships"
+              {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+              <a
+                href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() =>
                   gtagEvent({
                     action: ctaText === "VIEW PLANS" ? "click_view_plans" : "click_join_membership",
@@ -201,7 +207,7 @@ export function MembershipCard({
                 }
               >
                 {ctaText || "JOIN NOW"}
-              </Link>
+              </a>
             </Button>
           )}
         </div>

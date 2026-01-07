@@ -274,7 +274,8 @@ export function UpcomingEventCard({
                 </span>
             </Button>
 
-            {event.registration_required && (
+            {/* Temporarily hidden - using Glofox registration */}
+            {/* {event.registration_required && (
               <Button
                   onClick={() => setRegisterDialogOpen(true)}
                   className="flex-1 bg-[#ffb800] hover:bg-[#e0a300] text-black font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffb800]/30 min-h-[48px]"
@@ -284,7 +285,7 @@ export function UpcomingEventCard({
                       Register
                   </span>
               </Button>
-            )}
+            )} */}
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
