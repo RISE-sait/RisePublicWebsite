@@ -630,7 +630,8 @@ export default function EventDetailPage() {
                   Quick Actions
                 </h4>
                 <div className="space-y-4">
-                  {!isGame(event) && (event as Event).registration_required && (
+                  {/* Temporarily hidden - using Glofox registration */}
+                  {/* {!isGame(event) && (event as Event).registration_required && (
                     <Button
                       onClick={() => setRegisterDialogOpen(true)}
                       className="w-full bg-gradient-to-r from-[#ffb800] to-[#ff8c00] hover:from-[#e0a300] hover:to-[#e07800] text-black font-bold py-4 text-lg rounded-xl transition-all transform hover:scale-105"
@@ -638,7 +639,7 @@ export default function EventDetailPage() {
                       <Ticket className="h-5 w-5 mr-2" />
                       Register for Event
                     </Button>
-                  )}
+                  )} */}
                   <Button
                     onClick={() => router.push('/schedule')}
                     variant="outline"

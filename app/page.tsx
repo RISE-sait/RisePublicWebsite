@@ -168,7 +168,7 @@ export default function Home() {
         mainVideoSrc="/headervideos/mainhead.mp4"
         mainFallbackImageSrc="/backuplogo.jpg"
         mainPrimaryButtonText="JOIN NOW"
-        mainPrimaryButtonHref="/allmemberships"
+        mainPrimaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" /* Temporarily using Glofox - old: /allmemberships */
         mainSecondaryButtonText="EXPLORE"
         mainSecondaryButtonHref="#discover"
         height="100vh"
@@ -381,8 +381,11 @@ export default function Home() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link
-                  href="/allmemberships"
+                {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+                <a
+                  href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() =>
                     gtagEvent({
                       action: "click_join_now",
@@ -392,7 +395,7 @@ export default function Home() {
                   }
                 >
                   JOIN NOW
-                </Link>
+                </a>
               </Button>
             </motion.div>
           </div>

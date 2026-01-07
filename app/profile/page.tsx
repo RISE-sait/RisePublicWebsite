@@ -502,12 +502,15 @@ export default function ProfilePage() {
                   ) : (
                     <div>
                       <p className="text-gray-500 text-sm mb-3">No active membership</p>
-                      <button
-                        onClick={() => router.push('/allmemberships')}
+                      {/* Temporarily using Glofox link - old: onClick={() => router.push('/allmemberships') */}
+                      <a
+                        href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-[#ffb800] text-sm font-medium hover:underline"
                       >
                         Browse Plans →
-                      </button>
+                      </a>
                     </div>
                   )}
                 </div>
@@ -769,12 +772,15 @@ export default function ProfilePage() {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">No Active Membership</h4>
                   <p className="text-gray-400 mb-6">You don't have an active membership yet.</p>
-                  <button
-                    onClick={() => router.push('/allmemberships')}
-                    className="px-6 py-2.5 bg-[#ffb800] text-black font-semibold rounded-xl hover:bg-[#e0a300] transition-colors"
+                  {/* Temporarily using Glofox link - old: onClick={() => router.push('/allmemberships') */}
+                  <a
+                    href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-2.5 bg-[#ffb800] text-black font-semibold rounded-xl hover:bg-[#e0a300] transition-colors inline-block"
                   >
                     Browse Memberships
-                  </button>
+                  </a>
                 </div>
               )}
             </div>

@@ -321,9 +321,10 @@ export default function SupplementsPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="/allmemberships">
+                {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+                <a href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" target="_blank" rel="noopener noreferrer">
                   JOIN THE PRORISE INNOVATION CLASS
-                </Link>
+                </a>
               </Button>
             </motion.div>
           </div>

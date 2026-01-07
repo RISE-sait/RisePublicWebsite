@@ -108,7 +108,7 @@ export default function Header() {
   const dropdowns: Record<string, { href: string; label: string }[]> = {
     "/basketball": [
       {
-        href: "/allmemberships",
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
         label: "Memberships",
       },
       { href: "/coaches", label: "Coaches" },
@@ -116,7 +116,7 @@ export default function Header() {
     ],
     "/performance": [
       {
-        href: "/allmemberships?category=fitness",
+        href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
         label: "Memberships",
       },
     ],
@@ -220,8 +220,8 @@ export default function Header() {
             </a>
           </div>
 
-          {/* Auth Section */}
-          <div className="flex items-center space-x-3 ml-4">
+          {/* Auth Section - Temporarily commented out, using Glofox registration */}
+          {/* <div className="flex items-center space-x-3 ml-4">
             {loading ? (
               <div className="px-3 py-1.5 text-sm text-gray-400">Loading...</div>
             ) : isAuthenticated ? (
@@ -298,7 +298,7 @@ export default function Header() {
                 </Link>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -421,8 +421,8 @@ export default function Header() {
                 </a>
               </div>
 
-              {/* Mobile Auth Section */}
-              <div className="border-t border-gray-700 mt-4 pt-4">
+              {/* Mobile Auth Section - Temporarily commented out, using Glofox registration */}
+              {/* <div className="border-t border-gray-700 mt-4 pt-4">
                 {loading ? (
                   <div className="py-3 px-4 text-sm text-gray-400">Loading...</div>
                 ) : isAuthenticated ? (
@@ -490,7 +490,7 @@ export default function Header() {
                     </Link>
                   </>
                 )}
-              </div>
+              </div> */}
             </nav>
           </motion.div>
         )}

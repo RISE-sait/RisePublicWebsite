@@ -111,7 +111,7 @@ export default function BasketballPage() {
         videoSrc="/headervideos/basketballhead.mp4"
         fallbackImageSrc="/backuplogo.jpg"
         primaryButtonText="JOIN NOW"
-        primaryButtonHref="/allmemberships"
+        primaryButtonHref="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" /* Temporarily using Glofox - old: /allmemberships */
         secondaryButtonText="LEARN MORE"
         secondaryButtonHref="#why-rise"
         height="90vh"
@@ -356,7 +356,8 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                <Link href="/allmemberships">JOIN NOW</Link>
+                {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+                <a href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" target="_blank" rel="noopener noreferrer">JOIN NOW</a>
               </Button>
             </motion.div>
           </div>
@@ -487,9 +488,10 @@ export default function BasketballPage() {
               variant="outline"
               className="border-[#ffb800] text-[#ffb800] hover:bg-[#ffb800] hover:text-black hover:scale-105 transition-all shadow-lg"
             >
-              <Link href="/allmemberships">
+              {/* Temporarily using Glofox link - old: href="/allmemberships" */}
+              <a href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" target="_blank" rel="noopener noreferrer">
                 JOIN THE PREMIER TEAM
-              </Link>
+              </a>
             </Button>
           </motion.div>
         </SectionContainer>
