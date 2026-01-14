@@ -129,8 +129,20 @@ export const faqData: FAQItem[] = [
     id: "13",
     question: "Do you accept financial assistance (KidSport, Jumpstart)?",
     answer:
-      "Yes. If you plan to apply for funding, please notify us before registering. Once approved, funds will be applied as credits to the player’s account (no monetary refunds).",
+      "Yes. If you plan to apply for funding, please notify us before registering. Once approved, funds will be applied as credits to the player's account (no monetary refunds).",
     category: "Billing",
     icon: CreditCard,
+  },
+  {
+    id: "14",
+    question: "How do we ensure a safe environment for all athletes and participants?",
+    answer:
+      "To report maltreatment at RISE, use the Canadian Safe Sport Program (previously the Abuse Free Sport Helpline) on their website/social media: REPORT Safe Sport | Canadian Centre for Ethics in Sport, who offer anonymous or named reports.",
+    category: "Safety",
+    icon: Shield,
+    link: {
+      text: "Report Safe Sport",
+      url: "https://sportintegrity.ca/report-safe-sport",
+    },
   },
 ];
