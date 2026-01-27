@@ -14,6 +14,7 @@ export const NAVIGATION_ITEMS = [
 export const SECONDARY_NAV_ITEMS = [
   { label: "COFFEE", href: "/coffee" },
   { label: "SUPPLEMENTS", href: "/supplements" },
+  { label: "CAREERS", href: "/careers" },
   { label: "ABOUT US", href: "/contact" },
 ];
 
@@ -37,6 +38,7 @@ export const FOOTER_LINKS = {
     { label: "BOOM Coffee", href: "/coffee" },
     { label: "ProRise Nutrition", href: "/supplements" },
     { label: "Contact Us", href: "/contact" },
+    { label: "Careers", href: "/careers" },
     { label: "FAQ", href: "/faq" },
   ],
   policies: [
