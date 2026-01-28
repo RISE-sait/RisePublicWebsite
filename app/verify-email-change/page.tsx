@@ -26,27 +26,44 @@ export default function VerifyEmailChangePage() {
 
   const verifyEmailChange = async (verificationToken: string) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/email/verify`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: verificationToken,
-          }),
-        }
-      );
+      const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
+      const url = `${baseUrl}/users/email/verify`;
+      console.log("Verifying email change:", { url, token: verificationToken });
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: verificationToken,
+        }),
+      });
+
+      console.log("Response status:", response.status);
 
       if (response.ok) {
         setStatus("success");
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Verification failed:", response.status, errorData);
         setStatus("error");
-        setErrorMessage(
-          errorData.message || "Failed to verify email change. The link may be invalid or expired."
-        );
+
+        // Handle various error response formats
+        let message = "Verification failed. The link may be invalid or expired.";
+        if (typeof errorData.message === "string") {
+          message = errorData.message;
+        } else if (typeof errorData.error === "string") {
+          message = errorData.error;
+        } else if (errorData.error?.message && typeof errorData.error.message === "string") {
+          message = errorData.error.message;
+        } else if (response.status === 400) {
+          message = "Invalid or missing verification token.";
+        } else if (response.status === 410) {
+          message = "This verification link has expired.";
+        }
+
+        setErrorMessage(message);
       }
     } catch (error) {
       console.error("Email change verification error:", error);
