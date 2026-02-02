@@ -2,8 +2,25 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useCookieConsent } from "@/contexts/CookieConsentContext";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { useState, useEffect } from "react";
 
 export default function CookiesPage() {
+  const { consent, updateConsent, hasConsented } = useCookieConsent();
+  const [analytics, setAnalytics] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+
+  useEffect(() => {
+    setAnalytics(consent?.analytics ?? false);
+    setMarketing(consent?.marketing ?? false);
+  }, [consent]);
+
+  const handleSave = () => {
+    updateConsent({ analytics, marketing });
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header Section */}
@@ -28,6 +45,75 @@ export default function CookiesPage() {
 
       {/* Content Section */}
       <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Cookie Preferences Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-[#111] border border-gray-800 rounded-lg p-6 mb-10"
+        >
+          <h2 className="text-2xl font-semibold mb-4 text-white">
+            Manage Your Cookie Preferences
+          </h2>
+
+          <div className="space-y-6">
+            {/* Essential Cookies */}
+            <div className="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <h4 className="font-medium text-white">Essential Cookies</h4>
+                <p className="text-sm text-gray-400">
+                  Required for core functionality (theme, session). Cannot be
+                  disabled.
+                </p>
+              </div>
+              <Switch checked disabled className="opacity-50" />
+            </div>
+
+            {/* Analytics Cookies */}
+            <div className="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <h4 className="font-medium text-white">Analytics Cookies</h4>
+                <p className="text-sm text-gray-400">
+                  Help us understand how visitors interact with our site (Google
+                  Analytics).
+                </p>
+              </div>
+              <Switch checked={analytics} onCheckedChange={setAnalytics} />
+            </div>
+
+            {/* Marketing Cookies */}
+            <div className="flex items-center justify-between py-3">
+              <div>
+                <h4 className="font-medium text-white">Marketing Cookies</h4>
+                <p className="text-sm text-gray-400">
+                  Used for personalized advertisements and tracking engagement.
+                </p>
+              </div>
+              <Switch checked={marketing} onCheckedChange={setMarketing} />
+            </div>
+
+            <div className="pt-4 flex items-center gap-4">
+              <Button
+                onClick={handleSave}
+                className="bg-[#ffb800] text-black hover:bg-[#e0a300] font-semibold"
+              >
+                Save Preferences
+              </Button>
+              {hasConsented && consent?.timestamp && (
+                <span className="text-sm text-gray-400">
+                  Last updated:{" "}
+                  {new Date(consent.timestamp).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Cookie Information */}
         <h2 className="text-2xl font-semibold mb-4 text-white">
           How We Use Cookies
         </h2>
@@ -55,12 +141,12 @@ export default function CookiesPage() {
         </ul>
 
         <p className="text-base text-gray-400 mb-6">
-          By using our site, you consent to our use of cookies. You can manage
-          your cookie preferences at any time through your browser settings.
+          You can manage your cookie preferences at any time using the controls
+          above or through your browser settings.
         </p>
 
         <p className="text-sm text-gray-500 mb-10">
-          Last updated:{" "}
+          Policy last updated:{" "}
           {new Date().toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
