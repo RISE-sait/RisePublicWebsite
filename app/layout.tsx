@@ -46,21 +46,7 @@ export default async function RootLayout({
       style={{ colorScheme: theme }}
     >
       <head>
-        {/* Google Analytics */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-NSQ7GER1GK"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-NSQ7GER1GK');
-            `,
-          }}
-        />
+        {/* Google Analytics is now loaded conditionally via GoogleAnalytics component based on cookie consent */}
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Providers theme={theme}>{children}</Providers>
