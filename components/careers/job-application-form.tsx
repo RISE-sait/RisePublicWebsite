@@ -1,7 +1,15 @@
 "use client";
 
-import { useState, useRef } from "react";
+declare global {
+  interface Window {
+    grecaptcha?: any;
+    onJobApplicationCaptcha?: (token: string) => void;
+  }
+}
+
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import Script from "next/script";
 import {
   Upload,
   FileText,
@@ -25,6 +33,8 @@ interface JobApplicationFormProps {
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
+const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
+
 export function JobApplicationForm({
   jobId,
   jobTitle,
@@ -41,9 +51,30 @@ export function JobApplicationForm({
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Setup reCAPTCHA Enterprise v2
+  useEffect(() => {
+    window.onJobApplicationCaptcha = (token: string) => {
+      setCaptchaToken(token);
+    };
+
+    const interval = setInterval(() => {
+      const container = document.querySelector(".g-recaptcha-job-application");
+      if (window.grecaptcha?.enterprise && container && !container.hasChildNodes()) {
+        clearInterval(interval);
+        window.grecaptcha.enterprise.render(container, {
+          sitekey: SITE_KEY,
+          callback: "onJobApplicationCaptcha",
+        });
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -103,22 +134,38 @@ export function JobApplicationForm({
       return;
     }
 
+    if (!captchaToken) {
+      setErrorMessage('Please check the "I\'m not a robot" box.');
+      setStatus("error");
+      return;
+    }
+
     setStatus("submitting");
     setErrorMessage(null);
 
-    const submission: ApplicationSubmission = {
-      ...formData,
-      resume: resumeFile,
-    };
+    try {
+      const submission: ApplicationSubmission = {
+        ...formData,
+        resume: resumeFile,
+        recaptchaToken: captchaToken,
+      };
 
-    const result = await submitApplication(jobId, submission);
+      const result = await submitApplication(jobId, submission);
 
-    if (result.success) {
-      setStatus("success");
-      onSuccess?.();
-    } else {
+      if (result.success) {
+        setStatus("success");
+        onSuccess?.();
+      } else {
+        setStatus("error");
+        setErrorMessage(result.message);
+      }
+    } catch (error) {
       setStatus("error");
-      setErrorMessage(result.message);
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      // Reset reCAPTCHA
+      window.grecaptcha?.enterprise?.reset();
+      setCaptchaToken(null);
     }
   };
 
@@ -145,7 +192,14 @@ export function JobApplicationForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <>
+      {/* Load reCAPTCHA Enterprise script */}
+      <Script
+        src="https://www.google.com/recaptcha/enterprise.js"
+        strategy="afterInteractive"
+      />
+
+      <form onSubmit={handleSubmit} className="space-y-6">
       {/* Name Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -331,11 +385,19 @@ export function JobApplicationForm({
         </div>
       </div>
 
+      {/* reCAPTCHA */}
+      <div className="flex justify-center">
+        <div className="g-recaptcha-job-application"></div>
+      </div>
+
       {/* Error Message */}
       {status === "error" && errorMessage && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-          <p className="text-red-400">{errorMessage}</p>
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-amber-400 text-sm">{errorMessage}</p>
+            <p className="text-gray-500 text-xs mt-1">Please check your information and try again.</p>
+          </div>
         </div>
       )}
 
@@ -360,5 +422,6 @@ export function JobApplicationForm({
         terms of service.
       </p>
     </form>
+    </>
   );
 }

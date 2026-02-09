@@ -73,6 +73,7 @@ export interface ApplicationSubmission {
   cover_letter?: string;
   linkedin_url?: string;
   portfolio_url?: string;
+  recaptchaToken?: string;
 }
 
 export interface ApplicationListResponse {
