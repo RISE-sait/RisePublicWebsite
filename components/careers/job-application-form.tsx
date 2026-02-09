@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import {
   Upload,
   FileText,
@@ -44,6 +45,7 @@ export function JobApplicationForm({
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -103,22 +105,38 @@ export function JobApplicationForm({
       return;
     }
 
+    // Check if reCAPTCHA is available
+    if (!executeRecaptcha) {
+      setStatus("error");
+      setErrorMessage("reCAPTCHA not loaded. Please refresh the page and try again.");
+      return;
+    }
+
     setStatus("submitting");
     setErrorMessage(null);
 
-    const submission: ApplicationSubmission = {
-      ...formData,
-      resume: resumeFile,
-    };
+    try {
+      // Generate reCAPTCHA token
+      const recaptchaToken = await executeRecaptcha("submit_application");
 
-    const result = await submitApplication(jobId, submission);
+      const submission: ApplicationSubmission = {
+        ...formData,
+        resume: resumeFile,
+        recaptchaToken,
+      };
 
-    if (result.success) {
-      setStatus("success");
-      onSuccess?.();
-    } else {
+      const result = await submitApplication(jobId, submission);
+
+      if (result.success) {
+        setStatus("success");
+        onSuccess?.();
+      } else {
+        setStatus("error");
+        setErrorMessage(result.message);
+      }
+    } catch (error) {
       setStatus("error");
-      setErrorMessage(result.message);
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
 

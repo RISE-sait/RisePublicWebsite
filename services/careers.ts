@@ -83,6 +83,9 @@ export async function submitApplication(
   formData.append("phone", application.phone);
   formData.append("resume", application.resume); // File field named "resume"
 
+  if (application.recaptchaToken) {
+    formData.append("recaptcha_token", application.recaptchaToken);
+  }
   if (application.cover_letter) {
     formData.append("cover_letter", application.cover_letter);
   }

@@ -17,6 +17,7 @@ import { SectionContainer } from "@/components/ui/section-container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { JobApplicationForm } from "@/components/careers";
+import { ReCaptchaProvider } from "@/components/providers/recaptcha-provider";
 import { getJobById } from "@/services/careers";
 import {
   formatEmploymentType,
@@ -95,7 +96,8 @@ export default function JobDetailPage() {
     : null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-black via-gray-950 to-black">
+    <ReCaptchaProvider>
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-black via-gray-950 to-black">
       {/* Hero Section */}
       <div className="border-b border-white/5">
         <SectionContainer className="py-8 md:py-12">
@@ -381,5 +383,6 @@ export default function JobDetailPage() {
         </div>
       )}
     </div>
+    </ReCaptchaProvider>
   );
 }
