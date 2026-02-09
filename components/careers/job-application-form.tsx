@@ -333,9 +333,12 @@ export function JobApplicationForm({
 
       {/* Error Message */}
       {status === "error" && errorMessage && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-          <p className="text-red-400">{errorMessage}</p>
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-amber-400 text-sm">{errorMessage}</p>
+            <p className="text-gray-500 text-xs mt-1">Please check your information and try again.</p>
+          </div>
         </div>
       )}
 

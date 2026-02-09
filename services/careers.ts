@@ -29,6 +29,7 @@ export async function getJobs(filters?: JobFilters): Promise<JobPosting[]> {
   try {
     const res = await fetch(url);
     if (!res.ok) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch jobs:", res.statusText);
       return [];
     }
@@ -36,6 +37,7 @@ export async function getJobs(filters?: JobFilters): Promise<JobPosting[]> {
     const data = await res.json();
     return Array.isArray(data) ? data : data.jobs || [];
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching jobs:", error);
     return [];
   }
@@ -50,44 +52,19 @@ export async function getJobById(id: string): Promise<JobPosting | null> {
   try {
     const res = await fetch(url);
     if (!res.ok) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch job:", res.statusText);
       return null;
     }
 
     return await res.json();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching job:", error);
     return null;
   }
 }
 
-/**
- * Upload resume file and get URL
- */
-export async function uploadResume(file: File): Promise<string | null> {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const url = `${apiBaseUrl}/jobs/upload-resume`;
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      console.error("Failed to upload resume:", res.statusText);
-      return null;
-    }
-
-    const data = await res.json();
-    return data.url || data.resume_url;
-  } catch (error) {
-    console.error("Error uploading resume:", error);
-    return null;
-  }
-}
 
 /**
  * Submit a job application (public endpoint)
@@ -96,35 +73,30 @@ export async function submitApplication(
   jobId: string,
   application: ApplicationSubmission
 ): Promise<{ success: boolean; message: string; application?: JobApplication }> {
-  // First, upload the resume
-  const resumeUrl = await uploadResume(application.resume);
-  if (!resumeUrl) {
-    return {
-      success: false,
-      message: "Failed to upload resume. Please try again.",
-    };
-  }
-
   const url = `${apiBaseUrl}/jobs/${jobId}/apply`;
 
-  const payload = {
-    first_name: application.first_name,
-    last_name: application.last_name,
-    email: application.email,
-    phone: application.phone,
-    resume_url: resumeUrl,
-    cover_letter: application.cover_letter || undefined,
-    linkedin_url: application.linkedin_url || undefined,
-    portfolio_url: application.portfolio_url || undefined,
-  };
+  // Build FormData with all fields including the resume file
+  const formData = new FormData();
+  formData.append("first_name", application.first_name);
+  formData.append("last_name", application.last_name);
+  formData.append("email", application.email);
+  formData.append("phone", application.phone);
+  formData.append("resume", application.resume); // File field named "resume"
+
+  if (application.cover_letter) {
+    formData.append("cover_letter", application.cover_letter);
+  }
+  if (application.linkedin_url) {
+    formData.append("linkedin_url", application.linkedin_url);
+  }
+  if (application.portfolio_url) {
+    formData.append("portfolio_url", application.portfolio_url);
+  }
 
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      body: formData, // Send as multipart/form-data
     });
 
     if (!res.ok) {
@@ -142,6 +114,7 @@ export async function submitApplication(
       application: data,
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error submitting application:", error);
     return {
       success: false,
@@ -198,23 +171,30 @@ export function formatSalaryRange(
 /**
  * Format employment type for display
  */
-export function formatEmploymentType(type: JobPosting["employment_type"]): string {
-  const labels: Record<JobPosting["employment_type"], string> = {
+export function formatEmploymentType(type: string): string {
+  const labels: Record<string, string> = {
     "full-time": "Full-time",
+    "full_time": "Full-time",
     "part-time": "Part-time",
+    "part_time": "Part-time",
     contract: "Contract",
   };
-  return labels[type] || type;
+  return labels[type] || type.split(/[-_]/).map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join('-');
 }
 
 /**
  * Format location type for display
  */
-export function formatLocationType(type: JobPosting["location_type"]): string {
-  const labels: Record<JobPosting["location_type"], string> = {
+export function formatLocationType(type: string): string {
+  const labels: Record<string, string> = {
     "on-site": "On-site",
+    "on_site": "On-site",
     remote: "Remote",
     hybrid: "Hybrid",
   };
-  return labels[type] || type;
+  return labels[type] || type.split(/[-_]/).map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join('-');
 }
