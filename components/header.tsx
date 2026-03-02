@@ -85,6 +85,7 @@ export default function Header() {
   const availablePages = [
     "/",
     "/basketball",
+    "/academy",
     "/performance",
     "/contact",
     "/reviews",
