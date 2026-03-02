@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { VideoHero } from "@/components/ui/video-hero";
 import { SectionContainer } from "@/components/ui/section-container";
+import { ParallaxSection } from "@/components/ui/parallax-section";
 import { Button } from "@/components/ui/button";
 import { ACADEMY_FEATURES } from "@/lib/constants";
 import { Trophy, Target, Calendar, GraduationCap, ArrowRight } from "lucide-react";
@@ -66,10 +67,10 @@ export default function AcademyPage() {
               </h1>
               <div className="bg-black/80 p-8 md:p-10 rounded-xl border border-[#E10600]/30">
                 <p className="text-2xl md:text-3xl font-bold mb-6 text-[#E10600] tracking-wide">
-                  COMING SOON
+                  The Standard is Rising
                 </p>
                 <p className="text-lg md:text-xl mb-8 text-gray-100 leading-relaxed">
-                  Calgary's premier multi-sport training program preparing dedicated athletes for the next level.
+                  Coming soon RISE Academy
                 </p>
                 <Button
                   asChild
@@ -94,19 +95,18 @@ export default function AcademyPage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-              Welcome to RISE Academy
+              RISE Academy
             </h2>
             <div className="w-20 h-1 bg-[#E10600] mb-6" />
             <p className="text-base md:text-lg text-gray-300 mb-4 leading-relaxed">
-              RISE Academy represents the next evolution in comprehensive athletic development.
-              Building on the proven success of RISE Basketball and RISE Performance, the Academy
-              brings together elite coaching, world-class facilities, and a holistic approach to
-              athlete development.
+              We want to remove barriers and expand access to high-level basketball
+              development. We aim to become Alberta's top basketball prep program for
+              girls and boys.
             </p>
             <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-              Combining rigorous athletic training with academic excellence and personal growth,
-              RISE Academy prepares serious athletes for collegiate athletics, professional sports,
-              and leadership in any field they choose.
+              Our definition of success includes strong culture, academic integrity,
+              and positive outcomes. We aim to build a program that families trust and
+              athletes aspire to join.
             </p>
           </motion.div>
           <motion.div
@@ -163,34 +163,45 @@ export default function AcademyPage() {
         </div>
       </SectionContainer> */}
 
-      {/* CTA Section - Bold and Simple */}
-      <SectionContainer className="bg-[#E10600] py-20 text-white text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Ready to Rise?
-          </h2>
-          <p className="text-lg md:text-xl mb-8 text-white/90">
-            Be part of something extraordinary. Contact us to learn more about RISE Academy
-            and how we're building the next generation of elite athletes.
-          </p>
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-[#E10600] hover:bg-gray-100 font-bold text-lg px-8 py-6"
+      {/* CTA Section */}
+      <ParallaxSection
+        bgImage="/academy-page-images/academy-poster.jpeg"
+        overlayOpacity={0.85}
+        className="py-28"
+      >
+        <div className="relative">
+          <div className="absolute top-[-40px] left-1/4 w-64 h-64 bg-[#E10600]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-[-40px] right-1/4 w-80 h-80 bg-[#E10600]/5 rounded-full blur-3xl pointer-events-none" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto text-center px-4"
           >
-            <Link href="/contact" className="inline-flex items-center gap-2">
-              GET MORE INFORMATION
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-        </motion.div>
-      </SectionContainer>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-10 md:p-14 shadow-2xl">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                Ready to Rise?
+              </h2>
+              <div className="w-16 h-1 bg-[#E10600] mx-auto mb-6" />
+              <p className="text-base md:text-lg text-gray-300 mb-10 leading-relaxed">
+                Be part of something extraordinary. Contact us to learn more about RISE Academy
+                and how we're building the next generation of elite athletes.
+              </p>
+              <Button
+                asChild
+                size="lg"
+                className="bg-[#E10600] hover:bg-[#B80500] text-white font-bold text-lg px-10 py-6 rounded-lg transition-transform hover:scale-105"
+              >
+                <Link href="/contact" className="inline-flex items-center gap-2">
+                  GET MORE INFORMATION
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </ParallaxSection>
     </div>
   );
 }
