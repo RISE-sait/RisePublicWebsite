@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import { submitContactForm } from "@/services/contact";
 import { Button } from "@/components/ui/button";
@@ -26,26 +26,32 @@ export default function ContactFormEnterpriseV2() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Set global callback + render reCAPTCHA checkbox
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
+  const captchaRendered = useRef(false);
+
+  // Set global callback for reCAPTCHA
   useEffect(() => {
     window.onEnterpriseCaptcha = (token: string) => {
       setCaptchaToken(token);
       setError("");
     };
-
-    const interval = setInterval(() => {
-      const container = document.querySelector(".g-recaptcha");
-      if (window.grecaptcha?.enterprise && container && !container.hasChildNodes()) {
-        clearInterval(interval);
-        window.grecaptcha.enterprise.render(container, {
-          sitekey: SITE_KEY,
-          callback: "onEnterpriseCaptcha",
-        });
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
   }, []);
+
+  const renderCaptcha = () => {
+    if (
+      captchaRendered.current ||
+      !window.grecaptcha?.enterprise ||
+      !captchaContainerRef.current ||
+      captchaContainerRef.current.hasChildNodes()
+    ) {
+      return;
+    }
+    captchaRendered.current = true;
+    window.grecaptcha.enterprise.render(captchaContainerRef.current, {
+      sitekey: SITE_KEY,
+      callback: "onEnterpriseCaptcha",
+    });
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,10 +80,11 @@ export default function ContactFormEnterpriseV2() {
 
   return (
     <>
-      {/* ✅ Load reCAPTCHA script */}
+      {/* Load reCAPTCHA script */}
       <Script
         src="https://www.google.com/recaptcha/enterprise.js"
         strategy="afterInteractive"
+        onLoad={renderCaptcha}
       />
 
       <div className="bg-[#111] p-6 rounded-lg border border-gray-800">
@@ -147,8 +154,7 @@ export default function ContactFormEnterpriseV2() {
           </div>
 
           <div>
-            {/* ✅ Widget will be rendered into this container */}
-            <div className="g-recaptcha" />
+            <div ref={(el) => { captchaContainerRef.current = el; renderCaptcha(); }} />
           </div>
 
           <div>
