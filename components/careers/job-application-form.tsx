@@ -58,6 +58,7 @@ export function JobApplicationForm({
 
   const captchaContainerRef = useRef<HTMLDivElement>(null);
   const captchaRendered = useRef(false);
+  const [scriptReady, setScriptReady] = useState(false);
 
   // Setup reCAPTCHA Enterprise v2
   useEffect(() => {
@@ -66,12 +67,12 @@ export function JobApplicationForm({
     };
   }, []);
 
-  const renderCaptcha = () => {
+  // Render captcha once script is loaded and container is mounted
+  useEffect(() => {
     if (
       captchaRendered.current ||
-      !window.grecaptcha?.enterprise ||
       !captchaContainerRef.current ||
-      captchaContainerRef.current.hasChildNodes()
+      !window.grecaptcha?.enterprise
     ) {
       return;
     }
@@ -80,7 +81,7 @@ export function JobApplicationForm({
       sitekey: SITE_KEY,
       callback: "onJobApplicationCaptcha",
     });
-  };
+  }, [scriptReady]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -203,7 +204,8 @@ export function JobApplicationForm({
       <Script
         src="https://www.google.com/recaptcha/enterprise.js"
         strategy="afterInteractive"
-        onLoad={renderCaptcha}
+        onLoad={() => setScriptReady(true)}
+        onReady={() => setScriptReady(true)}
       />
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -394,7 +396,7 @@ export function JobApplicationForm({
 
       {/* reCAPTCHA */}
       <div className="flex justify-center">
-        <div ref={(el) => { captchaContainerRef.current = el; renderCaptcha(); }}></div>
+        <div ref={captchaContainerRef}></div>
       </div>
 
       {/* Error Message */}
