@@ -28,6 +28,7 @@ export default function ContactFormEnterpriseV2() {
 
   const captchaContainerRef = useRef<HTMLDivElement>(null);
   const captchaRendered = useRef(false);
+  const [scriptReady, setScriptReady] = useState(false);
 
   // Set global callback for reCAPTCHA
   useEffect(() => {
@@ -37,12 +38,12 @@ export default function ContactFormEnterpriseV2() {
     };
   }, []);
 
-  const renderCaptcha = () => {
+  // Render captcha once script is loaded and container is mounted
+  useEffect(() => {
     if (
       captchaRendered.current ||
-      !window.grecaptcha?.enterprise ||
       !captchaContainerRef.current ||
-      captchaContainerRef.current.hasChildNodes()
+      !window.grecaptcha?.enterprise
     ) {
       return;
     }
@@ -51,7 +52,7 @@ export default function ContactFormEnterpriseV2() {
       sitekey: SITE_KEY,
       callback: "onEnterpriseCaptcha",
     });
-  };
+  }, [scriptReady]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,7 +85,8 @@ export default function ContactFormEnterpriseV2() {
       <Script
         src="https://www.google.com/recaptcha/enterprise.js"
         strategy="afterInteractive"
-        onLoad={renderCaptcha}
+        onLoad={() => setScriptReady(true)}
+        onReady={() => setScriptReady(true)}
       />
 
       <div className="bg-[#111] p-6 rounded-lg border border-gray-800">
@@ -154,7 +156,7 @@ export default function ContactFormEnterpriseV2() {
           </div>
 
           <div>
-            <div ref={(el) => { captchaContainerRef.current = el; renderCaptcha(); }} />
+            <div ref={captchaContainerRef} />
           </div>
 
           <div>
