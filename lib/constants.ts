@@ -4,6 +4,7 @@ export const PRIMARY_COLOR = "#ffb800";
 // Update navigation items to match available pages
 export const NAVIGATION_ITEMS = [
   { label: "BASKETBALL", href: "/basketball" },
+  { label: "ACADEMY", href: "/academy" },
   { label: "SCHEDULE/EVENTS", href: "/schedule" },
   { label: "PERFORMANCE", href: "/performance" },
   { label: "BARBER", href: "/barber" },
@@ -33,6 +34,7 @@ export const FOOTER_LINKS = {
   ],
   company: [
     { label: "RISE Basketball", href: "/basketball" },
+    { label: "RISE Academy", href: "/academy" },
     { label: "RISE Performance", href: "/performance" },
     { label: "Game Schedule", href: "/basketball#programs" },
     { label: "BOOM Coffee", href: "/coffee" },
@@ -532,3 +534,33 @@ export const STARTING_PRICE = {
   "077bbea4-6374-44fd-a13d-4e3dd197c073": 50.0, //Strength Room Unlimited Membership
   "95696a7a-3727-4cd1-ad66-b15112dbec33": 87.5, // Adult Basketball
 };
+
+// RISE Academy Constants
+export const ACADEMY_PRIMARY_COLOR = "#E10600";
+
+export const ACADEMY_FEATURES = [
+  {
+    title: "Elite Coaching",
+    description:
+      "World-class instructors with proven track records in developing championship-level athletes.",
+    icon: "trophy",
+  },
+  {
+    title: "Comprehensive Development",
+    description:
+      "Integrated approach combining athletics, academics, and personal growth.",
+    icon: "target",
+  },
+  {
+    title: "Year-Round Training",
+    description:
+      "Continuous development through seasonal camps, leagues, and specialized sessions.",
+    icon: "calendar",
+  },
+  {
+    title: "College Pathways",
+    description:
+      "Dedicated support for athletes pursuing collegiate athletics and scholarships.",
+    icon: "graduation-cap",
+  },
+];

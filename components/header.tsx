@@ -85,6 +85,7 @@ export default function Header() {
   const availablePages = [
     "/",
     "/basketball",
+    "/academy",
     "/performance",
     "/contact",
     "/reviews",
@@ -303,7 +304,7 @@ export default function Header() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center"
+          className="md:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-white"
           onClick={toggleMenu}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >
