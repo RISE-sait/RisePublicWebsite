@@ -69,18 +69,27 @@ export function JobApplicationForm({
 
   // Render captcha once script is loaded and container is mounted
   useEffect(() => {
-    if (
-      captchaRendered.current ||
-      !captchaContainerRef.current ||
-      !window.grecaptcha?.enterprise
-    ) {
+    if (captchaRendered.current || !scriptReady || !captchaContainerRef.current) {
       return;
     }
-    captchaRendered.current = true;
-    window.grecaptcha.enterprise.render(captchaContainerRef.current, {
-      sitekey: SITE_KEY,
-      callback: "onJobApplicationCaptcha",
-    });
+
+    // enterprise.render may not be available immediately after script loads
+    const interval = setInterval(() => {
+      if (captchaRendered.current) {
+        clearInterval(interval);
+        return;
+      }
+      if (typeof window.grecaptcha?.enterprise?.render === "function") {
+        clearInterval(interval);
+        captchaRendered.current = true;
+        window.grecaptcha.enterprise.render(captchaContainerRef.current!, {
+          sitekey: SITE_KEY,
+          callback: "onJobApplicationCaptcha",
+        });
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
   }, [scriptReady]);
 
   const handleInputChange = (
