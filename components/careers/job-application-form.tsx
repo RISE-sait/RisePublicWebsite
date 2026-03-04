@@ -56,25 +56,31 @@ export function JobApplicationForm({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
+  const captchaRendered = useRef(false);
+
   // Setup reCAPTCHA Enterprise v2
   useEffect(() => {
     window.onJobApplicationCaptcha = (token: string) => {
       setCaptchaToken(token);
     };
-
-    const interval = setInterval(() => {
-      const container = document.querySelector(".g-recaptcha-job-application");
-      if (window.grecaptcha?.enterprise && container && !container.hasChildNodes()) {
-        clearInterval(interval);
-        window.grecaptcha.enterprise.render(container, {
-          sitekey: SITE_KEY,
-          callback: "onJobApplicationCaptcha",
-        });
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
   }, []);
+
+  const renderCaptcha = () => {
+    if (
+      captchaRendered.current ||
+      !window.grecaptcha?.enterprise ||
+      !captchaContainerRef.current ||
+      captchaContainerRef.current.hasChildNodes()
+    ) {
+      return;
+    }
+    captchaRendered.current = true;
+    window.grecaptcha.enterprise.render(captchaContainerRef.current, {
+      sitekey: SITE_KEY,
+      callback: "onJobApplicationCaptcha",
+    });
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -197,6 +203,7 @@ export function JobApplicationForm({
       <Script
         src="https://www.google.com/recaptcha/enterprise.js"
         strategy="afterInteractive"
+        onLoad={renderCaptcha}
       />
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -387,7 +394,7 @@ export function JobApplicationForm({
 
       {/* reCAPTCHA */}
       <div className="flex justify-center">
-        <div className="g-recaptcha-job-application"></div>
+        <div ref={(el) => { captchaContainerRef.current = el; renderCaptcha(); }}></div>
       </div>
 
       {/* Error Message */}
