@@ -124,6 +124,7 @@ export default function Header() {
     "/contact": [
       { href: "/contact", label: "Contact Us" },
       { href: "/reviews", label: "Reviews" },
+      { href: "/careers", label: "Careers" },
     ],
     "/barber": [
       { href: "/barber", label: "Barber" },
