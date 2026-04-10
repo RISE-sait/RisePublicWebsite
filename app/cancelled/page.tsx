@@ -44,7 +44,7 @@ export default function CancelledPage() {
                 Return to Homepage
               </Button>
             </Link>
-            <Link href="/memberships">
+            <Link href="/registrations">
               <Button className="flex items-center gap-2 bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg">
                 <RefreshCw className="w-4 h-4" />
                 Try Again

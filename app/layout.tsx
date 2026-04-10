@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: `${SITE_NAME} - Basketball, Performance, Academy & More`,
   description:
-    "Year-round basketball membership for all ages, fitness training, and more.",
+    "Year-round basketball registration for all ages, fitness training, and more.",
   metadataBase: new URL("https://risesportscomplex.com"),
   icons: {
     icon: "/favicon.ico",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${SITE_NAME} - Basketball, Performance, Academy & More`,
     description:
-      "Year-round basketball membership for all ages, fitness training, and more.",
+      "Year-round basketball registration for all ages, fitness training, and more.",
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,

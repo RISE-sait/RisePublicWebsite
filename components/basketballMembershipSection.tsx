@@ -15,7 +15,7 @@ interface BasketballMembershipsSectionProps {
 
 export function BasketballMembershipsSection({
   showHeading = false,
-  headingTitle = "Basketball Memberships",
+  headingTitle = "Basketball Registrations",
   containerClassName
 }: BasketballMembershipsSectionProps) {
   const [displayPlans, setDisplayPlans] = useState<GridPlan[]>([]);

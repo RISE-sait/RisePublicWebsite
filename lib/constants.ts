@@ -99,7 +99,7 @@ export const MEMBERSHIP_PLANS = [
     id: "full-year",
     featured: true,
     badge: "BEST VALUE",
-    title: "RISE FULL YEAR Basketball Membership",
+    title: "RISE FULL YEAR Basketball Registration",
     price: 225,
     period: "month",
     description:
@@ -116,7 +116,7 @@ export const MEMBERSHIP_PLANS = [
     id: "jr-rise",
     featured: false,
     badge: "GREAT VALUE",
-    title: "Jr. RISE Basketball Membership",
+    title: "Jr. RISE Basketball Registration",
     price: 125,
     period: "month",
     description:
@@ -133,7 +133,7 @@ export const MEMBERSHIP_PLANS = [
     id: "performance",
     featured: false,
     badge: "GREAT VALUE",
-    title: "RISE Performance Membership",
+    title: "RISE Performance Registration",
     price: 145,
     period: "month",
     description:

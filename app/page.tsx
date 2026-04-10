@@ -270,7 +270,7 @@ export default function Home() {
           </motion.div>
           <div>
             <SectionHeading
-              title="RISE PERFORMANCE MEMBERSHIP"
+              title="RISE PERFORMANCE REGISTRATION"
               subtitle="Train, Play, and Get in the Best Shape of Your Life"
             />
             <motion.p
@@ -403,7 +403,7 @@ export default function Home() {
       </SectionContainer>
 
       {/* Memberships Section */}
-      <MembershipsSection showHeading headingTitle="Memberships" containerId="memberships" />
+      <MembershipsSection showHeading headingTitle="Registrations" containerId="memberships" />
 
       {/* Compare Plans */}
       <ParallaxSection
@@ -424,7 +424,7 @@ export default function Home() {
           <div>
             <SectionHeading
               title="RISE APP TECHNOLOGY"
-              subtitle="Effortless Membership Management at Your Fingertips"
+              subtitle="Effortless Registration Management at Your Fingertips"
             />
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -433,7 +433,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              The RISE app makes it simple to manage memberships, schedules, and
+              The RISE app makes it simple to manage registrations, schedules, and
               payments. Whether you're tracking your progress or managing
               multiple athletes, everything you need is right at your
               fingertips.
@@ -481,7 +481,7 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <span>Easy Membership Control</span>
+                <span>Easy Registration Control</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="bg-[#ffb800]/10 rounded-full p-1">
@@ -526,7 +526,7 @@ export default function Home() {
             <div className="w-full h-full border-4 border-[#ffb800] rounded-lg overflow-hidden shadow-lg">
               <Image
                 src="/home-page-images/riseapp.svg"
-                alt="RISE Basketball Mobile App - Membership and Scheduling"
+                alt="RISE Basketball Mobile App - Registration and Scheduling"
                 width={500}
                 height={500}
                 className="w-full h-auto"

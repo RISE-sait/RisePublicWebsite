@@ -285,7 +285,7 @@ export default function PerformancePage() {
       </ParallaxSection>
 
       {/* Memberships */}
-      <PerformanceMembershipsSection showHeading headingTitle="Memberships" containerClassName="bg-black" />
+      <PerformanceMembershipsSection showHeading headingTitle="Registrations" containerClassName="bg-black" />
 
       {/* Gallery */}
       <SectionContainer>
