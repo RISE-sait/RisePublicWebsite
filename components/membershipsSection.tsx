@@ -16,7 +16,7 @@ interface MembershipsSectionProps {
 
 export function MembershipsSection({
   showHeading = false,
-  headingTitle = "Memberships",
+  headingTitle = "Registrations",
   containerClassName,
   containerId
 }: MembershipsSectionProps = {}) {

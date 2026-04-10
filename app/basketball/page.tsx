@@ -444,7 +444,7 @@ export default function BasketballPage() {
       </ParallaxSection> */}
 
       {/* Basketball Memberships */}
-      <BasketballMembershipsSection showHeading headingTitle="Basketball Memberships" />
+      <BasketballMembershipsSection showHeading headingTitle="Basketball Registrations" />
 
       {/* Gallery */}
       <SectionContainer>

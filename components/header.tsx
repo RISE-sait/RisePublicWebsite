@@ -110,7 +110,7 @@ export default function Header() {
     "/basketball": [
       {
         href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-        label: "Memberships",
+        label: "Registrations",
       },
       { href: "/coaches", label: "Coaches" },
       { href: "/games", label: "Games" },
@@ -118,7 +118,7 @@ export default function Header() {
     "/performance": [
       {
         href: "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships",
-        label: "Memberships",
+        label: "Registrations",
       },
     ],
     "/contact": [

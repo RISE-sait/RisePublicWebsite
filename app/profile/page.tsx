@@ -176,7 +176,7 @@ export default function ProfilePage() {
   // Profile tabs
   const profileTabs = [
     { id: "overview", label: "Overview" },
-    { id: "membership", label: "Membership" },
+    { id: "membership", label: "Registration" },
     { id: "schedule", label: "My Schedule" },
     { id: "waivers", label: "Waivers" },
   ];
@@ -486,7 +486,7 @@ export default function ProfilePage() {
                     <div className="w-10 h-10 rounded-lg bg-[#ffb800]/10 flex items-center justify-center">
                       <CreditCard className="h-5 w-5 text-[#ffb800]" />
                     </div>
-                    <h3 className="text-sm font-medium text-gray-400">Membership</h3>
+                    <h3 className="text-sm font-medium text-gray-400">Registration</h3>
                   </div>
                   {(userProfile?.membership_info || membership) ? (
                     <div>
@@ -501,7 +501,7 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <div>
-                      <p className="text-gray-500 text-sm mb-3">No active membership</p>
+                      <p className="text-gray-500 text-sm mb-3">No active registration</p>
                       {/* Temporarily using Glofox link - old: onClick={() => router.push('/allmemberships') */}
                       <a
                         href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
@@ -698,7 +698,7 @@ export default function ProfilePage() {
           {activeTab === "membership" && (
             <>
             <div className="bg-gradient-to-br from-gray-900 to-gray-900/50 rounded-xl border border-gray-800 p-5">
-              <h3 className="text-lg font-semibold text-white mb-6">Membership Details</h3>
+              <h3 className="text-lg font-semibold text-white mb-6">Registration Details</h3>
 
               {membershipLoading ? (
                 <div className="animate-pulse space-y-4">
@@ -770,8 +770,8 @@ export default function ProfilePage() {
                   <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-4">
                     <CreditCard className="h-8 w-8 text-gray-500" />
                   </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">No Active Membership</h4>
-                  <p className="text-gray-400 mb-6">You don't have an active membership yet.</p>
+                  <h4 className="text-lg font-semibold text-white mb-2">No Active Registration</h4>
+                  <p className="text-gray-400 mb-6">You don't have an active registration yet.</p>
                   {/* Temporarily using Glofox link - old: onClick={() => router.push('/allmemberships') */}
                   <a
                     href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships"
@@ -779,7 +779,7 @@ export default function ProfilePage() {
                     rel="noopener noreferrer"
                     className="px-6 py-2.5 bg-[#ffb800] text-black font-semibold rounded-xl hover:bg-[#e0a300] transition-colors inline-block"
                   >
-                    Browse Memberships
+                    Browse Registrations
                   </a>
                 </div>
               )}
@@ -882,7 +882,7 @@ export default function ProfilePage() {
                         {subsidyUsage.slice(0, 5).map((usage) => {
                           const formatTransactionType = (type: string) => {
                             const typeMap: Record<string, string> = {
-                              'membership_payment': 'Membership Payment',
+                              'membership_payment': 'Registration Payment',
                               'event_payment': 'Event Payment',
                               'credit_purchase': 'Credit Purchase',
                               'refund': 'Refund',

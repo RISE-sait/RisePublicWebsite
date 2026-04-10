@@ -15,7 +15,7 @@ interface PerformanceMembershipsSectionProps {
 
 export function PerformanceMembershipsSection({
   showHeading = false,
-  headingTitle = "Memberships",
+  headingTitle = "Registrations",
   containerClassName
 }: PerformanceMembershipsSectionProps) {
   const [displayPlans, setDisplayPlans] = useState<GridPlan[]>([]);

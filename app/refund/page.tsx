@@ -16,7 +16,7 @@ export default function RefundPolicyPage() {
             Participants have up to <strong>7 days before the program start date</strong> to withdraw and receive a full refund. Withdrawal requests must be submitted <strong>via email</strong> before the program begins.
           </p>
           <p className="mt-2 text-yellow-400 italic">
-            *Excludes Full-Year Memberships
+            *Excludes Full-Year Registrations
           </p>
           <p className="mt-2 text-red-400">
             Once the program has started, no refunds will be issued.
@@ -34,13 +34,13 @@ export default function RefundPolicyPage() {
 
         <section>
           <h2 className="text-xl font-semibold mb-2 text-white">
-            Full-Year Memberships
+            Full-Year Registrations
           </h2>
           <p>
-            All Full-Year Memberships are final. No cancellations or refunds will be issued after registration.
+            All Full-Year Registrations are final. No cancellations or refunds will be issued after registration.
           </p>
           <p className="mt-2">
-            The initial sign-up fee is <strong>non-refundable</strong>. For full membership details, please refer to the Member Contract available in your <Link href="/profile" className="text-yellow-400 underline">account</Link>.
+            The initial sign-up fee is <strong>non-refundable</strong>. For full registration details, please refer to the Member Contract available in your <Link href="/profile" className="text-yellow-400 underline">account</Link>.
           </p>
         </section>
 
