@@ -131,11 +131,8 @@ export default function BasketballPage() {
         </motion.div>
       </motion.div>
 
-      {/* Partners Section */}
-      <PartnerLogos />
-
       {/* Program Tabs */}
-      <SectionContainer id="programs" className="">
+      {false && (<SectionContainer id="programs" className="">
         <SectionHeading title="BASKETBALL INFORMATION" centered />
 
         <div className="mb-8 max-w-3xl mx-auto">
@@ -229,10 +226,10 @@ export default function BasketballPage() {
             </div>
           </div>
         )}
-      </SectionContainer>
+      </SectionContainer>)}
 
       {/* Why RISE Basketball */}
-      <SectionContainer id="why-rise" className="bg-[#111]">
+      {false && (<SectionContainer id="why-rise" className="bg-[#111]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px]">
             <div className="h-full">
@@ -356,15 +353,14 @@ export default function BasketballPage() {
                 variant="default"
                 className="bg-[#ffb800] text-black hover:bg-[#e0a300] hover:scale-105 transition-all shadow-lg"
               >
-                {/* Temporarily using Glofox link - old: href="/allmemberships" */}
                 <a href="https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/memberships" target="_blank" rel="noopener noreferrer">JOIN NOW</a>
               </Button>
             </motion.div>
           </div>
         </div>
-      </SectionContainer>
+      </SectionContainer>)}
 
-      {/* Latest Events 
+      {/* Latest Events
       <SectionContainer>
         <SectionHeading
           title="Latest Events"
@@ -444,7 +440,7 @@ export default function BasketballPage() {
       </ParallaxSection> */}
 
       {/* Basketball Memberships */}
-      <BasketballMembershipsSection showHeading headingTitle="Basketball Registrations" />
+      {/* <BasketballMembershipsSection showHeading headingTitle="Basketball Registrations" /> */}
 
       {/* Gallery */}
       <SectionContainer>
@@ -496,6 +492,9 @@ export default function BasketballPage() {
           </motion.div>
         </SectionContainer>
       </ParallaxSection>
+
+      {/* Partners Section */}
+      <PartnerLogos />
     </div>
   );
 }
