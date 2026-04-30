@@ -109,7 +109,7 @@ export function DualHero({
 }
 
 // Event Hero Content Component
-function EventHeroContent({
+export function EventHeroContent({
   title,
   subtitle,
   description,
