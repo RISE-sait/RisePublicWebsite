@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
 
 const JOIN_LINK =
   "https://app.glofox.com/portal/#/branch/66464503a11addded10584e5/courses";
@@ -44,9 +44,22 @@ export default function AcademyPage() {
         <div className="absolute bottom-[-200px] right-[-150px] w-[600px] h-[600px] bg-[#E10600]/10 rounded-full blur-[150px]" />
         <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] bg-[#E10600]/10 rounded-full blur-[100px]" />
       </div>
-      <h1 className="text-4xl md:text-5xl font-bold text-white mb-10 tracking-tight">
+      <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
         RISE ACADEMY
       </h1>
+
+      <div className="flex flex-col items-center gap-2 mb-10">
+        <a
+          href="/academy-page-images/rise-academy-faq.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 bg-[#E10600] hover:bg-[#B80500] text-white font-bold text-lg px-8 py-4 rounded-xl transition-colors shadow-lg shadow-[#E10600]/30"
+        >
+          <FileText className="h-6 w-6 shrink-0" />
+          View the Academy FAQ
+        </a>
+        <p className="text-gray-500 text-xs">Opens as a PDF — you can read it or download it</p>
+      </div>
 
       <div className="relative w-full max-w-4xl aspect-[4/3]">
         {slide.link ? (
@@ -113,6 +126,7 @@ export default function AcademyPage() {
           />
         ))}
       </div>
+
     </div>
   );
 }
