@@ -15,7 +15,7 @@ import { SUPPLEMENT_PRODUCTS } from "@/lib/constants";
 import CountdownTimer from "@/components/countdown-timer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { ChevronDown } from "lucide-react";
-import NewsletterSection from "@/components/newsletter-form";
+// import NewsletterSection from "@/components/newsletter-form";
 import RecaptchaContactForm from "@/components/contactForm";
 import Head from "next/head";
 import Link from "next/link";
@@ -370,7 +370,8 @@ export default function SupplementsPage() {
           className="bg-black/80 p-8 rounded-lg max-w-3xl mx-auto"
         >
           <SectionHeading title="JOIN THE SUPPLEMENTS WAITLIST" centered />
-          <NewsletterSection tag="supplement-announcments" />
+          {/* Newsletter subscription temporarily hidden */}
+          {/* <NewsletterSection tag="supplement-announcments" /> */}
         </ParallaxSection>
       </SectionContainer>
     </div>
