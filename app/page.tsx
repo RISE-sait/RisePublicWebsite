@@ -7,6 +7,8 @@ import { PlanComparisonTable } from "@/components/ui/plan-comparison-table";
 import { ParallaxSection } from "@/components/ui/parallax-section";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { PromoVideosSection } from "@/components/ui/promo-videos-section";
+import { ContactInfo } from "@/components/ui/contact-info";
+import RecaptchaContactForm from "@/components/contactForm";
 import PartnerLogos from "@/components/partner-logos";
 import { PLAN_COMPARISON } from "@/lib/constants";
 import { useEffect, useState } from "react";
@@ -171,6 +173,37 @@ export default function Home() {
           <PlanComparisonTable features={PLAN_COMPARISON} />
         </SectionContainer>
       </ParallaxSection>
+
+      {/* Contact Form and Info */}
+      <SectionContainer animate={false} className="py-16">
+        <SectionHeading title="Get In Touch" centered className="mb-12" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <ContactInfo
+              className="h-full"
+              address="RISE SPORTS COMPLEX, #01, 33 St NE"
+              city="Calgary, AB"
+              postalCode="T2E 7K1"
+              contactTitle="HQ Contact"
+              contactName="RISE Headquarters"
+              phone="587-899-7473"
+              email="info@risesportscomplex.com"
+              hours={[
+                "Monday 9:00 am - 11:00 pm",
+                "Tuesday 9:00 am - 11:00 pm",
+                "Wednesday 9:00 am - 11:00 pm",
+                "Thursday 9:00 am - 11:00 pm",
+                "Friday 9:00 am - 11:00 pm",
+                "Saturday 9:00 am - 11:00 pm",
+                "Sunday 9:00 am - 11:00 pm",
+              ]}
+            />
+          </div>
+          <div>
+            <RecaptchaContactForm />
+          </div>
+        </div>
+      </SectionContainer>
 
       {/* Partners Section */}
       <PartnerLogos />
