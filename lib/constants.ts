@@ -88,7 +88,6 @@ export const PARTNER_LOGOS = [
     image: "/partnerImages/luxury.png",
   },
   { name: "MaxPhysio", image: "/partnerImages/max-phisyo.jpg" },
-  { name: "TurningStone", image: "/partnerImages/turning-stone.png" },
 
   //{ name: "Exmerce", image: "/partnerImages/exmerce.png" },
   { name: "Century 21", image: "/partnerImages/century.png" },
